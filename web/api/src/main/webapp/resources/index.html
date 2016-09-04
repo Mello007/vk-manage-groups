@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Система Управления Оценками Студента</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/signin.css" rel="stylesheet">
+    <script src="/resources/js/bootstrap.min.js"></script>
+    <script src="/resources/js/requests.js"></script>
+</head>
+
+<script type="text/javascript">
+    function getApi() {
+            window.open("https://oauth.vk.com/authorize?client_id=5499487&display=page&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52");
+    }
+</script>
+<body>
+<button type="button" class="btn btn-primary" onclick="getApi()" action="javascript:void(null);">VK</button>
+<div class="container">
+    <form class="form-signin" role="form" action='/login' method='POST'>
+        <h2 class="form-signin-heading">Авторизация</h2>
+        <input type="email" class="form-control" placeholder="Почта" name="username" required autofocus>
+        <input type="password" class="form-control" placeholder="Пароль" name="password" required>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me"> Запомнить меня
+        </label>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Войти</button>
+    </form>
+</div>
+</body>
+</html>
