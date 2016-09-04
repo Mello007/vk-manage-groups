@@ -4,6 +4,15 @@
 //     });
 // }
 
+var getUserName = new XMLHttpRequest();
+getUserName.open("GET", "user/getName", true);  //Указываем адрес GET-запроса
+getUserName.onload = function (){ //Функция которая отправляет запрос на сервер для получения имени пользователя
+    var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
+    document.getElementById('userName').innerHTML =
+        'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
+};
+
+
 function login() {
     var email = $('#inputEmail3').val();
     var password = $('#inputPassword3').val();
@@ -29,6 +38,7 @@ $(document).ready(function() {
         globalvar = $(this).data('val');
     })
 });
+
 function addNewStudent() {
     var name = $('#itemName').val();
     var requestJSONparametr = "{\"itemName\": \"" + name + "\", \"itemKind\": \"" + globalvar + "\"}";
