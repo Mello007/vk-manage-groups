@@ -38,6 +38,9 @@ function loadGroups() {
             managementLinkElement.innerHTML = 'Управлять группой';
             managementLinkElement.href = "manage-groups.html";
             managementElement.appendChild(managementLinkElement);
+            tableRowElement.appendChild(managementElement);
+
+            groupTable.appendChild(tableRowElement);
         }
     };
     getGroupsInfo.send(null);
