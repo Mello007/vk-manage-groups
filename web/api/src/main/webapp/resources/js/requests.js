@@ -4,13 +4,25 @@
 //     });
 // }
 
-var getUserName = new XMLHttpRequest();
-getUserName.open("GET", "user/getName", true);  //Указываем адрес GET-запроса
-getUserName.onload = function (){ //Функция которая отправляет запрос на сервер для получения имени пользователя
-    var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
-    document.getElementById('userName').innerHTML =
-        'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
-};
+function changeWelcome() {
+    var getUserName = new XMLHttpRequest();
+    getUserName.open("GET", "user/getName", true);  //Указываем адрес GET-запроса
+    getUserName.onload = function (){ //Функция которая отправляет запрос на сервер для получения имени пользователя
+        var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
+        document.getElementById('userName').innerHTML =
+            'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
+    };
+}
+function loadGroups() {
+    var getGroupsInfo = new XMLHttpRequest();
+    getGroupsInfo.open("GET", "user/getName", true);  //Указываем адрес GET-запроса
+    getGroupsInfo.onload = function (){ //Функция которая отправляет запрос на сервер для получения имени пользователя
+        var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
+        document.getElementById('userName').innerHTML =
+            'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
+    };
+}
+
 
 
 function login() {
