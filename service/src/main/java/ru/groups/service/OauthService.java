@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.groups.entity.User;
+import ru.groups.entity.UserVk;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class OauthService {
         URL obj = new URL(reqUrl);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
-        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("UserVk-Agent", USER_AGENT);
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
@@ -64,7 +64,7 @@ public class OauthService {
     } //Ненужный пока метод который предназнчен для работы с токеном
 
     @Transactional
-    public boolean requestToUserForFindName(User user) throws Exception {
+    public void requestToUserForFindName(UserVk user) throws Exception {
         String userName, userLastName;
         String method = "users.get";
         String reqUrl = "https://api.vk.com/method/{METHOD_NAME}?user_id={userID}"
@@ -81,12 +81,12 @@ public class OauthService {
 //        userLastName = String.valueOf(actualObj.get("response").findValue("last_name")).replace("\"", ""); удалить после проверки findValueInJson
         user.setUserName(findValueInJson(actualObj, "first_name"));
         user.setUserLastName(findValueInJson(actualObj, "last_name"));
-        return userService.searchUserName(user);
+        userService.searchUserName(user);
     }
 
     @Transactional
-    public boolean searchUserId(String code) throws Exception {
-        User user = new User();
+    public void searchUserId(String code) throws Exception {
+        UserVk user = new UserVk();
         String reqUrl = "https://oauth.vk.com/{METHOD_NAME}?client_id={USER_ID}&client_secret={CLIENT_SECRET}&redirect_uri={REDIRECT_URI}&code={CODE}"
                 .replace("{METHOD_NAME}", "access_token")
                 .replace("{USER_ID}", "5499487")
@@ -100,7 +100,7 @@ public class OauthService {
 //        String userId = String.valueOf(actualObj.findValue("user_id")).replace("\"", ""); удалить после проверки метода findValueInJson
         user.setUserAccessToken(findValueInJson(actualObj ,"access_token"));
         user.setUserId(findValueInJson(actualObj, "user_id"));
-        return requestToUserForFindName(user);
+        requestToUserForFindName(user);
     }
 
     @Transactional

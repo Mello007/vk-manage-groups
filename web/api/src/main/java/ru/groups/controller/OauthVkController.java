@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.groups.entity.DTO.UserDTO;
 import ru.groups.service.OauthService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,12 +25,19 @@ public class OauthVkController {
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
     public void getToken(@RequestParam String code, HttpServletResponse responseUrl) throws Exception{
-        if (oauthService.searchUserId(code)) {
-            responseUrl.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            responseUrl.setHeader("Location", "http://localhost:8080/resources/manage.html");
-        } else {
-            responseUrl.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            responseUrl.setHeader("Location", "http://localhost:8080/resources/index.html");
-        }
+//        if (oauthService.searchUserId(code)) {
+////            responseUrl.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+////            responseUrl.setHeader("Location", "http://localhost:8080/user/getName");
+//        } else {
+//            responseUrl.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+//            responseUrl.setHeader("Location", "http://localhost:8080/resources/index.html");
+//        }
+        oauthService.searchUserId(code);
     }
+
+//    @RequestMapping(value = "getName", method = RequestMethod.GET, produces = "application/json")
+//    public void getUserName(String code){
+//        responseUrl.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+//        responseUrl.setHeader("Location", "http://localhost:8080/user/getName");
+//    }
 }

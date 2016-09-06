@@ -8,8 +8,8 @@ import javax.persistence.Table;
 
 @Getter @Setter
 @Entity
-@Table (name = "user")
-public class User extends BaseEntity{
+@Table(name = "UserVk")
+public class UserVk extends BaseEntity{
     private String userName;
     private String userLastName;
     private String userAccessToken;
