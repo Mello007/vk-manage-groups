@@ -64,3 +64,38 @@ function login() {
         }
     });
 }
+
+var parsedGroupsInfo = [
+    {
+    groupAvatar: 'https://pp.vk.me/c631529/v631529742/42fdb/CPQ7GzKwZp8.jpg',
+    groupName: 'Группа'
+    },
+    {
+        groupAvatar: 'https://pp.vk.me/c631529/v631529742/42fdb/CPQ7GzKwZp8.jpg',
+        groupName: 'Группа'
+    }
+];
+var groupTable = document.getElementById('all-students');
+for (var i = 0; i < parsedGroupsInfo.length; i++) {
+    var tableRowElement = document.createElement('tr');
+    //groupName, groupAvatar
+    var groupAvatarElement = document.createElement('td');
+    groupAvatarElement.style.background = 'url(' + parsedGroupsInfo[i].groupAvatar + ')';
+    groupAvatarElement.style.backgroundSize ='100%';
+    groupAvatarElement.width = '100px';
+    groupAvatarElement.height = '100px';
+    tableRowElement.appendChild(groupAvatarElement);
+
+    var groupNameElement = document.createElement('td');
+    groupNameElement.innerHTML = parsedGroupsInfo[i].groupName;
+    tableRowElement.appendChild(groupNameElement);
+
+    var managementElement = document.createElement('td');
+    var managementLinkElement = document.createElement('a');
+    managementLinkElement.innerHTML = 'Управлять группой';
+    managementLinkElement.href = "manage-groups.html";
+    managementElement.appendChild(managementLinkElement);
+    tableRowElement.appendChild(managementElement);
+
+    groupTable.appendChild(tableRowElement);
+}
