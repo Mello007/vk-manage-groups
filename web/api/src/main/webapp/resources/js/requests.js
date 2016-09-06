@@ -11,7 +11,7 @@ function changeWelcome() {
         var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
         document.getElementById('userName').innerHTML =
             'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
-    };
+    }; 
 }
 function loadGroups() {
     var getGroupsInfo = new XMLHttpRequest();
