@@ -26,7 +26,7 @@ public class OauthService {
     private final String API_VERSION = "5.21";
 
     @Transactional
-    private StringBuffer apiRequestToUser(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
+    public StringBuffer apiRequestToUser(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
         URL obj = new URL(reqUrl);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -77,8 +77,6 @@ public class OauthService {
         if (actualObj.get("response") == null){
             throw new Exception("Ошибка авторизации!!!");
         }
-//        userName = String.valueOf(actualObj.get("response").findValue("first_name")).replace("\"", "");
-//        userLastName = String.valueOf(actualObj.get("response").findValue("last_name")).replace("\"", ""); удалить после проверки findValueInJson
         user.setUserName(findValueInJson(actualObj, "first_name"));
         user.setUserLastName(findValueInJson(actualObj, "last_name"));
         userService.searchUserName(user);
@@ -96,8 +94,6 @@ public class OauthService {
         StringBuffer response = apiRequestToUser(reqUrl);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(response.toString());
-//        String token = String.valueOf(actualObj.findValue("access_token")).replace("\"", "");
-//        String userId = String.valueOf(actualObj.findValue("user_id")).replace("\"", ""); удалить после проверки метода findValueInJson
         user.setUserAccessToken(findValueInJson(actualObj ,"access_token"));
         user.setUserId(findValueInJson(actualObj, "user_id"));
         requestToUserForFindName(user);

@@ -1,7 +1,10 @@
 package ru.groups.service.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.Set;
 @Service("userDetailsService")
 public class MyUserDetailService {
 
+    @Autowired Session session;
+
     @Transactional(readOnly=true)
     public void loadUserByUsername(UserVk user) throws UsernameNotFoundException {
         if (user == null) {
@@ -25,8 +30,8 @@ public class MyUserDetailService {
         Set<String> roles = new HashSet<String>();
         roles.add("ROLE_TEACHER");
         List<GrantedAuthority> authorities = buildUserAuthority(roles);
-        Session session = new Session();
-        session.setAuthentication(new CustomUser(user.getId(), user.getUserName() + " " + user.getUserLastName(), user.getUserAccessToken(), true, true, true, true, authorities));
+        CustomUser customUser = new CustomUser(user.getId(), user.getUserName() + " " + user.getUserLastName(), user.getUserAccessToken(), true, true, true, true, authorities);
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(customUser, customUser.getPassword(), customUser.getAuthorities()));
     }
 
     private List<GrantedAuthority> buildUserAuthority(Set<String> userRoles) {

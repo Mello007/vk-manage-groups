@@ -2,7 +2,6 @@ package ru.groups.service.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +13,11 @@ public class Session {
         return customUser.getId();
     }
 
-    private Authentication getAuthentication() {
+    public Authentication getAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         if (auth == null) {
-            throw new RuntimeException("Юзер не найден не найден!");
+            throw new RuntimeException("Юзер не найден!");
         }
         return auth;
     }

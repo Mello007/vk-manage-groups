@@ -15,7 +15,6 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
     <context:component-scan base-package="ru.groups.service"/>  <!-- Указываем, какие файлы сканировать на наличие Сервисов -->
     <mvc:annotation-driven/>
-    <task:annotation-driven/>
 
     <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> <!-- Подключаем PosgreSQL-->
         <beans:property name="driverClassName" value="org.postgresql.Driver"/> <!-- Указываем данные от БД-->
@@ -29,8 +28,8 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
         <beans:property name="dataSource" ref="dataSource" />
         <beans:property name="annotatedClasses">
             <beans:list>
-                <beans:value>ru.groups.User</beans:value>
-                <!--<beans:value>ru.price.Item</beans:value>-->
+                <beans:value>ru.groups.entity.UserVk</beans:value>
+                <beans:value>ru.groups.entity.GroupVk</beans:value>
                 <!--<beans:value>ru.price.Currency</beans:value>-->
                 <!--<beans:value>ru.university.entity.Group</beans:value>-->
                 <!--<beans:value>ru.university.entity.Teacher</beans:value>-->
@@ -45,7 +44,6 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
             </beans:props>
         </beans:property>
     </beans:bean>
-    <!--<beans:bean class="ru.university.mapper.DTOMapperImpl"/>-->
 
     <beans:bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"> <!--Указываем данные для использования в классах, которые позволяют подключаться к БД -->
         <beans:property name="dataSource" ref="dataSource" /> <!--Имя Бд -->

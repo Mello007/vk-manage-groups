@@ -20,7 +20,7 @@ public class OauthVkController {
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
     public String sendLink(){
-        return "https://oauth.vk.com/authorize?client_id=5499487&display=page&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52";
+        return "https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52";
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)

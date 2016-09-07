@@ -8,15 +8,17 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.service.UserService;
 
+import java.security.Principal;
+
 
 @RestController
 @RequestMapping(value = "user")
 public class UserController {
+
     @Autowired UserService userService;
 
-
     @RequestMapping(value = "getName", method = RequestMethod.GET, produces = "application/json")
-    public UserDTO getUserName(){
+    public UserDTO getUserName(Principal principal){
         return userService.getUserName();
     }
 }

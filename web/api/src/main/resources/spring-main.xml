@@ -10,7 +10,4 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <context:component-scan base-package="ru.groups.controller"/>
     <mvc:annotation-driven />
-    <!--<mvc:interceptors>-->
-       <!--<bean class="ru.university.interceptors.StatsInterceptor"/>-->
-    <!--</mvc:interceptors>-->
 </beans>
