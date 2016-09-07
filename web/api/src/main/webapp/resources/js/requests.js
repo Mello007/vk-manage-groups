@@ -15,10 +15,6 @@ function changeWelcome() {
     getUserName.send(null);
 }
 
-if (location.href.match(/admin/)) {
-    changeWelcome();
-}
-
 function loadGroups() {
     var getGroupsInfo = new XMLHttpRequest();
     getGroupsInfo.open("GET", "user/getName", true);  //Указываем адрес GET-запроса
@@ -40,4 +36,9 @@ function login() {
         dataType: 'json',
         data: requestJSONparametr
     });
+}
+
+if (location.href.match(/admin/)) {
+    changeWelcome();
+    loadGroups();
 }
