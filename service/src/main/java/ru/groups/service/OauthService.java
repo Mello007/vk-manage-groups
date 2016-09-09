@@ -5,6 +5,7 @@ import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.UserVk;

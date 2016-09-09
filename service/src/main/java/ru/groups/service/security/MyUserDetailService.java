@@ -2,45 +2,53 @@ package ru.groups.service.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.UserVk;
-
+import ru.groups.service.UserService;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
+public class MyUserDetailService implements UserDetailsService {
+    @Autowired UserService userService;
+    @Autowired CustomAuthenticationManager customAuthenticationManager;
 
 
-@Service("userDetailsService")
-public class MyUserDetailService {
+    @Transactional(readOnly = true)
+    @Override
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        UserVk user = userService.getUserByName(username);
+        return new SecurityUser(user.getId(), user.getUserName(), user.getUserAccessToken(), false, false, false, false, null);
+    }
 
-    @Autowired Session session;
-
-    @Transactional(readOnly=true)
-    public void loadUserByUsername(UserVk user) throws UsernameNotFoundException {
-        if (user == null) {
-            throw new UsernameNotFoundException("Студент с таким именем не найден!");
+        @Transactional
+        public Authentication loadUserByUsername(UserVk user) throws UsernameNotFoundException {
+            if (user == null) {
+                throw new UsernameNotFoundException("Пользователь не определен и не получен по ВК апи");
         }
         Set<String> roles = new HashSet<String>();
         roles.add("ROLE_TEACHER");
         List<GrantedAuthority> authorities = buildUserAuthority(roles);
-        CustomUser customUser = new CustomUser(user.getId(), user.getUserName() + " " + user.getUserLastName(), user.getUserAccessToken(), true, true, true, true, authorities);
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(customUser, customUser.getPassword(), customUser.getAuthorities()));
-    }
+        SecurityUser customUser = new SecurityUser(user.getId(), user.getUserName(), user.getUserAccessToken(), true, true, true, true, authorities);
+        return customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customUser, customUser.getPassword(), customUser.getAuthorities()));
+        }
 
+    @Transactional
     private List<GrantedAuthority> buildUserAuthority(Set<String> userRoles) {
         Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-        // Build user's authorities
-        for (String userRole : userRoles) {
+        for (String userRole : userRoles){
             setAuths.add(new SimpleGrantedAuthority(userRole));
         }
-        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-        return Result;
+        List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);
+        return result;
     }
 }

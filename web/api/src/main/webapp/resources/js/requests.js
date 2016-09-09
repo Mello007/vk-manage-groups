@@ -6,7 +6,7 @@ function getApi() {
 
 function changeWelcome() {
     var getUserName = new XMLHttpRequest();
-    getUserName.open("GET", "user/getName", true);  //Указываем адрес GET-запроса
+    getUserName.open("GET", "/user/getName", true);  //Указываем адрес GET-запроса
     getUserName.onload = function () { //Функция которая отправляет запрос на сервер для получения имени пользователя
         var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
         document.getElementById('userName').innerHTML =

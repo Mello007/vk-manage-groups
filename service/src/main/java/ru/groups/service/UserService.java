@@ -3,40 +3,50 @@ package ru.groups.service;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
-import ru.groups.service.security.CustomUser;
 import ru.groups.service.security.MyUserDetailService;
-import ru.groups.service.security.Session;
+import ru.groups.service.security.SecurityServiceContext;
+import java.io.IOException;
 
 @Service
 public class UserService {
 
     @Autowired SessionFactory sessionFactory;
     @Autowired MyUserDetailService myUserDetailService;
-    @Autowired Session session;
+    @Autowired SecurityServiceContext context;
 
     @Transactional
     public void searchUserName(UserVk user){
         sessionFactory.getCurrentSession().save(user);
-        myUserDetailService.loadUserByUsername(user);
+//        return myUserDetailService.loadUserByUsername(user);
     }
 
     @Transactional
-    public UserDTO getUserName(){
+    public UserDTO getUserDTO(){
         UserDTO userDTO = new UserDTO();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        CustomUser customUser = (CustomUser) auth.getPrincipal();
-        long userId = customUser.getId();
-        Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where id = :id"); //Делаем запрос в БД с помощью HQL
-        query.setParameter("id", userId); //Указываем что в запросе login будет принимаемый login
+        long userId = context.getLoggedUserId();
+        Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where id = :id");
+        query.setParameter("id", userId);//Делаем запрос в БД с помощью HQL
         UserVk user = (UserVk)query.uniqueResult();
         userDTO.setUserLastName(user.getUserLastName());
         userDTO.setUserName(user.getUserName());
         return userDTO;
+    }
+
+    @Transactional
+        public UserVk getUserByName(String name){
+        Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where userName = :userName");
+        query.setParameter("userName", name);
+        UserVk user = (UserVk)query.uniqueResult();
+        if (user == null){
+            throw new BadCredentialsException("User not found");
+        }
+        return user;
     }
 }
