@@ -65,7 +65,7 @@ public class OauthService {
     } //Ненужный пока метод который предназнчен для работы с токеном
 
     @Transactional
-    public void requestToUserForFindName(UserVk user) throws Exception {
+    public Authentication requestToUserForFindName(UserVk user) throws Exception {
         String userName, userLastName;
         String method = "users.get";
         String reqUrl = "https://api.vk.com/method/{METHOD_NAME}?user_id={userID}"
@@ -80,11 +80,11 @@ public class OauthService {
         }
         user.setUserName(findValueInJson(actualObj, "first_name"));
         user.setUserLastName(findValueInJson(actualObj, "last_name"));
-        userService.searchUserName(user);
+        return userService.searchUserName(user);
     }
 
     @Transactional
-    public void searchUserId(String code) throws Exception {
+    public Authentication searchUserId(String code) throws Exception {
         UserVk user = new UserVk();
         String reqUrl = "https://oauth.vk.com/{METHOD_NAME}?client_id={USER_ID}&client_secret={CLIENT_SECRET}&redirect_uri={REDIRECT_URI}&code={CODE}"
                 .replace("{METHOD_NAME}", "access_token")
@@ -97,7 +97,7 @@ public class OauthService {
         JsonNode actualObj = mapper.readTree(response.toString());
         user.setUserAccessToken(findValueInJson(actualObj ,"access_token"));
         user.setUserId(findValueInJson(actualObj, "user_id"));
-        requestToUserForFindName(user);
+        return requestToUserForFindName(user);
     }
 
     @Transactional

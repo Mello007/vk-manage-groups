@@ -22,9 +22,9 @@ public class UserService {
     @Autowired SecurityServiceContext context;
 
     @Transactional
-    public void searchUserName(UserVk user){
+    public Authentication searchUserName(UserVk user){
         sessionFactory.getCurrentSession().save(user);
-//        return myUserDetailService.loadUserByUsername(user);
+        return myUserDetailService.loadUserByUsername(user);
     }
 
     @Transactional

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SecurityServiceContext {
-
     public Long getLoggedUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return ((SecurityUser) auth.getPrincipal()).getId(); //get logged in username

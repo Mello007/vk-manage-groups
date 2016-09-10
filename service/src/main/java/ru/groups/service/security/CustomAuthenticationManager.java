@@ -16,14 +16,13 @@ import java.util.Collection;
 
 @Component
 public class CustomAuthenticationManager implements AuthenticationProvider {
-    @Autowired MyUserDetailService userDetailsService;
 
+    @Autowired MyUserDetailService userDetailsService;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
         UserDetails user = userDetailsService.loadUserByUsername(username);
-
         if (user == null || !user.getUsername().equalsIgnoreCase(username)) {
             throw new BadCredentialsException("Username not found.");
         }

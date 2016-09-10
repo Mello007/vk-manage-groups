@@ -24,7 +24,7 @@ public class OauthVkController {
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
-    public void getToken(@RequestParam String code, HttpServletResponse responseUrl) throws Exception{
+    public void getToken(@RequestParam String code) throws Exception{
         oauthService.searchUserId(code);
     }
 }
