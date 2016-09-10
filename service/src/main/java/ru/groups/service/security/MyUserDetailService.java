@@ -20,7 +20,6 @@ import java.util.Set;
 @Service
 public class MyUserDetailService implements UserDetailsService {
     @Autowired UserService userService;
-    @Autowired CustomAuthenticationManager customAuthenticationManager;
 
 
     @Transactional(readOnly = true)
@@ -30,17 +29,17 @@ public class MyUserDetailService implements UserDetailsService {
         return new SecurityUser(user.getId(), user.getUserName(), user.getUserAccessToken(), false, false, false, false, null);
     }
 
-        @Transactional
-        public Authentication loadUserByUsername(UserVk user) throws UsernameNotFoundException {
-            if (user == null) {
-                throw new UsernameNotFoundException("Пользователь не определен и не получен по ВК апи");
+    @Transactional
+    public Authentication loadUserByUsername(UserVk user) throws UsernameNotFoundException {
+        if (user == null) {
+            throw new UsernameNotFoundException("Пользователь не определен и не получен по ВК апи");
         }
         Set<String> roles = new HashSet<String>();
         roles.add("ROLE_TEACHER");
         List<GrantedAuthority> authorities = buildUserAuthority(roles);
         SecurityUser customUser = new SecurityUser(user.getId(), user.getUserName(), user.getUserAccessToken(), true, true, true, true, authorities);
-        return customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customUser, customUser.getPassword(), customUser.getAuthorities()));
-        }
+        return new UsernamePasswordAuthenticationToken(customUser, customUser.getPassword(), customUser.getAuthorities());
+    }
 
     @Transactional
     private List<GrantedAuthority> buildUserAuthority(Set<String> userRoles) {

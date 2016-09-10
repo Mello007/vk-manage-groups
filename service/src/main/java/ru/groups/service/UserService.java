@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
+import ru.groups.service.security.CustomAuthenticationManager;
 import ru.groups.service.security.MyUserDetailService;
 import ru.groups.service.security.SecurityServiceContext;
 import java.io.IOException;
@@ -20,11 +21,12 @@ public class UserService {
     @Autowired SessionFactory sessionFactory;
     @Autowired MyUserDetailService myUserDetailService;
     @Autowired SecurityServiceContext context;
+    @Autowired CustomAuthenticationManager customAuthenticationManager;
 
     @Transactional
     public Authentication searchUserName(UserVk user){
         sessionFactory.getCurrentSession().save(user);
-        return myUserDetailService.loadUserByUsername(user);
+        return customAuthenticationManager.loadUserByUsername(user);
     }
 
     @Transactional

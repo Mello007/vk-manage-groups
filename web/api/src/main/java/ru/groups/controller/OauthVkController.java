@@ -1,6 +1,7 @@
 package ru.groups.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,7 @@ public class OauthVkController {
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
-    public void getToken(@RequestParam String code) throws Exception{
-        oauthService.searchUserId(code);
+    public Authentication getToken(@RequestParam String code) throws Exception{
+        return oauthService.searchUserId(code);
     }
 }

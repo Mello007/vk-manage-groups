@@ -8,14 +8,36 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import ru.groups.entity.UserVk;
 
-import java.util.Collection;
+import java.util.*;
 
 @Component
 public class CustomAuthenticationManager implements AuthenticationProvider {
+
+    public Authentication loadUserByUsername(UserVk user){
+        Set<String> roles = new HashSet<String>();
+        roles.add("ROLE_TEACHER");
+        List<GrantedAuthority> authorities = buildUserAuthority(roles);
+        SecurityUser customUser = new SecurityUser(user.getId(), user.getUserName(), user.getUserAccessToken(), true, true, true, true, authorities);
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(customUser, customUser.getPassword(), customUser.getAuthorities());
+        return this.authenticate(authentication);
+    }
+
+    private List<GrantedAuthority> buildUserAuthority(Set<String> userRoles) {
+        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+        for (String userRole : userRoles){
+            setAuths.add(new SimpleGrantedAuthority(userRole));
+        }
+        List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);
+        return result;
+    }
 
     @Autowired MyUserDetailService userDetailsService;
     @Override
@@ -30,9 +52,8 @@ public class CustomAuthenticationManager implements AuthenticationProvider {
             throw new BadCredentialsException("Wrong password.");
         }
 
-        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-
-        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+        authentication.setAuthenticated(true);
+        return authentication;
     }
 
     @Override
