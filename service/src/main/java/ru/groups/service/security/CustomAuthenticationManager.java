@@ -14,11 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.UserVk;
+import ru.groups.service.UserService;
 
 import java.util.*;
 
 @Component
 public class CustomAuthenticationManager implements AuthenticationProvider {
+    @Autowired UserService userService;
 
     public Authentication loadUserByUsername(UserVk user){
         Set<String> roles = new HashSet<String>();
@@ -39,12 +41,13 @@ public class CustomAuthenticationManager implements AuthenticationProvider {
         return result;
     }
 
-    @Autowired MyUserDetailService userDetailsService;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        UserVk userVK = userService.getUserByName(username);
+        UserDetails user = new SecurityUser(userVK.getId(), userVK.getUserName(),
+                userVK.getUserAccessToken(), false, false, false, false, null);
         if (user == null || !user.getUsername().equalsIgnoreCase(username)) {
             throw new BadCredentialsException("Username not found.");
         }
