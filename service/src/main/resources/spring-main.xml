@@ -22,7 +22,6 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
         <beans:property name="username" value="postgres"/> <!--Логин к бд -->
         <beans:property name="password" value="55164937"/> <!--Пароль к бд -->
     </beans:bean>
-
     <!-- Hibernate 5 SessionFactory Bean definition -->
     <beans:bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <beans:property name="dataSource" ref="dataSource" />
@@ -45,10 +44,10 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
         </beans:property>
     </beans:bean>
 
+
     <beans:bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"> <!--Указываем данные для использования в классах, которые позволяют подключаться к БД -->
         <beans:property name="dataSource" ref="dataSource" /> <!--Имя Бд -->
         <beans:property name="sessionFactory" ref="hibernateSessionFactory" /> <!-- Название объекта, с помощью которго подключаемся-->
     </beans:bean>
-
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans:beans>

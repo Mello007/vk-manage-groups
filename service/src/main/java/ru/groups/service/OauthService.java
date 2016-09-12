@@ -66,7 +66,6 @@ public class OauthService {
 
     @Transactional
     public Authentication requestToUserForFindName(UserVk user) throws Exception {
-        String userName, userLastName;
         String method = "users.get";
         String reqUrl = "https://api.vk.com/method/{METHOD_NAME}?user_id={userID}"
                 .replace("{METHOD_NAME}", method)
