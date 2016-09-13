@@ -13,6 +13,7 @@ function changeWelcome() {
             'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
     };
     getUserName.send(null);
+    getUserName.onerror = changeWelcome;
 }
 
 function loadGroups() {
@@ -26,9 +27,9 @@ function loadGroups() {
 }
 
 function login() {
-    var email = $('#inputEmail3').val();
-    var password = $('#inputPassword3').val();
-    var requestJSONparametr = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
+    var email = $('#inputEmail3').val(),
+        password = $('#inputPassword3').val(),
+        requestJSONparametr = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
     $.ajax({
         type: "POST",
         url: "/teacher/delete",
