@@ -8,7 +8,7 @@ function changeWelcome() {
     var getUserName = new XMLHttpRequest();
     getUserName.open("GET", "/user/getName", true);  //Указываем адрес GET-запроса
     getUserName.onload = function () { //Функция которая отправляет запрос на сервер для получения имени пользователя
-        if (this.responseText[0] === '<0') {
+        if (this.responseText[0] === '<') {
             changeWelcome();
         }
         var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
