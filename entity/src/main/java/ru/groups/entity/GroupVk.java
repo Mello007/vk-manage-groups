@@ -13,4 +13,5 @@ public class GroupVk extends BaseEntity{
     private String groupName;
     private String photo50px;
     private String photo100px;
+    private String accessToken;
 }

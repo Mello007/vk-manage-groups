@@ -21,11 +21,12 @@ public class OauthVkController {
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
     public String sendLink(){
-        return "https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52";
+        return "https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52";
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
     public Authentication getToken(@RequestParam String code) throws Exception{
         return oauthService.searchUserId(code);
     }
+
 }

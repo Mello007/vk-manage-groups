@@ -13,6 +13,4 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd http://ww
         <authentication-provider ref="customAuthenticationManager"></authentication-provider>
     </authentication-manager>
     <global-method-security secured-annotations="enabled" />
-
-
 </beans:beans>
