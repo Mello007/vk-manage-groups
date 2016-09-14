@@ -71,7 +71,4 @@ public class GroupService {
         String accessToken = oauthService.findValueInJson(actualObj, "access_token"); //вот это гребаный ключ
         //  я хуй его знает как тут дописать добавление аксесса именно в нужную группу, тут скорее всего нужно принимать еще и айдишку группу
     }
-
-
-
 }

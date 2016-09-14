@@ -14,7 +14,6 @@ import ru.groups.service.UserService;
 public class UserController {
 
     @Autowired UserService userService;
-
     @RequestMapping(value = "getName", method = RequestMethod.GET, produces = "application/json")
     public UserDTO getUserName(){
         return userService.getUserDTO();

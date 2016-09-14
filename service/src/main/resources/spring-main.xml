@@ -29,7 +29,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
             <beans:list>
                 <beans:value>ru.groups.entity.UserVk</beans:value>
                 <beans:value>ru.groups.entity.GroupVk</beans:value>
-                <!--<beans:value>ru.price.Currency</beans:value>-->
+                <beans:value>ru.groups.entity.MessageVk</beans:value>
                 <!--<beans:value>ru.university.entity.Group</beans:value>-->
                 <!--<beans:value>ru.university.entity.Teacher</beans:value>-->
                 <!--<beans:value>ru.university.entity.Estimate</beans:value>-->
