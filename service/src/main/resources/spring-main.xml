@@ -30,9 +30,8 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
                 <beans:value>ru.groups.entity.UserVk</beans:value>
                 <beans:value>ru.groups.entity.GroupVk</beans:value>
                 <beans:value>ru.groups.entity.MessageVk</beans:value>
-                <!--<beans:value>ru.university.entity.Group</beans:value>-->
-                <!--<beans:value>ru.university.entity.Teacher</beans:value>-->
-                <!--<beans:value>ru.university.entity.Estimate</beans:value>-->
+                <beans:value>ru.groups.entity.typeOfMessages.BadMessages</beans:value>
+                <beans:value>ru.groups.entity.typeOfMessages.AnswerMessage</beans:value>
             </beans:list>
         </beans:property>
         <beans:property name="hibernateProperties">
@@ -43,7 +42,6 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
             </beans:props>
         </beans:property>
     </beans:bean>
-
 
     <beans:bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"> <!--Указываем данные для использования в классах, которые позволяют подключаться к БД -->
         <beans:property name="dataSource" ref="dataSource" /> <!--Имя Бд -->

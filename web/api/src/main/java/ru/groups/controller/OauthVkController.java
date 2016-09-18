@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.groups.entity.DTO.UserDTO;
+import ru.groups.entity.UserVk;
 import ru.groups.service.OauthService;
+import ru.groups.service.VkInformationService;
+import ru.groups.service.security.SecurityServiceContext;
+import ru.groups.service.security.SecurityUser;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "oauth")
 public class OauthVkController {
 
-    @Autowired OauthService oauthService;
+    @Autowired VkInformationService vkInformationService;
+    @Autowired
+    SecurityServiceContext securityServiceContext;
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
     public String sendLink(){
@@ -25,8 +31,9 @@ public class OauthVkController {
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
-    public Authentication getToken(@RequestParam String code) throws Exception{
-        return oauthService.searchUserId(code);
+    public void getToken(@RequestParam String code) throws Exception {
+        UserVk userVk =  vkInformationService.loadUserByCode(code);
+        SecurityUser securityUser = new SecurityUser(userVk);
+        securityServiceContext.authUser(securityUser);
     }
-
 }

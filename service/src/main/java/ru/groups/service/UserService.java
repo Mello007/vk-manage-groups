@@ -16,25 +16,17 @@ import ru.groups.service.security.SecurityServiceContext;
 public class UserService {
 
     @Autowired SessionFactory sessionFactory;
-    @Autowired SecurityServiceContext context;
-    @Autowired CustomAuthenticationManager customAuthenticationManager;
+    @Autowired SecurityServiceContext securityServiceContext;
 
     @Transactional
-    public Authentication searchUserName(UserVk user){
+    public void saveUserVk(UserVk user){
         sessionFactory.getCurrentSession().save(user);
-        return customAuthenticationManager.loadUserByUsername(user);
     }
 
     @Transactional
-    public UserDTO getUserDTO(){
-        UserDTO userDTO = new UserDTO();
-        long userId = context.getLoggedUserId();
-        Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where id = :id");
-        query.setParameter("id", userId);//Делаем запрос в БД с помощью HQL
-        UserVk user = (UserVk)query.uniqueResult();
-        userDTO.setUserLastName(user.getUserLastName());
-        userDTO.setUserName(user.getUserName());
-        return userDTO;
+    public UserDTO getUserDTO(Long userId){
+        UserVk userVk = sessionFactory.getCurrentSession().get(UserVk.class, userId);
+        return new UserDTO(userVk);
     }
 
     @Transactional

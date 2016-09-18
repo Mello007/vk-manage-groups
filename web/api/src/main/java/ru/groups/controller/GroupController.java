@@ -2,10 +2,8 @@ package ru.groups.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.groups.entity.AnswerAndAsk;
 import ru.groups.entity.GroupVk;
 import ru.groups.service.GroupService;
 import ru.groups.service.OauthService;
@@ -26,9 +24,14 @@ public class GroupController {
                 .replace("{version}", "5.53");
         return reqUrl;
     }
+//
+//    @RequestMapping(value = "{groupId}/rights", method = RequestMethod.GET)
+//    public void getRouteForGroup(@RequestParam String code, @PathVariable String groupId) throws Exception{
+//        groupService.getAccessKeyOfGroups(code, groupId);
+//    }
 
-    @RequestMapping(value = "getgroupsroute", method = RequestMethod.GET)
-    public void getRouteForGroup(@RequestParam String code) throws Exception{
-        groupService.getAccessKeyOfGroups(code);
+    @RequestMapping(value = "addaskandansmessages", method = RequestMethod.POST, consumes = "application/json")
+    public void addAnsAndAskMessages(@RequestBody AnswerAndAsk answerAndAsk){
+
     }
 }

@@ -29,6 +29,9 @@ function loadGroups() {
     };
 }
 
+
+
+
 function login() {
     var email = $('#inputEmail3').val(),
         password = $('#inputPassword3').val(),
