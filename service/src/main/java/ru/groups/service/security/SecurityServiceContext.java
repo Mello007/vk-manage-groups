@@ -16,8 +16,7 @@ import java.util.Collections;
 
 @Service
 public class SecurityServiceContext {
-    @Autowired
-    @Qualifier("customAuthenticationManager") AuthenticationProvider authenticationProvider;
+    @Autowired @Qualifier("customAuthenticationManager") AuthenticationProvider authenticationProvider;
 
     public boolean authUser(SecurityUser userDTO) {
         String login = userDTO.getUserName();

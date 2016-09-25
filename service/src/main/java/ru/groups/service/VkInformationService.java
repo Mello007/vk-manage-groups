@@ -2,7 +2,10 @@ package ru.groups.service;
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.UserVk;
 import ru.groups.service.help.JsonParsingHelper;
 
@@ -19,8 +22,11 @@ public class VkInformationService {
     private final String API_VERSION = "5.21";
 
 
+    @Autowired
+    SessionFactory sessionFactory;
 
-    private StringBuffer apiRequestToUser(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
+
+    public StringBuffer apiRequestToUser(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
         URL obj = new URL(reqUrl);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -83,12 +89,16 @@ public class VkInformationService {
         return userVk;
     }
 
+
+    @Transactional
     public UserVk loadUserByCode(String code) throws Exception{
         UserVk userWithAccessTokenAndId = this.getAccessTokeByCode(code);
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
         userWithAccessTokenAndId.setUserName(userWithFullName.getUserName());
         userWithAccessTokenAndId.setUserLastName(userWithFullName.getUserLastName());
+
+        sessionFactory.getCurrentSession().save(userWithAccessTokenAndId);
         return userWithAccessTokenAndId;
     }
 }

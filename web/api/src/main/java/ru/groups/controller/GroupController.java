@@ -14,8 +14,7 @@ import java.util.List;
 @RequestMapping(value = "groups")
 public class GroupController {
 
-    @Autowired
-    GroupService groupService;
+    @Autowired GroupService groupService;
 
     @RequestMapping(value = "getgrouptoken", method = RequestMethod.GET)
     public String getAccessKeyOfGroups(@RequestParam String groupId) throws Exception{
@@ -23,6 +22,13 @@ public class GroupController {
                 .replace("{group_id}", groupId)
                 .replace("{version}", "5.53");
         return reqUrl;
+    }
+
+
+    @RequestMapping(value = "get", method = RequestMethod.GET, produces = "application/json")
+    public List<GroupVk> getGroups() throws Exception{
+           List<GroupVk> groupVks = groupService.getUserGroups();
+        return  groupVks;
     }
 //
 //    @RequestMapping(value = "{groupId}/rights", method = RequestMethod.GET)
