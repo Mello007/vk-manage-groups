@@ -29,10 +29,6 @@ public class CustomAuthenticationManager implements AuthenticationProvider {
 
         SecurityUser user = new SecurityUser(userService.getUserByName(username));
 
-        if (user == null || !user.getUsername().equalsIgnoreCase(username)) {
-            throw new BadCredentialsException("Username not found.");
-        }
-
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
         return new UsernamePasswordAuthenticationToken(user, password, authorities);
