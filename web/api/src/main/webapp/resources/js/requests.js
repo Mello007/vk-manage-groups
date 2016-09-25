@@ -5,6 +5,11 @@ function getApi() {
 }
 
 function changeWelcome() {
+    changeWelcome.try = changeWelcome.try || 10;
+    changeWelcome.try = changeWelcome.try - 1;
+    if (changeWelcome.try === 0) {
+        return;
+    }
     var getUserName = new XMLHttpRequest();
     getUserName.open("GET", "/user/getName", true);  //Указываем адрес GET-запроса
     getUserName.onload = function () { //Функция которая отправляет запрос на сервер для получения имени пользователя
@@ -39,6 +44,7 @@ function loadGroups() {
             tableElement.appendChild(tableRowElement);
         });
     };
+    getGroupsInfo.send(null);
 }
 
 
@@ -56,8 +62,8 @@ function login() {
 }
 
 if (location.href.match(/admin/)) {
-    setTimeout(changeWelcome, 0);
-    setTimeout(loadGroups, 0);
+    setTimeout(changeWelcome, 1000);
+    setTimeout(loadGroups, 10);
 }
 
 
