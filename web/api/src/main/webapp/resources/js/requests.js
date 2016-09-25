@@ -58,6 +58,6 @@ function login() {
 }
 
 if (location.href.match(/admin/)) {
-    changeWelcome();
-    loadGroups();
+    setTimeout(changeWelcome, 0);
+    setTimeout(loadGroups, 0);
 }
