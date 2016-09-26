@@ -44,7 +44,7 @@ function loadGroups() {
             tableElement.appendChild(tableRowElement);
         });
     };
-    getGroupsInfo.send(null);
+    getGroupsInfo.send(null);       //пали суда
 }
 
 
