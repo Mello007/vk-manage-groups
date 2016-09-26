@@ -36,9 +36,9 @@ function loadGroups() {
             var tableRowElement = document.createElement('tr'),
                 imgContainer = document.createElement('td'),
                 nameContainer = document.createElement('td');
-            imgContainer.innerHTML = '<img src="' + group.avatar + '" class = "img-circle" alt = "' + group.name +
+            imgContainer.innerHTML = '<img src="' + group.photo50px + '" class = "img-circle" alt = "' + group.name +
                     '" width="50" height="50">';
-            nameContainer.innerHTML = '<a href="' + group.id + '">' + group.name + '</a>';
+            nameContainer.innerHTML = '<a href="' + group.groupId + '">' + group.groupName + '</a>';
             tableRowElement.appendChild(imgContainer);
             tableRowElement.appendChild(nameContainer);
             tableElement.appendChild(tableRowElement);
