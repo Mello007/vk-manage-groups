@@ -4,6 +4,7 @@ function getApi() {
     });
 }
 
+
 function changeWelcome() {
     changeWelcome.try = changeWelcome.try || 10;
     changeWelcome.try = changeWelcome.try - 1;
@@ -27,7 +28,7 @@ function changeWelcome() {
 function loadGroups() {
     //parameters of json object: name, avatar (there is address in vk), id group. That's all.
     var getGroupsInfo = new XMLHttpRequest();
-    getGroupsInfo.open("GET", "groups/get", true);  //Указываем адрес GET-запроса
+    getGroupsInfo.open("GET", "/groups/get", true);  //Указываем адрес GET-запроса
     getGroupsInfo.onload = function () { //Функция которая отправляет запрос на сервер для получения имени пользователя
         var parsedName = JSON.parse(this.responseText), //получаем объект их JSON ответа.
             tableElement = document.getElementById('all-groups');
@@ -38,14 +39,18 @@ function loadGroups() {
                 nameContainer = document.createElement('td');
             imgContainer.innerHTML = '<img src="' + group.photo50px + '" class = "img-circle" alt = "' + group.name +
                     '" width="50" height="50">';
-            nameContainer.innerHTML = '<a href="' + group.groupId + '">' + group.groupName + '</a>';
+            nameContainer.innerHTML = '<a href="vk.com/id' + group.groupId + '">' + group.groupName + '</a>';
             tableRowElement.appendChild(imgContainer);
             tableRowElement.appendChild(nameContainer);
             tableElement.appendChild(tableRowElement);
         });
     };
-    getGroupsInfo.send(null);       //пали суда
+    getGroupsInfo.send(null);
 }
+
+
+
+
 
 
 function login() {
@@ -66,6 +71,26 @@ if (location.href.match(/admin/)) {
     setTimeout(loadGroups, 10);
 }
 
+
+function registerNewUser() {
+    var email = $('#userEmail').val();
+    var name = $('#userName').val();
+    var password = $('#password').val();
+    var requestJSONparametr = "{\"userEmail\": \"" + email + "\", \"userName\": \"" + name + "\", \"password\": \"" + password + "\"}";
+    $.ajax({
+        type: "POST",
+        url: "/register/new",
+        contentType: "application/json",
+        dataType: 'json',
+        data: requestJSONparametr,
+        success: function (data) {
+            alert("Пользователь успешно добавлен!");
+        },
+        error: function (data) {
+            alert("Не удалось добавить пользователя! Что-то пошло не так, попробуйте еще раз");
+        }
+    });
+}
 
 //Вот такой json будет приходить на сервер
 

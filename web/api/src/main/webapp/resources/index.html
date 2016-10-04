@@ -27,5 +27,63 @@
         <button type="button" class="btn btn-lg btn-primary btn-block" onclick="getApi()" action="javascript:void(null);">VK</button>
     </form>
 </div>
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#myModal" class="btn" data-toggle="modal">Регистрация</a></li>
+</ul>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!— Заголовок модального окна —>
+            <h2>Регистрация</h2>
+            <form class="form-horizontal" onsubmit="registerNewUser()">
+                <div class="form-group">
+                    <label class="control-label col-xs-3" for="inputEmail">Email:</label>
+                    <div class="col-xs-9">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Ваша почта    ">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-3" for="userName">Имя пользователя:</label>
+                    <div class="col-xs-9">
+                        <input type="text" class="form-control" id="userName" placeholder="Имя">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-3" for="password">Пароль:</label>
+                    <div class="col-xs-9">
+                        <input type="password" class="form-control" id="password" placeholder="Введите пароль">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-3" for="confirmPassword">Подтвердите пароль:</label>
+                    <div class="col-xs-9">
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Введите пароль ещё раз">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-3 col-xs-9">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="agree">  Я согласен с <a href="#">условиями</a>.
+                        </label>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-xs-offset-3 col-xs-9">
+                        <input type="submit" class="btn btn-primary" value="Регистрация">
+                        <input type="reset" class="btn btn-default" value="Очистить форму">
+                    </div>
+                </div>
+            </form>
+            <!— Футер модального окна —>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
