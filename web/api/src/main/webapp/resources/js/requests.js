@@ -74,9 +74,9 @@ if (location.href.match(/admin/)) {
 
 function registerNewUser() {
     var email = $('#userEmail').val();
-    var name = $('#userName').val();
+    var login = $('#login').val();
     var password = $('#password').val();
-    var requestJSONparametr = "{\"userEmail\": \"" + email + "\", \"userName\": \"" + name + "\", \"password\": \"" + password + "\"}";
+    var requestJSONparametr = "{\"userEmail\": \"" + email + "\", \"login\": \"" + login + "\", \"password\": \"" + password + "\"}";
     $.ajax({
         type: "POST",
         url: "/register/new",

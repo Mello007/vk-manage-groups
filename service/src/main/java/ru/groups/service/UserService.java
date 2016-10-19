@@ -4,19 +4,18 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
-import ru.groups.service.security.CustomAuthenticationManager;
-import ru.groups.service.security.SecurityServiceContext;
+import ru.groups.service.security.Session;
 
 @Service
 public class UserService {
 
     @Autowired SessionFactory sessionFactory;
-    @Autowired SecurityServiceContext securityServiceContext;
+    @Autowired
+    Session securityServiceContext;
 
     @Transactional
     public void saveUserVk(UserVk user){
@@ -24,19 +23,27 @@ public class UserService {
     }
 
     @Transactional
+    public UserVk getUserVk(Long userId){
+        UserVk userVk = sessionFactory.getCurrentSession().get(UserVk.class, userId);
+        return userVk;
+    }
+
+    @Transactional
     public UserDTO getUserDTO(Long userId){
         UserVk userVk = sessionFactory.getCurrentSession().get(UserVk.class, userId);
-        return new UserDTO(userVk);
+        UserDTO userDTO = new UserDTO(userVk);
+        return userDTO;
     }
 
     @Transactional
         public UserVk getUserByName(String name){
-        Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where userName = :userName");
-        query.setParameter("userName", name);
+        Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where login = :login");
+        query.setParameter("login", name);
         UserVk user = (UserVk)query.uniqueResult();
         if (user == null){
             throw new BadCredentialsException("User not found");
         }
         return user;
     }
+
 }

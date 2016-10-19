@@ -33,7 +33,7 @@ public class OauthService {
 //                .replace("{ACCESS_TOKEN}", accessToken)
 //                .replace("{API_VERSION}", API_VERSION);
 //        System.out.println(reqUrl);
-//        StringBuffer response = apiRequestToUser(reqUrl);
+//        StringBuffer response = apiRequestForGetResponseFromServer(reqUrl);
 //        ObjectMapper mapper = new ObjectMapper();
 //        JsonNode actualObj = mapper.readTree(response.toString());
 //        if (actualObj.get("response") == null){

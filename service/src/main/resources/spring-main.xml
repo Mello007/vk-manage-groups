@@ -32,6 +32,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
                 <beans:value>ru.groups.entity.MessageVk</beans:value>
                 <beans:value>ru.groups.entity.typeOfMessages.BadMessages</beans:value>
                 <beans:value>ru.groups.entity.typeOfMessages.AnswerMessage</beans:value>
+                <beans:value>ru.groups.entity.typeOfMessages.AnswerAndAsk</beans:value>
             </beans:list>
         </beans:property>
         <beans:property name="hibernateProperties">

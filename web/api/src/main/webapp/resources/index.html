@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/requests.js"></script>
     <title>Система Управления Оценками Студента</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/signin.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/requests.js"></script>
 </head>
-
-
 <body>
 
 <div class="container">
     <form class="form-signin" role="form" action='/login' method='POST'>
         <h2 class="form-signin-heading">Авторизация</h2>
-        <input type="email" class="form-control" placeholder="Почта" name="username" required autofocus>
+        <input class="form-control" placeholder="Почта" name="username" required autofocus>
         <input type="password" class="form-control" placeholder="Пароль" name="password" required>
         <label class="checkbox">
             <input type="checkbox" value="remember-me"> Запомнить меня
         </label>
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Войти</button>
-        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="getApi()" action="javascript:void(null);">VK</button>
+        <!-- Это раньше кнопка авторизации была <button type="button" class="btn btn-lg btn-primary btn-block" onclick="getApi()" action="javascript:void(null);">VK</button>-->
     </form>
 </div>
 
-<ul class="nav navbar-nav navbar-right">
-    <li><a href="#myModal" class="btn" data-toggle="modal">Регистрация</a></li>
-</ul>
+<button type="button" class="btn btn-lg btn-primary btn-block"  href="#myModal"  data-toggle="modal">Регистрация</button>
 
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
@@ -39,15 +35,15 @@
             <h2>Регистрация</h2>
             <form class="form-horizontal" onsubmit="registerNewUser()">
                 <div class="form-group">
-                    <label class="control-label col-xs-3" for="inputEmail">Email:</label>
+                    <label class="control-label col-xs-3" for="userEmail">Email:</label>
                     <div class="col-xs-9">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Ваша почта    ">
+                        <input type="email" class="form-control" id="userEmail" placeholder="Ваша почта    ">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-xs-3" for="userName">Имя пользователя:</label>
+                    <label class="control-label col-xs-3" for="login">Имя пользователя:</label>
                     <div class="col-xs-9">
-                        <input type="text" class="form-control" id="userName" placeholder="Имя">
+                        <input type="text" class="form-control" id="login" placeholder="Имя">
                     </div>
                 </div>
                 <div class="form-group">

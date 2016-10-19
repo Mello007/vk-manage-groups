@@ -7,10 +7,14 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
     <http auto-config="true">
         <logout logout-url="/logout"  logout-success-url="/resources/index.html" />
-        <form-login default-target-url="/resources/admin.html"/>
+
+        <form-login default-target-url="/oauth/vk"/>
         <remember-me />
         <csrf disabled="true"></csrf>
     </http>
+
+
+
     <global-method-security secured-annotations="enabled" />
 
 </beans:beans>

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.UserVk;
 import ru.groups.service.UserService;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,17 +31,17 @@ public class MyUserDetailService implements UserDetailsService {
 
         UserVk userVk = userService.getUserByName(username);
         if (userVk == null) {
-            throw new UsernameNotFoundException("Учитель с таким именем не найден!");
+            throw new UsernameNotFoundException("User not found");
         }
         Set<String> roles = new HashSet<String>();
-        roles.add("ROLE_TEACHER");
+        roles.add("ROLE_LOGGED_USER");
         List<GrantedAuthority> authorities = buildUserAuthority(roles);
         return buildUserForAuthentication(userVk, authorities);
     }
 
     private User buildUserForAuthentication(UserVk userVk,
                                             List<GrantedAuthority> authorities) {
-        return new CustomUser(userVk.getId(), userVk.getUserName(), userVk.getPassword(),
+        return new CustomUser(userVk.getId(), userVk.getLogin(), userVk.getPassword(),
                true, true, true, true, authorities);
     }
 

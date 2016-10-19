@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.UserVk;
-import ru.groups.service.security.SecurityServiceContext;
+import ru.groups.service.security.Session;
 
 import java.util.List;
 
@@ -14,16 +14,13 @@ import java.util.List;
 public class LoggedUserHelper {
 
 
-    @Autowired SecurityServiceContext session;
+    @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
 
 
     @Transactional
     public UserVk getUserFromBD(){
-        long userId = 0;
-        while (userId == 0){
-            userId = session.getLoggedUserId();
-        }
+        long userId = session.getLoggedUserId();
         UserVk userVk = sessionFactory.openSession().get(UserVk.class, userId);
         return userVk;
     }

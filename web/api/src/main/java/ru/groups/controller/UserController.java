@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.service.UserService;
-import ru.groups.service.security.SecurityServiceContext;
+import ru.groups.service.security.Session;
 
 
 @RestController
 @RequestMapping(value = "user")
 public class UserController {
 
-    @Autowired SecurityServiceContext context;
+    @Autowired Session session;
     @Autowired UserService userService;
 
     @RequestMapping(value = "getName", method = RequestMethod.GET, produces = "application/json")
     public UserDTO getUserName(){
-        Long loggedUserId = context.getLoggedUserId();
+        Long loggedUserId = session.getLoggedUserId();
         if (loggedUserId == null){
             throw  new RuntimeException("User not logged");
         }

@@ -6,8 +6,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
 import ru.groups.service.help.JsonParsingHelper;
+import ru.groups.service.security.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,12 +23,13 @@ public class VkInformationService {
     private final String USER_AGENT = "Mozilla/5.0";
     private final String API_VERSION = "5.21";
 
+    @Autowired Session session;
+    @Autowired SessionFactory sessionFactory;
+    @Autowired UserService userService;
 
-    @Autowired
-    SessionFactory sessionFactory;
 
 
-    public StringBuffer apiRequestToUser(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
+    public StringBuffer apiRequestForGetResponseFromServer(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
         URL obj = new URL(reqUrl);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -49,7 +52,7 @@ public class VkInformationService {
                 .replace("{CLIENT_SECRET}", "bMTTeUDFad7H95I8LiIt")
                 .replace("{REDIRECT_URI}", "http://localhost:8080/oauth/token")
                 .replace("{CODE}", code);
-        StringBuffer response = apiRequestToUser(reqUrl);
+        StringBuffer response = apiRequestForGetResponseFromServer(reqUrl);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(response.toString());
         return actualObj;
@@ -58,11 +61,9 @@ public class VkInformationService {
 
     public UserVk getAccessTokeByCode(String code) throws Exception {
         JsonNode userWithAccessToken = this.loadJsonUserByCode(code);
-
         UserVk user = new UserVk();
         user.setUserAccessToken(JsonParsingHelper.findValueInJson(userWithAccessToken ,"access_token"));
         user.setUserId(JsonParsingHelper.findValueInJson(userWithAccessToken, "user_id"));
-
         return user;
     }
 
@@ -72,7 +73,7 @@ public class VkInformationService {
                 .replace("{METHOD_NAME}", method)
                 .replace("{userID}", userId);
         System.out.println(reqUrl);
-        StringBuffer response = apiRequestToUser(reqUrl);
+        StringBuffer response = apiRequestForGetResponseFromServer(reqUrl);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(response.toString());
         if (actualObj.get("response") == null){
@@ -89,16 +90,27 @@ public class VkInformationService {
         return userVk;
     }
 
-
+    // Main method, which create new User with Full Data in DB
     @Transactional
     public UserVk loadUserByCode(String code) throws Exception{
+
+        //here I create new user, which has AccessToken and Id
         UserVk userWithAccessTokenAndId = this.getAccessTokeByCode(code);
+
+        //here I create new user, which has Name and LastName
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
-        userWithAccessTokenAndId.setUserName(userWithFullName.getUserName());
-        userWithAccessTokenAndId.setUserLastName(userWithFullName.getUserLastName());
+        //Here I invoke logged User and adding him parametres from other users
+        long userdId = session.getLoggedUserId();
+        UserVk fullUserWithRegistrationData = userService.getUserVk(userdId);
+        fullUserWithRegistrationData.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
+        fullUserWithRegistrationData.setUserName(userWithFullName.getUserName());
+        fullUserWithRegistrationData.setUserLastName(userWithFullName.getUserLastName());
+        fullUserWithRegistrationData.setUserId(userWithAccessTokenAndId.getUserId());
 
-        sessionFactory.getCurrentSession().save(userWithAccessTokenAndId);
-        return userWithAccessTokenAndId;
+        //update fullUser
+        sessionFactory.getCurrentSession().merge(fullUserWithRegistrationData);
+
+        return fullUserWithRegistrationData;
     }
 }

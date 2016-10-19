@@ -2,7 +2,7 @@ package ru.groups.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ManyToAny;
+import ru.groups.entity.typeOfMessages.AnswerAndAsk;
 import ru.groups.entity.typeOfMessages.BadMessages;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class GroupVk extends BaseEntity{
     private String accessToken;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<MessageVk> messagesOfGroup;
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<AnswerAndAsk> answerAndAsksMessages;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<AnswerAndAsk> answerAndAsksMessages;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<BadMessages> badMessages;
 
 }

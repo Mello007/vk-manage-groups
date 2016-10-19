@@ -10,10 +10,12 @@ import java.util.List;
 @Entity @Table(name = "UserVk")
 public class UserVk extends BaseEntity{
     private String userName;
+    private String login;
     private String userLastName;
     private String userAccessToken;
     private String userEmail;
     private String password;
     private String userId;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable  private List<GroupVk> userGroups;
 }

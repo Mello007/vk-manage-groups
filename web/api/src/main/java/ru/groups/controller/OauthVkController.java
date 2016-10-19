@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
 import ru.groups.service.OauthService;
+import ru.groups.service.UserService;
 import ru.groups.service.VkInformationService;
-import ru.groups.service.security.SecurityServiceContext;
-import ru.groups.service.security.SecurityUser;
 
 import javax.servlet.http.HttpServletResponse;
-
+import java.io.IOException;
 
 
 @RestController
@@ -23,21 +22,19 @@ public class OauthVkController {
 
     @Autowired VkInformationService vkInformationService;
     @Autowired
-    SecurityServiceContext securityServiceContext;
+    UserService userService;
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
-    public String sendLink(){
-        return "https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52";
+    public void sendLink(HttpServletResponse response) throws IOException{
+        response.sendRedirect("https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52");
     }
 
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
-    public void getToken(@RequestParam String code) throws Exception {
-        UserVk userVk =  vkInformationService.loadUserByCode(code);
-        SecurityUser securityUser = new SecurityUser(userVk);
-        securityServiceContext.authUser(securityUser);
+    public void getToken(@RequestParam String code, HttpServletResponse response) throws Exception {
+        vkInformationService.loadUserByCode(code);
+        response.sendRedirect("http://localhost:8080/resources/admin.html");
+//        SecurityUser securityUser = new SecurityUser(userVk);
+//        securityServiceContext.authUser(securityUser);
     }
-
-
-
 }

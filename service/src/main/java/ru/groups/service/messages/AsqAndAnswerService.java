@@ -1,29 +1,42 @@
 package ru.groups.service.messages;
 
-
-import lombok.Data;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.groups.entity.AnswerAndAsk;
 import ru.groups.entity.GroupVk;
-import ru.groups.entity.UserVk;
+import ru.groups.entity.typeOfMessages.AnswerAndAsk;
 import ru.groups.service.GroupService;
-import java.util.List;
 
+import java.util.List;
 
 @Service
 public class AsqAndAnswerService {
 
     @Autowired SessionFactory sessionFactory;
     @Autowired GroupService groupService;
-//
-//    @Transactional
-//    public void AsqAndAnswerService(AnswerAndAsk answerAndAsk, String groupId){
-//        GroupVk groupVk = groupService.searchGroup(groupId);
-//        List answerAndAskList = groupVk.getAnswerAndAsksMessages();
-//        answerAndAskList.add(answerAndAsk);
-//    }
+
+
+    //This method adding AnswerAndAsk to group
+
+    public void addAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
+        GroupVk groupVk = groupService.searchGroup(groupId);
+        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
+        answerAndAsksList.add(answerAndAsk);
+    }
+
+    //This method find Answer from value of Ask.
+    // need write else
+    public String findAnswer(String message, String groupId){
+        GroupVk groupVk = groupService.searchGroup(groupId);
+        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
+        for (AnswerAndAsk answer : answerAndAsksList){
+            if (answer.getMessageAsk().equals(message)){
+                return answer.getMessageAnswer();
+            }
+        }
+        return null;
+    }
+
+
+
 }
