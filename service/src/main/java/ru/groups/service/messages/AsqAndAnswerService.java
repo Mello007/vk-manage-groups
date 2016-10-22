@@ -3,6 +3,7 @@ package ru.groups.service.messages;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.typeOfMessages.AnswerAndAsk;
 import ru.groups.service.GroupService;
@@ -16,16 +17,19 @@ public class AsqAndAnswerService {
     @Autowired GroupService groupService;
 
 
-    //This method adding AnswerAndAsk to group
+    //This method is adding AnswerAndAsk to group
 
+    @Transactional
     public void addAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
         List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
         answerAndAsksList.add(answerAndAsk);
+        groupVk.setAnswerAndAsksMessages(answerAndAsksList);
+        sessionFactory.getCurrentSession().merge(groupVk);
     }
 
     //This method find Answer from value of Ask.
-    // need write else
+    // need to write else
     public String findAnswer(String message, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
         List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();

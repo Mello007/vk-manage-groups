@@ -17,6 +17,9 @@ public class GroupVk extends BaseEntity{
     private String photo50px;
     private String photo100px;
     private String accessToken;
+    private String tempKeyOfPollingServer;
+    private String addressOfPollingServer;
+    private String numberOfLastAction;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<MessageVk> messagesOfGroup;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<AnswerAndAsk> answerAndAsksMessages;

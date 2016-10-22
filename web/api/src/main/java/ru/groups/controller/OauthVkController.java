@@ -29,7 +29,6 @@ public class OauthVkController {
         response.sendRedirect("https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52");
     }
 
-
     @RequestMapping(value = "token", method = RequestMethod.GET)
     public void getToken(@RequestParam String code, HttpServletResponse response) throws Exception {
         vkInformationService.loadUserByCode(code);

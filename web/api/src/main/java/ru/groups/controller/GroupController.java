@@ -35,11 +35,12 @@ public class GroupController {
     }
 
 
-    @RequestMapping(value = "getaccess", method = RequestMethod.GET)
-    public void getToken(@RequestParam String code, HttpServletResponse response) throws Exception {
-        if (code != null) {
-            groupService.getAccessKeyOfGroups(code);
-        } else response.sendRedirect("http://localhost:8080/resources/admin.html");
+    //This method adding accessToken to pointed group
+    @RequestMapping(value = "getaccess", method = RequestMethod.POST)
+    public void getToken(@RequestParam String accessToken, @RequestParam String groupId,
+                         HttpServletResponse response) throws Exception {
+        groupService.setAccessTokenToGroup(accessToken, groupId);
+        response.sendRedirect("http://localhost:8080/resources/admin.html");
 //        SecurityUser securityUser = new SecurityUser(userVk);
 //        securityServiceContext.authUser(securityUser);
     }
