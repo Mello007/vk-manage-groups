@@ -1,21 +1,16 @@
 package ru.groups.service;
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
-import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
 import ru.groups.service.help.JsonParsingHelper;
+import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.security.Session;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @Service
 public class VkInformationService {
@@ -26,24 +21,9 @@ public class VkInformationService {
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
     @Autowired UserService userService;
+    @Autowired LoggedUserHelper loggedUserHelper;
 
 
-
-    public StringBuffer apiRequestForGetResponseFromServer(String reqUrl) throws IOException { //Метод, который получает с GET запроса данные в response в формате json
-        URL obj = new URL(reqUrl);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("GET");
-        con.setRequestProperty("UserVk-Agent", USER_AGENT);
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        return response;
-    }
 
     private JsonNode loadJsonUserByCode(String code) throws IOException{
         String reqUrl = "https://oauth.vk.com/{METHOD_NAME}?client_id={USER_ID}&client_secret={CLIENT_SECRET}&redirect_uri={REDIRECT_URI}&code={CODE}"
@@ -52,9 +32,7 @@ public class VkInformationService {
                 .replace("{CLIENT_SECRET}", "bMTTeUDFad7H95I8LiIt")
                 .replace("{REDIRECT_URI}", "http://localhost:8080/oauth/token")
                 .replace("{CODE}", code);
-        StringBuffer response = apiRequestForGetResponseFromServer(reqUrl);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree(response.toString());
+        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         return actualObj;
     }
 
@@ -73,9 +51,7 @@ public class VkInformationService {
                 .replace("{METHOD_NAME}", method)
                 .replace("{userID}", userId);
         System.out.println(reqUrl);
-        StringBuffer response = apiRequestForGetResponseFromServer(reqUrl);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree(response.toString());
+        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         if (actualObj.get("response") == null){
             throw new RuntimeException("Ошибка авторизации!!!");
         }
@@ -101,8 +77,8 @@ public class VkInformationService {
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
         //Here I invoke logged User and adding him parametres from other users
-        long userdId = session.getLoggedUserId();
-        UserVk fullUserWithRegistrationData = userService.getUserVk(userdId);
+
+        UserVk fullUserWithRegistrationData = loggedUserHelper.getUserFromBD();
         fullUserWithRegistrationData.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
         fullUserWithRegistrationData.setUserName(userWithFullName.getUserName());
         fullUserWithRegistrationData.setUserLastName(userWithFullName.getUserLastName());

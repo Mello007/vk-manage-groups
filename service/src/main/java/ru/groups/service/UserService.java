@@ -23,19 +23,6 @@ public class UserService {
     }
 
     @Transactional
-    public UserVk getUserVk(Long userId){
-        UserVk userVk = sessionFactory.getCurrentSession().get(UserVk.class, userId);
-        return userVk;
-    }
-
-    @Transactional
-    public UserDTO getUserDTO(Long userId){
-        UserVk userVk = sessionFactory.getCurrentSession().get(UserVk.class, userId);
-        UserDTO userDTO = new UserDTO(userVk);
-        return userDTO;
-    }
-
-    @Transactional
         public UserVk getUserByName(String name){
         Query query = sessionFactory.getCurrentSession().createQuery("from UserVk where login = :login");
         query.setParameter("login", name);

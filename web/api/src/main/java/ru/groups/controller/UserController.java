@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.groups.entity.DTO.UserDTO;
+import ru.groups.entity.UserVk;
 import ru.groups.service.UserService;
+import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.security.Session;
 
 
@@ -16,13 +18,10 @@ public class UserController {
 
     @Autowired Session session;
     @Autowired UserService userService;
+    @Autowired LoggedUserHelper loggedUserHelper;
 
     @RequestMapping(value = "getName", method = RequestMethod.GET, produces = "application/json")
     public UserDTO getUserName(){
-        Long loggedUserId = session.getLoggedUserId();
-        if (loggedUserId == null){
-            throw  new RuntimeException("User not logged");
-        }
-        return userService.getUserDTO(loggedUserId);
+        return new UserDTO(loggedUserHelper.getUserFromBD());
     }
 }

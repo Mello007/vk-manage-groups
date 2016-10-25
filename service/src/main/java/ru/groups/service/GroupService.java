@@ -2,7 +2,6 @@ package ru.groups.service;
 
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
-import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.node.ArrayNode;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -29,8 +28,6 @@ public class GroupService {
     @Autowired LoggedUserHelper loggedUserHelper;
     @Autowired LongPollingService longPollingService;
 
-
-
     private static final String versionOfVkApi = "5.59";
 
     @Transactional
@@ -43,9 +40,7 @@ public class GroupService {
                 .replace("{userID}", user.getUserId())
                 .replace("{access_token}", user.getUserAccessToken())
                 .replace("{version}", versionOfVkApi);
-        StringBuffer response = oauthService.apiRequestForGetResponseFromServer(reqUrl);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree(response.toString());
+        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         JsonNode massivJson = actualObj.get("response");
         JsonNode slaidsNode = (ArrayNode) massivJson.get("items");
         Iterator<JsonNode> slaidsIterator = slaidsNode.elements();
@@ -82,32 +77,14 @@ public class GroupService {
     }
 
 
-
-
+    @Transactional
     public void setAccessTokenToGroup(String accessTokenToGroup, String groupId) throws IOException {
+        //It's solution, which get groupVk per ID from BD
         Query query = sessionFactory.getCurrentSession().createQuery("from GroupVk where groupid = :groupid");
-        query.setParameter("groupid", groupId);//Делаем запрос в БД с помощью HQL
+        query.setParameter("groupid", groupId);
         GroupVk groupVk = (GroupVk) query.uniqueResult();
         groupVk.setAccessToken(accessTokenToGroup);
         sessionFactory.getCurrentSession().merge(groupVk);
         longPollingService.getLongPolling(groupVk);
-
     }
-
-
-
-
-//    This method isn't work with website :( I didn't delete him, because I can find other ways
-//    @Transactional
-//    public void getAccessKeyOfGroups(String code) throws Exception {
-//        String reqUrl = ("https://oauth.vk.com/access_token?client_id=5499487&client_secret=bMTTeUDFad7H95I8LiIt&redirect_uri=http://localhost:8080/groups/getaccess&code={code}")
-//                .replace("{code}", code);
-//        StringBuffer response = oauthService.apiRequestForGetResponseFromServer(reqUrl);
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode actualObj = mapper.readTree(response.toString());
-//        long userId = session.getLoggedUserId();
-//        UserVk userVk = sessionFactory.openSession().get(UserVk.class, userId);
-//        List<GroupVk> groups =  userVk.getUserGroups();
-//        String accessToken = JsonParsingHelper.findValueInJson(actualObj, "access_token");//вот это гребаный ключ
-//    }
 }

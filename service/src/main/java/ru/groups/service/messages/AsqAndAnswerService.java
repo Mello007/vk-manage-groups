@@ -40,7 +40,4 @@ public class AsqAndAnswerService {
         }
         return null;
     }
-
-
-
 }

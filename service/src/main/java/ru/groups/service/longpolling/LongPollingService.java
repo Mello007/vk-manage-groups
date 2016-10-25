@@ -2,16 +2,17 @@ package ru.groups.service.longpolling;
 
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
-import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
+import ru.groups.service.MessageService;
 import ru.groups.service.VkInformationService;
 import ru.groups.service.help.JsonParsingHelper;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class LongPollingService {
@@ -20,6 +21,18 @@ public class LongPollingService {
 
     @Autowired SessionFactory sessionFactory;
     @Autowired VkInformationService oauthService;
+    @Autowired MessageService messageService;
+
+
+    private void addNewKeyServerTsToGroup(GroupVk groupVk, JsonNode actualObj){
+        List<String> valuesInJson = JsonParsingHelper.findValueInJson(actualObj, "key", "server", "ts");
+        Integer numberOfKeyInMassiv = 1;
+        groupVk.setTempKeyOfPollingServer(valuesInJson.get(numberOfKeyInMassiv));
+        Integer numberOfServerInMassiv = 2;
+        groupVk.setAddressOfPollingServer(valuesInJson.get(numberOfServerInMassiv));
+        Integer numberOfTSinMassiv = 3;
+        groupVk.setNumberOfLastAction(valuesInJson.get(numberOfTSinMassiv));
+    }
 
     @Transactional
     public void getLongPolling(GroupVk groupVk) throws IOException {
@@ -28,60 +41,36 @@ public class LongPollingService {
                 .replace("{METHOD_NAME}", method)
                 .replace("{ACCESS_TOKEN}", groupVk.getAccessToken())
                 .replace("{API_VERSION}", versionOfVkApi);
-        System.out.println(reqUrl);
-        StringBuffer response = oauthService.apiRequestForGetResponseFromServer(reqUrl);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree(response.toString());
-        groupVk.setTempKeyOfPollingServer(JsonParsingHelper.findValueInJson(actualObj ,"key"));
-        groupVk.setAddressOfPollingServer(JsonParsingHelper.findValueInJson(actualObj ,"server"));
-        groupVk.setNumberOfLastAction(JsonParsingHelper.findValueInJson(actualObj ,"ts"));
+        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
+        addNewKeyServerTsToGroup(groupVk, actualObj);
         sessionFactory.getCurrentSession().merge(groupVk);
         requestToPollingServer(groupVk);
     }
 
     // Here I need to add annotation @Sheduled
     @Transactional
-    public void requestToPollingServer(GroupVk groupVk) throws IOException {
+    private void requestToPollingServer(GroupVk groupVk) throws IOException {
 
         String reqUrl = "https://{SERVER_ADDRESS}?act=a_check&key={GROUP_KEY}&ts={LATEST_ACTION}&wait=25&mode=2&version=1"
                 .replace("{SERVER_ADDRESS}", groupVk.getAddressOfPollingServer())
                 .replace("{GROUP_KEY}", groupVk.getTempKeyOfPollingServer())
                 .replace("{LATEST_ACTION}", groupVk.getNumberOfLastAction());
-
-        StringBuffer response = oauthService.apiRequestForGetResponseFromServer(reqUrl);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree(response.toString());
+        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
 
         checkPollingServerAtErrors(actualObj, groupVk);
-
-
-        groupVk.setTempKeyOfPollingServer(JsonParsingHelper.findValueInJson(actualObj ,"key"));
-        groupVk.setAddressOfPollingServer(JsonParsingHelper.findValueInJson(actualObj ,"server"));
-        groupVk.setNumberOfLastAction(JsonParsingHelper.findValueInJson(actualObj ,"ts"));
+        addNewKeyServerTsToGroup(groupVk, actualObj);
+        messageService.findMessageAndUserIdInResponse(actualObj, groupVk);
         sessionFactory.getCurrentSession().merge(groupVk);
+
     }
 
 
-
-    public void getNewMessages(JsonNode actualObj, GroupVk groupVk){
-        
-    }
-
-
-    private void checkPollingServerAtErrors(JsonNode actualObj, GroupVk groupVk) throws IOException {
-        String newTs = JsonParsingHelper.findValueInJson(actualObj ,"ts");
-        String updates = JsonParsingHelper.findValueInJson(actualObj ,"updates");
-
-        if (updates == null || updates.equals("[]")){
-            groupVk.setNumberOfLastAction(newTs);
-            requestToPollingServer(groupVk);
-        }
-
+    private void findErrorInServer(JsonNode actualObj, GroupVk groupVk) throws IOException{
         String numberOfError = JsonParsingHelper.findValueInJson(actualObj ,"failed");
         if (numberOfError != null){
             switch (numberOfError){
                 case "1":
-                    groupVk.setNumberOfLastAction(newTs);
+                    groupVk.setNumberOfLastAction(groupVk.getNumberOfLastAction());
                     requestToPollingServer(groupVk);
                     break;
                 case "2":
@@ -94,5 +83,14 @@ public class LongPollingService {
                     break;
             }
         }
+    }
+
+    private void checkPollingServerAtErrors(JsonNode actualObj, GroupVk groupVk) throws IOException {
+        groupVk.setNumberOfLastAction(JsonParsingHelper.findValueInJson(actualObj ,"ts"));
+        String updates = JsonParsingHelper.findValueInJson(actualObj ,"updates");
+        if (updates == null || updates.equals("[]")){
+            requestToPollingServer(groupVk);
+        }
+        findErrorInServer(actualObj, groupVk);
     }
 }
