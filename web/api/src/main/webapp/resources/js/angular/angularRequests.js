@@ -5,7 +5,7 @@ app.controller('adminCTRL', function ($scope, $http) {
     $scope.userWelcome = 'Приветствуем вас, незнакомец';
     $scope.loginned = false;
     $scope.groups = [];
-    
+
     $scope.groups = [{"groupId":"116153191","groupName":"CSGO-LUCK.NET - Лучшая лотерея вещей!","photo50px":"https://pp.vk.me/c633821/v633821852/18d64/4J0IeTYxa9M.jpg"},{"groupId":"41399075","groupName":"Lenkin.kz - официальная группа!","photo50px":"https://pp.vk.me/c307615/g41399075/e_1c8fef9b.jpg"}];
 
     $scope.load = function (){
@@ -29,7 +29,7 @@ app.controller('adminCTRL', function ($scope, $http) {
             method: 'GET',
             url: '/groups/get'
         }).then(function successCallback(data) {
-           $scope.groups = data;
+            $scope.groups = data;
         }, function errorCallback(response) {
             //обработка ошибки. но это же нам не надо, ведь теперь все в норме, да, брат?
             alert('login error!');
@@ -39,7 +39,7 @@ app.controller('adminCTRL', function ($scope, $http) {
         //var email = $('#userEmail').val();
         //var login = $('#login').val();
         //var password = $('#password').val();
-        
+
         $http.post('/register/new', {
             userEmail: $scope.email,
             login: $scope.login,
