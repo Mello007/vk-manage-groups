@@ -64,7 +64,7 @@
             <th class="hand-th">Тайные желания</th>
         </tr>
         <tbody id="all-groups" ng-repeat="group in groups">
-            <tr class="topheader">
+            <tr>
                 <td>
                     <img src="{{group.photo50px}}">
                 </td>
@@ -73,6 +73,17 @@
                 </td>
                 <td>
                     <button class="btn">добавить бота</button>
+                </td>
+            </tr>
+            <tr ng-hide="group.active">
+                <td>
+                    <p class="text-info">Введите проверочный код</p>
+                </td>
+                <td>
+                    <input ng-model="group.code">
+                </td>
+                <td>
+                    <button>submit</button>
                 </td>
             </tr>
         </tbody>
