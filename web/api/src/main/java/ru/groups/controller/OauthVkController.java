@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.groups.entity.DTO.UserDTO;
-import ru.groups.entity.UserVk;
-import ru.groups.service.OauthService;
 import ru.groups.service.UserService;
 import ru.groups.service.VkInformationService;
 
@@ -33,7 +30,5 @@ public class OauthVkController {
     public void getToken(@RequestParam String code, HttpServletResponse response) throws Exception {
         vkInformationService.loadUserByCode(code);
         response.sendRedirect("http://localhost:8080/resources/admin.html");
-//        SecurityUser securityUser = new SecurityUser(userVk);
-//        securityServiceContext.authUser(securityUser);
     }
 }

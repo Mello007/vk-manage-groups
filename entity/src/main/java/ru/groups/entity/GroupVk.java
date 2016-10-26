@@ -3,7 +3,7 @@ package ru.groups.entity;
 import lombok.Getter;
 import lombok.Setter;
 import ru.groups.entity.typeOfMessages.AnswerAndAsk;
-import ru.groups.entity.typeOfMessages.BadMessages;
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,8 +21,10 @@ public class GroupVk extends BaseEntity{
     private String addressOfPollingServer;
     private String numberOfLastAction;
 
+    @ElementCollection private List<String> question;
+    @ElementCollection private List<String> badMessage;
+    @ElementCollection private List<String> answer;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<MessageVk> messagesOfGroup;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<AnswerAndAsk> answerAndAsksMessages;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<BadMessages> badMessages;
-
 }
