@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script>
+    <script defer src="js/angular/angularRequests.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="adminCTRL">
+
+<div class="container">
+
+    <nav class="navbar navbar-default navbar-static">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".js-navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="#" style="padding:15px 15px;">SMP</a>
+            </div>
+            <div class="collapse navbar-collapse js-navbar">
+                <div class="nav navbar-nav navbar-right">
+                    <a id="userName" href="#">Привет, незнакомец!</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Заголовок модального окна -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Добавить студента</h4>
+                </div>
+                <!-- Основное содержимое модального окна -->
+                <div class="modal-body">
+                    <form onsubmit="addNewStudent()" action="javascript:void(null);">
+                        <input type="text" placeholder="ФИО" id="fullName">
+                        <input type="text" placeholder="Баллы" id="studentBalls">
+                        <input type="text" placeholder="Курс" id="studentCours" style="margin-right: 70px">
+                        <input type="text" placeholder="Группа" id="studentGroup">
+                        <button type="submit" class="btn" style="margin-top:60px; margin-right: 120px">Подтвердить</button>
+                    </form>
+                </div>
+                <!-- Футер модального окна -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped" id="all-student-table">
+        <tr>
+            <th class="hand-th">Аватар</th>
+            <th class="hand-th">Название группы</th>
+            <th class="hand-th">Тайные желания</th>
+        </tr>
+        <tbody id="all-groups" ng-repeat="group in groups">
+            <tr class="topheader">
+                <td>
+                    <img src="{{group.photo50px}}">
+                </td>
+                <td>
+                    <a href="{{'https://vk.com/club' + group.groupId}}">{{group.groupName}}</a>
+                </td>
+                <td>
+                    <button class="btn">добавить бота</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

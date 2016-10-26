@@ -36,10 +36,12 @@ function loadGroups() {
         parsedName.forEach(function (group) {
             var tableRowElement = document.createElement('tr'),
                 imgContainer = document.createElement('td'),
-                nameContainer = document.createElement('td');
+                nameContainer = document.createElement('td'),
+                linkContainer = document.createElement('td');
             imgContainer.innerHTML = '<img src="' + group.photo50px + '" class = "img-circle" alt = "' + group.name +
                     '" width="50" height="50">';
             nameContainer.innerHTML = '<a href="vk.com/id' + group.groupId + '">' + group.groupName + '</a>';
+            linkContainer.innerHTML = '<button></button>';
             tableRowElement.appendChild(imgContainer);
             tableRowElement.appendChild(nameContainer);
             tableElement.appendChild(tableRowElement);
