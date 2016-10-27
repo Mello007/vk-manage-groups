@@ -24,4 +24,5 @@ public class UserController {
     public UserDTO getUserName(){
         return new UserDTO(loggedUserHelper.getUserFromBD());
     }
+
 }

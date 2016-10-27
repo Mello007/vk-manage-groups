@@ -24,6 +24,7 @@ public class GroupVk extends BaseEntity{
     @ElementCollection private List<String> question;
     @ElementCollection private List<String> badMessage;
     @ElementCollection private List<String> answer;
+    @ElementCollection private List<String> stopWords;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<MessageVk> messagesOfGroup;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<AnswerAndAsk> answerAndAsksMessages;

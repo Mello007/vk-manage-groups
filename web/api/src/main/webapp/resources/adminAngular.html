@@ -12,9 +12,9 @@
     </style>
 </head>
 <body ng-app="myApp" ng-controller="adminCTRL" ng-init="init()">
-<p>{{groups}}</p>
-<div class="container">
 
+<div class="container">
+    <p>{{response}}</p>
     <nav class="navbar navbar-default navbar-static">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -25,7 +25,7 @@
             </div>
             <div class="collapse navbar-collapse js-navbar">
                 <div class="nav navbar-nav navbar-right">
-                    <a id="userName" href="#">Привет, незнакомец!</a>
+                    <a id="userName" href="#">{{userWelcome}}</a>
                 </div>
             </div>
         </div>

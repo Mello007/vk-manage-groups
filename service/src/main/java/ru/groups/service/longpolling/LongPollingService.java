@@ -50,7 +50,6 @@ public class LongPollingService {
     // Here I need to add annotation @Sheduled
     @Transactional
     private void requestToPollingServer(GroupVk groupVk) throws IOException {
-
         String reqUrl = "https://{SERVER_ADDRESS}?act=a_check&key={GROUP_KEY}&ts={LATEST_ACTION}&wait=25&mode=2&version=1"
                 .replace("{SERVER_ADDRESS}", groupVk.getAddressOfPollingServer())
                 .replace("{GROUP_KEY}", groupVk.getTempKeyOfPollingServer())
@@ -61,9 +60,7 @@ public class LongPollingService {
         addNewKeyServerTsToGroup(groupVk, actualObj);
         messageService.findMessageAndUserIdInResponse(actualObj, groupVk);
         sessionFactory.getCurrentSession().merge(groupVk);
-
     }
-
 
     private void findErrorInServer(JsonNode actualObj, GroupVk groupVk) throws IOException{
         String numberOfError = JsonParsingHelper.findValueInJson(actualObj ,"failed");

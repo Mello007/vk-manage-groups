@@ -16,7 +16,6 @@ public class AsqAndAnswerService {
     @Autowired SessionFactory sessionFactory;
     @Autowired GroupService groupService;
 
-
     //This method is adding AnswerAndAsk to group
 
     @Transactional
@@ -27,6 +26,24 @@ public class AsqAndAnswerService {
         groupVk.setAnswerAndAsksMessages(answerAndAsksList);
         sessionFactory.getCurrentSession().merge(groupVk);
     }
+
+
+    // I don't know, work this method or no, we neet to check method REMOVE, maybe it isn't work with type of object AnswerAndAsk
+    @Transactional
+    public void deleteAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
+        GroupVk groupVk = groupService.searchGroup(groupId);
+        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
+        answerAndAsksList.remove(answerAndAsk);
+    }
+
+
+    // Bad bad bad fuck
+    @Transactional
+    public void changeAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
+        GroupVk groupVk = groupService.searchGroup(groupId);
+        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
+    }
+
 
     //This method find Answer from value of Ask.
     // need to write else

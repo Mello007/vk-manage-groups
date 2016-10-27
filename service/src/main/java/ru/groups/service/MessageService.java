@@ -9,6 +9,8 @@ import ru.groups.entity.GroupVk;
 import ru.groups.entity.MessageVk;
 import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
+import ru.groups.service.messages.BadMessageService;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class MessageService {
 
     @Autowired VkInformationService oauthService;
     @Autowired LoggedUserHelper loggedUserHelper;
+    @Autowired BadMessageService badMessageService;
 
     private void sendMessageToUser(String message, GroupVk groupVk, String userId) throws IOException {
         String reqUrl = "https://api.vk.com/method/messages.send?access_token={ACCESS_TOKEN}&user_id={userID}&message={MESSAGE}&notification=1"
@@ -62,6 +65,8 @@ public class MessageService {
 
     private void findAnswerToMessage(GroupVk groupVk) throws IOException{
         //Here I will put many methods (badMessages, AnswerAndAsk message)
+
+
 
     }
 

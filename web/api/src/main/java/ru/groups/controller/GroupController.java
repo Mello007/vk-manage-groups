@@ -41,15 +41,8 @@ public class GroupController {
                          HttpServletResponse response) throws Exception {
         groupService.setAccessTokenToGroup(accessToken, groupId);
         response.sendRedirect("http://localhost:8080/resources/admin.html");
-//        SecurityUser securityUser = new SecurityUser(userVk);
-//        securityServiceContext.authUser(securityUser);
     }
 
-
-    @RequestMapping(value = "redirect", method = RequestMethod.GET)
-    public void sendRedirect(HttpServletResponse response) throws Exception {
-
-    }
 
 
 //
@@ -58,8 +51,5 @@ public class GroupController {
 //        groupService.getAccessKeyOfGroups(code, groupId);
 //    }
 
-    @RequestMapping(value = "addaskandansmessages", method = RequestMethod.POST, consumes = "application/json")
-    public void addAnsAndAskMessages(@RequestBody AnswerAndAsk answerAndAsk){
 
-    }
 }

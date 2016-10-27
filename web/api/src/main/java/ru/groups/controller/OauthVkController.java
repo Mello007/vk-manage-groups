@@ -18,8 +18,7 @@ import java.io.IOException;
 public class OauthVkController {
 
     @Autowired VkInformationService vkInformationService;
-    @Autowired
-    UserService userService;
+    @Autowired UserService userService;
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
     public void sendLink(HttpServletResponse response) throws IOException{
