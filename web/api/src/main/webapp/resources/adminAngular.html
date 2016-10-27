@@ -11,7 +11,7 @@
 
     </style>
 </head>
-<body ng-app="myApp" ng-controller="adminCTRL">
+<body ng-app="myApp" ng-controller="adminCTRL" ng-init="init()">
 
 <div class="container">
 
@@ -59,7 +59,7 @@
     <h1>Список групп</h1>
     <div style="margin-top: 10px" class="container" ng-repeat="group in groups">
         <span style="width: 500px; display: inline-block">
-            <img class="img-circle" src="{{group.photo50px}}">
+            <img class="img-circle" src="{{group.photo100px}}">
             <a href="{{'https://vk.com/club' + group.groupId}}">{{group.groupName}}</a>
         </span>
         <span ng-hide="group.active">
