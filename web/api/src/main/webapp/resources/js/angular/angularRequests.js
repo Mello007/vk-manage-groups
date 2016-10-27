@@ -50,6 +50,9 @@ app.controller('adminCTRL', function ($scope, $http) {
             alert("Не удалось добавить пользователя! Что-то пошло не так, попробуйте еще раз");
         });
     };
+    
+    $scope.load();
+    $scope.loadGroups();
 });
 //Вот такой json будет приходить на сервер
 

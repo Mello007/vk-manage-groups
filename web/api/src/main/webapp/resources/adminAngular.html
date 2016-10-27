@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap.min.js"></script>
     <script defer src="js/angular/angularRequests.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <style>
+
+    </style>
 </head>
 <body ng-app="myApp" ng-controller="adminCTRL">
 
@@ -56,38 +56,21 @@
             </div>
         </div>
     </div>
-
-    <table class="table table-striped" id="all-student-table">
-        <tr>
-            <th class="hand-th">Аватар</th>
-            <th class="hand-th">Название группы</th>
-            <th class="hand-th">Тайные желания</th>
-        </tr>
-        <tbody id="all-groups" ng-repeat="group in groups">
-            <tr>
-                <td>
-                    <img src="{{group.photo50px}}">
-                </td>
-                <td>
-                    <a href="{{'https://vk.com/club' + group.groupId}}">{{group.groupName}}</a>
-                </td>
-                <td>
-                    <button class="btn">добавить бота</button>
-                </td>
-            </tr>
-            <tr ng-hide="group.active">
-                <td>
-                    <p class="text-info">Введите проверочный код</p>
-                </td>
-                <td>
-                    <input ng-model="group.code">
-                </td>
-                <td>
-                    <button>submit</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <h1>Список групп</h1>
+    <div style="margin-top: 10px" class="container" ng-repeat="group in groups">
+        <span style="width: 500px; display: inline-block">
+            <img class="img-circle" src="{{group.photo50px}}">
+            <a href="{{'https://vk.com/club' + group.groupId}}">{{group.groupName}}</a>
+        </span>
+        <span ng-hide="group.active">
+            <button ng-click="group.active = true" class="btn">Добавить бота</button>
+        </span>
+        <span ng-show="group.active">
+            Введите проверочный код
+            <input ng-model="group.code">
+            <button>submit</button>
+        </span>
+    </div>
 </div>
 </body>
 </html>
