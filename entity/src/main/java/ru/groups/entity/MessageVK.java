@@ -14,4 +14,6 @@ public class MessageVk extends BaseEntity{
     private String messageDate;
     private String messageBody;
     private String messageUserId;
+    private String messageReply;
+    private boolean messageAnswered;
 }

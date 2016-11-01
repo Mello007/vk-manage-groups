@@ -17,7 +17,6 @@ public class LoggedUserHelper {
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
 
-
     @Transactional
     public UserVk getUserFromBD(){
         long userId = session.getLoggedUserId();

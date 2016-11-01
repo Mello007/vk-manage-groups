@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.groups.entity.DTO.UserDTO;
 import ru.groups.entity.UserVk;
+import ru.groups.service.GroupService;
 import ru.groups.service.UserService;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.security.Session;
+
+import java.io.IOException;
 
 
 @RestController
@@ -20,8 +23,9 @@ public class UserController {
     @Autowired UserService userService;
     @Autowired LoggedUserHelper loggedUserHelper;
 
+
     @RequestMapping(value = "getName", method = RequestMethod.GET, produces = "application/json")
-    public UserDTO getUserName(){
+    public UserDTO getUserName() throws IOException {
         return new UserDTO(loggedUserHelper.getUserFromBD());
     }
 

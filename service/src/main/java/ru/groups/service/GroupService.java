@@ -13,6 +13,7 @@ import ru.groups.entity.UserVk;
 import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
+import ru.groups.service.messages.BadMessageService;
 import ru.groups.service.security.Session;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class GroupService {
     @Autowired SessionFactory sessionFactory;
     @Autowired LoggedUserHelper loggedUserHelper;
     @Autowired LongPollingService longPollingService;
+    @Autowired BadMessageService badMessageService;
 
     private static final String versionOfVkApi = "5.59";
 
@@ -51,7 +53,7 @@ public class GroupService {
             group.setGroupName(slaidNode.get("name").asText());
             group.setPhoto50px(slaidNode.get("photo_50").asText());
             group.setPhoto100px(slaidNode.get("photo_100").asText());
-            sessionFactory.getCurrentSession().save(group);
+            sessionFactory.getCurrentSession().saveOrUpdate(group);
             groupVks.add(group);
         }
         user.setUserGroups(groupVks); //добавляем юзеру группы его
@@ -85,6 +87,15 @@ public class GroupService {
         GroupVk groupVk = (GroupVk) query.uniqueResult();
         groupVk.setAccessToken(accessTokenToGroup);
         sessionFactory.getCurrentSession().merge(groupVk);
+
+
+        addToGroupDefaultAnswers(groupVk);
         longPollingService.getLongPolling(groupVk);
+    }
+
+
+    @Transactional
+    private void addToGroupDefaultAnswers(GroupVk groupVk){
+        badMessageService.addDefaultBadMessages(groupVk);
     }
 }

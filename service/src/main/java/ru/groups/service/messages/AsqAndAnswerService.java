@@ -21,27 +21,21 @@ public class AsqAndAnswerService {
     @Transactional
     public void addAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
-        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
-        answerAndAsksList.add(answerAndAsk);
-        groupVk.setAnswerAndAsksMessages(answerAndAsksList);
-        sessionFactory.getCurrentSession().merge(groupVk);
+        groupVk.getAnswerAndAsksMessages().add(answerAndAsk);
+        sessionFactory.getCurrentSession().save(groupVk.getAnswerAndAsksMessages());
     }
-
 
     // I don't know, work this method or no, we neet to check method REMOVE, maybe it isn't work with type of object AnswerAndAsk
     @Transactional
     public void deleteAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
-        GroupVk groupVk = groupService.searchGroup(groupId);
-        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
-        answerAndAsksList.remove(answerAndAsk);
+        sessionFactory.getCurrentSession().delete(answerAndAsk);
     }
 
-
-    // Bad bad bad fuck
+    // Bad bad bad fuck this method isn't work
     @Transactional
     public void changeAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
-        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
+        groupVk.getAnswerAndAsksMessages().add(answerAndAsk);
     }
 
 

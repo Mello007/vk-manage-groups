@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.groups.entity.typeOfMessages.AnswerAndAsk;
 import ru.groups.entity.GroupVk;
 import ru.groups.service.GroupService;
+import ru.groups.service.longpolling.LongPollingService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public class GroupController {
 
     @Autowired GroupService groupService;
-
+    @Autowired LongPollingService longPollingService;
 
     // Here I need get request from front, and this method will send link, which are open in browser
     // After authorization user reroute at address ouath/getaccess, where method in service get access token from api
@@ -31,6 +32,7 @@ public class GroupController {
     @RequestMapping(value = "get", method = RequestMethod.GET, produces = "application/json")
     public List<GroupVk> getGroups() throws Exception{
            List<GroupVk> groupVks = groupService.getUserGroups();
+
         return  groupVks;
     }
 
@@ -39,11 +41,15 @@ public class GroupController {
     @RequestMapping(value = "getaccess", method = RequestMethod.POST)
     public void getToken(@RequestParam String accessToken, @RequestParam String groupId,
                          HttpServletResponse response) throws Exception {
-        groupService.setAccessTokenToGroup(accessToken, groupId);
+
         response.sendRedirect("http://localhost:8080/resources/admin.html");
     }
 
-
+    @RequestMapping(value = "setpolling", method = RequestMethod.POST)
+    public void setTokenToPollingServer(@RequestParam("token") String accessToken, @RequestParam("groupId") String groupId) throws Exception {
+        groupService.setAccessTokenToGroup(accessToken, groupId);
+       // response.sendRedirect("http://localhost:8080/resources/admin.html");
+    }
 
 //
 //    @RequestMapping(value = "{groupId}/rights", method = RequestMethod.GET)

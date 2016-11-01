@@ -6,7 +6,6 @@ app.controller('adminCTRL', function ($scope, $http) {
     $scope.loginned = false;
     $scope.groups = [];
     
-
     $scope.load = function (){
         $http.get('/user/getName').
         success(function(data) {

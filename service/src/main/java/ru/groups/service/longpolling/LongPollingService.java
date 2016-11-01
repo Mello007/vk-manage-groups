@@ -4,6 +4,7 @@ package ru.groups.service.longpolling;
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
@@ -14,6 +15,8 @@ import ru.groups.service.help.JsonParsingHelper;
 import java.io.IOException;
 import java.util.List;
 
+
+@Component
 @Service
 public class LongPollingService {
 
@@ -26,11 +29,11 @@ public class LongPollingService {
 
     private void addNewKeyServerTsToGroup(GroupVk groupVk, JsonNode actualObj){
         List<String> valuesInJson = JsonParsingHelper.findValueInJson(actualObj, "key", "server", "ts");
-        Integer numberOfKeyInMassiv = 1;
+        Integer numberOfKeyInMassiv = 0;
         groupVk.setTempKeyOfPollingServer(valuesInJson.get(numberOfKeyInMassiv));
-        Integer numberOfServerInMassiv = 2;
+        Integer numberOfServerInMassiv = 1;
         groupVk.setAddressOfPollingServer(valuesInJson.get(numberOfServerInMassiv));
-        Integer numberOfTSinMassiv = 3;
+        Integer numberOfTSinMassiv = 2;
         groupVk.setNumberOfLastAction(valuesInJson.get(numberOfTSinMassiv));
     }
 
@@ -47,7 +50,7 @@ public class LongPollingService {
         requestToPollingServer(groupVk);
     }
 
-    // Here I need to add annotation @Sheduled
+
     @Transactional
     private void requestToPollingServer(GroupVk groupVk) throws IOException {
         String reqUrl = "https://{SERVER_ADDRESS}?act=a_check&key={GROUP_KEY}&ts={LATEST_ACTION}&wait=25&mode=2&version=1"
@@ -55,11 +58,10 @@ public class LongPollingService {
                 .replace("{GROUP_KEY}", groupVk.getTempKeyOfPollingServer())
                 .replace("{LATEST_ACTION}", groupVk.getNumberOfLastAction());
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
-
         checkPollingServerAtErrors(actualObj, groupVk);
         addNewKeyServerTsToGroup(groupVk, actualObj);
-        messageService.findMessageAndUserIdInResponse(actualObj, groupVk);
         sessionFactory.getCurrentSession().merge(groupVk);
+        messageService.findMessageAndUserIdInResponse(actualObj, groupVk);
     }
 
     private void findErrorInServer(JsonNode actualObj, GroupVk groupVk) throws IOException{
