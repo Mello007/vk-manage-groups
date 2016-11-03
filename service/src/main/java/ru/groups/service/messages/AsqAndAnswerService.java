@@ -17,7 +17,6 @@ public class AsqAndAnswerService {
     @Autowired GroupService groupService;
 
     //This method is adding AnswerAndAsk to group
-
     @Transactional
     public void addAnswerAndAsk(AnswerAndAsk answerAndAsk, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
@@ -37,7 +36,6 @@ public class AsqAndAnswerService {
         GroupVk groupVk = groupService.searchGroup(groupId);
         groupVk.getAnswerAndAsksMessages().add(answerAndAsk);
     }
-
 
     //This method find Answer from value of Ask.
     // need to write else

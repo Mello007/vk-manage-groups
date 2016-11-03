@@ -13,8 +13,6 @@ http://www.springframework.org/schema/security/spring-security-4.0.xsd">
         <csrf disabled="true"></csrf>
     </http>
 
-
-
     <global-method-security secured-annotations="enabled" />
 
 </beans:beans>

@@ -13,7 +13,6 @@ import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
 import ru.groups.service.messages.BadMessageService;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +20,6 @@ import java.util.List;
 
 @Service
 public class MessageService {
-
 
     @Autowired VkInformationService oauthService;
     @Autowired LoggedUserHelper loggedUserHelper;
@@ -34,13 +32,13 @@ public class MessageService {
         String reqUrl = "https://api.vk.com/method/messages.send?access_token={ACCESS_TOKEN}&user_id={userID}&message={MESSAGE}&notification=1"
                 .replace("{ACCESS_TOKEN}", accessToken)
                 .replace("{userID}", messageVk.getMessageUserId())
-                .replace("{MESSAGE}", messageVk.getMessageReply());
+                .replace("{MESSAGE}", messageVk.getMessageReply().replace(" ", "%20"));
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
 //        После успешного выполнения возвращает идентификатор отправленного сообщения.
         String messageId;
     }
 
-    // This method WORK!!!!
+    // This method is WORK!!!!
     private  MessageVk findAnswerFromMessage(String id[], MessageVk messageVk) {
         for (int i = 0; i < id.length; i++){
             if (id[i].equals("[4")){
@@ -52,7 +50,6 @@ public class MessageService {
         }
         return messageVk;
     }
-
 
 
 
@@ -79,19 +76,20 @@ public class MessageService {
         //Here I will put many methods (badMessages, AnswerAndAsk message)
         List<MessageVk> messageVks = groupVk.getMessagesOfGroup();
         for (MessageVk messageVk : messageVks) {
-            if (!messageVk.isMessageAnswered()) {
-                String badMessage = badMessageService.isBadMessage(messageVk.getMessageBody(), groupVk);
-                if (badMessage == null) {
-                    //here I need to write else find answer and add answer to messageReply
-                    messageVk.setMessageReply("Мой Папка Савич Артем".replace(" ", "%20"));
-                   // sendMessageToUser("Привет!!!", groupVk, messageVk.getMessageUserId()); Cheking
-                    sendMessageToUser(messageVk, groupVk.getAccessToken());
-                } else {
-                    messageVk.setMessageReply(badMessage);
-                    sendMessageToUser(messageVk, groupVk.getAccessToken());
+
+                if (!messageVk.isMessageAnswered()) {
+                    String badMessage = badMessageService.isBadMessage(messageVk.getMessageBody(), groupVk);
+                    if (badMessage == null) {
+                        //here I need to write else find answer and add answer to messageReply
+                        messageVk.setMessageReply("Мой Папка Савич Артем".replace(" ", "%20"));
+                        // sendMessageToUser("Привет!!!", groupVk, messageVk.getMessageUserId()); Cheking
+                        sendMessageToUser(messageVk, groupVk.getAccessToken());
+                    } else {
+                        messageVk.setMessageReply(badMessage);
+                        sendMessageToUser(messageVk, groupVk.getAccessToken());
+                    }
                 }
             }
-        }
         longPollingService.getLongPolling(groupVk);
     }
 }

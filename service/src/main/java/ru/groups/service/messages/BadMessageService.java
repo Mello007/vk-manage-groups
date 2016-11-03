@@ -34,7 +34,7 @@ public class BadMessageService {
         if (isBadMessage){
             Random random = new Random();
             //Here method return random answer from BD to BAD question
-            return groupVk.getStopWords().get(random.nextInt(groupVk.getStopWords().size())).replace(" ","%20");
+            return groupVk.getStopWords().get(random.nextInt(groupVk.getStopWords().size()));
         }
         return null;
     }

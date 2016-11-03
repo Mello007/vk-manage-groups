@@ -3,7 +3,6 @@ package ru.groups.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.groups.entity.typeOfMessages.AnswerAndAsk;
 import ru.groups.entity.GroupVk;
 import ru.groups.service.GroupService;
 import ru.groups.service.longpolling.LongPollingService;
@@ -31,8 +30,7 @@ public class GroupController {
 
     @RequestMapping(value = "get", method = RequestMethod.GET, produces = "application/json")
     public List<GroupVk> getGroups() throws Exception{
-           List<GroupVk> groupVks = groupService.getUserGroups();
-
+           List<GroupVk> groupVks = groupService.getGroupsFromBD();
         return  groupVks;
     }
 

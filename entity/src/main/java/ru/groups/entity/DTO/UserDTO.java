@@ -6,7 +6,6 @@ import ru.groups.entity.UserVk;
 
 @Getter @Setter
 
-
 public class UserDTO {
 
     private String userName;

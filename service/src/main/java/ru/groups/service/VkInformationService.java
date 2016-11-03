@@ -22,7 +22,7 @@ public class VkInformationService {
     @Autowired SessionFactory sessionFactory;
     @Autowired UserService userService;
     @Autowired LoggedUserHelper loggedUserHelper;
-
+    @Autowired GroupService groupService;
 
 
     private JsonNode loadJsonUserByCode(String code) throws IOException{
@@ -86,7 +86,7 @@ public class VkInformationService {
 
         //update fullUser
         sessionFactory.getCurrentSession().merge(fullUserWithRegistrationData);
-
+        groupService.findUserGroupsInAPI();
         return fullUserWithRegistrationData;
     }
 }

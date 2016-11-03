@@ -32,12 +32,22 @@ public class GroupService {
 
     private static final String versionOfVkApi = "5.59";
 
+
     @Transactional
-    public List<GroupVk> getUserGroups() throws Exception{
+    public List<GroupVk> getGroupsFromBD(){
+        UserVk user = loggedUserHelper.getUserFromBD();
+        return user.getUserGroups();
+    }
+
+
+    @Transactional
+    public List<GroupVk> findUserGroupsInAPI() throws Exception{
         UserVk user = loggedUserHelper.getUserFromBD();
         List<GroupVk> groupVks = new LinkedList<>();
         String method = "groups.get";
-        String reqUrl = "https://api.vk.com/method/{METHOD_NAME}?user_id={userID}&extended=1&filter=admin&access_token={access_token}&v={version}"
+        String reqUrl = ("https://api.vk.com/method/{METHOD_NAME}?user_id={userID}&" +
+                "extended=1&filter=admin&access_token=" +
+                "{access_token}&v={version}")
                 .replace("{METHOD_NAME}", method)
                 .replace("{userID}", user.getUserId())
                 .replace("{access_token}", user.getUserAccessToken())
@@ -61,18 +71,11 @@ public class GroupService {
         return groupVks;
     }
 
-    @Transactional
-    public List<GroupVk> getGroupsFromBD(){
-        long userId = session.getLoggedUserId();
-        UserVk userVk = sessionFactory.openSession().get(UserVk.class, userId);
-        List<GroupVk> groupList = userVk.getUserGroups();
-        groupList.forEach(group -> userVk.getUserGroups());
-        return groupList;
-    }
 
     @Transactional
     public GroupVk searchGroup(String groupId){
-        Query query = sessionFactory.getCurrentSession().createQuery("from GroupVk vkgroup join vkgroup.badMessages as messages where id = :id");
+        Query query = sessionFactory.getCurrentSession().createQuery
+                ("from GroupVk vkgroup join vkgroup.badMessages as messages where id = :id");
         query.setParameter("id", groupId);//Делаем запрос в БД с помощью HQL
         GroupVk groupVk = (GroupVk) query.uniqueResult();
         return groupVk;
@@ -87,7 +90,6 @@ public class GroupService {
         GroupVk groupVk = (GroupVk) query.uniqueResult();
         groupVk.setAccessToken(accessTokenToGroup);
         sessionFactory.getCurrentSession().merge(groupVk);
-
 
         addToGroupDefaultAnswers(groupVk);
         longPollingService.getLongPolling(groupVk);

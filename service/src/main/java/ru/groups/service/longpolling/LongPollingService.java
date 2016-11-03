@@ -15,7 +15,6 @@ import ru.groups.service.help.JsonParsingHelper;
 import java.io.IOException;
 import java.util.List;
 
-
 @Component
 @Service
 public class LongPollingService {
