@@ -31,31 +31,7 @@
         </div>
     </nav>
 
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Заголовок модального окна -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Добавить студента</h4>
-                </div>
-                <!-- Основное содержимое модального окна -->
-                <div class="modal-body">
-                    <form onsubmit="addNewStudent()" action="javascript:void(null);">
-                        <input type="text" placeholder="ФИО" id="fullName">
-                        <input type="text" placeholder="Баллы" id="studentBalls">
-                        <input type="text" placeholder="Курс" id="studentCours" style="margin-right: 70px">
-                        <input type="text" placeholder="Группа" id="studentGroup">
-                        <button type="submit" class="btn" style="margin-top:60px; margin-right: 120px">Подтвердить</button>
-                    </form>
-                </div>
-                <!-- Футер модального окна -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <h1>Список групп</h1>
     <div style="margin-top: 10px" class="container" ng-repeat="group in groups">
         <span style="width: 500px; display: inline-block">

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.MessageVk;
+import ru.groups.service.help.FindMessageHelper;
 import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
@@ -27,15 +28,14 @@ public class MessageService {
     @Autowired SessionFactory sessionFactory;
     @Autowired LongPollingService longPollingService;
 
-
     private void sendMessageToUser(MessageVk messageVk, String accessToken) throws IOException {
         String reqUrl = "https://api.vk.com/method/messages.send?access_token={ACCESS_TOKEN}&user_id={userID}&message={MESSAGE}&notification=1"
                 .replace("{ACCESS_TOKEN}", accessToken)
                 .replace("{userID}", messageVk.getMessageUserId())
                 .replace("{MESSAGE}", messageVk.getMessageReply().replace(" ", "%20"));
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
+        messageVk.isMessageAnswered();
 //        После успешного выполнения возвращает идентификатор отправленного сообщения.
-        String messageId;
     }
 
     // This method is WORK!!!!
@@ -50,7 +50,6 @@ public class MessageService {
         }
         return messageVk;
     }
-
 
 
     public void findMessageAndUserIdInResponse(JsonNode actualObj, GroupVk groupVk) throws IOException {
@@ -72,24 +71,19 @@ public class MessageService {
         findAnswerToMessage(groupVk);
     }
 
-    private void findAnswerToMessage(GroupVk groupVk) throws IOException{
+    private void findAnswerToMessage(GroupVk groupVk) throws IOException {
         //Here I will put many methods (badMessages, AnswerAndAsk message)
         List<MessageVk> messageVks = groupVk.getMessagesOfGroup();
-        for (MessageVk messageVk : messageVks) {
-
-                if (!messageVk.isMessageAnswered()) {
-                    String badMessage = badMessageService.isBadMessage(messageVk.getMessageBody(), groupVk);
-                    if (badMessage == null) {
-                        //here I need to write else find answer and add answer to messageReply
-                        messageVk.setMessageReply("Мой Папка Савич Артем".replace(" ", "%20"));
-                        // sendMessageToUser("Привет!!!", groupVk, messageVk.getMessageUserId()); Cheking
-                        sendMessageToUser(messageVk, groupVk.getAccessToken());
-                    } else {
-                        messageVk.setMessageReply(badMessage);
-                        sendMessageToUser(messageVk, groupVk.getAccessToken());
-                    }
-                }
+        messageVks.forEach(messageVk -> {
+            messageVk.setMessageReply(FindMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk));
+            //  FindMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk);
+            try {
+                sendMessageToUser(messageVk, groupVk.getAccessToken());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        longPollingService.getLongPolling(groupVk);
+        });
     }
+
+
 }

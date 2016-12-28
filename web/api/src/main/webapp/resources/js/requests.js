@@ -19,7 +19,7 @@ function changeWelcome() {
         }
         var parsedName = JSON.parse(this.responseText); //получаем объект их JSON ответа.
         document.getElementById('userName').innerHTML =
-            'Приветствуем вас, ' + parsedName.userName + ' ' + parsedName.userLastName + '!';
+            parsedName.userName + ' ' + parsedName.userLastName;
     };
     getUserName.send(null);
     getUserName.onerror = changeWelcome;
@@ -73,6 +73,11 @@ if (location.href.match(/admin/)) {
     setTimeout(loadGroups, 10);
 }
 
+if (location.href.match(/manage-group/)) {
+    changeWelcome();
+}
+
+
 
 function registerNewUser() {
     var email = $('#userEmail').val();
@@ -81,7 +86,7 @@ function registerNewUser() {
     var requestJSONparametr = "{\"userEmail\": \"" + email + "\", \"login\": \"" + login + "\", \"password\": \"" + password + "\"}";
     $.ajax({
         type: "POST",
-        url: "/register/new",
+        url: "/user/new",
         contentType: "application/json",
         dataType: 'json',
         data: requestJSONparametr,

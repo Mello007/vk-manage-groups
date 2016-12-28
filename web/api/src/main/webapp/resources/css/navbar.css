@@ -1,0 +1,155 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.page-header {
+    border-radius: 10px;
+    padding-bottom: 0;
+    background-color: #fff;
+	    margin: 20px 0 20px;
+    border-bottom: 1px solid #ddd;
+}
+.page-header-content {
+    position: relative;
+    background-color: inherit;
+    padding: 0 20px;
+    border-radius: 10px;
+}
+
+.page-title {
+    padding: 15px 36px 15px 0;
+    display: block;
+    position: relative;
+}
+.page-header-content + .breadcrumb-line {
+    border-bottom-width: 0;
+    border-top: 1px solid #ddd;
+}
+.breadcrumb-line {
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+.bg-success-400 {
+    background-color: #66BB6A;
+    border-color: #66BB6A;
+    color: #fff;
+}
+.label {
+    display: inline-block;
+    font-weight: 500;
+    padding: 1px 4px 0px 4px;
+    line-height: 1.5384616;
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1px;
+    border-radius: 2px;
+}
+
+.panel {
+    margin-bottom: 20px;
+    border-color: #ddd;
+    color: #333333;
+}
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 10px solid transparent;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.panel-heading {
+    position: relative;
+}
+.panel-heading {
+    padding: 15px 20px;
+    border-bottom: 1px solid transparent;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+}
+h5.panel-title, .h5.panel-title {
+    font-size: 17px;
+}
+.panel-title {
+    position: relative;
+    font-size: 13px;
+}
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    color: inherit;
+}
+.heading-elements {
+    background-color: inherit;
+    position: absolute;
+    /* top: 50%; */
+    right: 20px;
+    height: 36px;
+    margin-top: -18px;
+}
+.panel-flat > .panel-heading + .panel-body {
+    padding-top: 0;
+}
+.panel-body {
+    position: relative;
+}
+.panel-body {
+    padding: 20px;
+}
+.panel-body + .dataTables_wrapper {
+    border-top: 1px solid #ddd;
+}
+.dataTables_wrapper {
+    position: relative;
+    clear: both;
+}
+.panel-body + .dataTables_wrapper {
+    border-top: 1px solid #ddd;
+}
+.dataTables_wrapper {
+    position: relative;
+    clear: both;
+}
+.panel > .dataTables_wrapper .datatable-header, .panel > .dataTables_wrapper .datatable-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.datatable-header {
+    border-bottom: 1px solid #ddd;
+}
+.datatable-header, .datatable-footer {
+    padding-top: 20px;
+}
+.datatable-header > div:first-child, .datatable-footer > div:first-child {
+    margin-left: 0;
+}
+.dataTables_filter {
+    position: relative;
+    display: block;
+    float: left;
+    margin: 0 0 20px 20px;
+}
+.dataTables_length {
+    float: right;
+    display: inline-block;
+    margin: 0 0 20px 20px;
+}
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: fixed !important;
+    width: 1px !important;
+}

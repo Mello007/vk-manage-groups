@@ -16,6 +16,9 @@ public class JsonParsingHelper {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String API_VERSION = "5.21";
 
+
+
+
     public static String findValueInJson(JsonNode actualObj, String value){
         return String.valueOf(actualObj.findValue(value)).replace("\"", "");
     }
@@ -35,7 +38,7 @@ public class JsonParsingHelper {
         return actualObj;
     }
 
-    public static StringBuffer apiRequestForGetResponseFromServer(String reqUrl) throws IOException {
+    private static StringBuffer apiRequestForGetResponseFromServer(String reqUrl) throws IOException {
         URL obj = new URL(reqUrl);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");

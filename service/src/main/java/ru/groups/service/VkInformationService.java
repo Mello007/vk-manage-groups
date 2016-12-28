@@ -1,22 +1,22 @@
 package ru.groups.service;
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.groups.entity.GroupVk;
 import ru.groups.entity.UserVk;
 import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.security.Session;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class VkInformationService {
-
-    private final String USER_AGENT = "Mozilla/5.0";
-    private final String API_VERSION = "5.21";
 
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
@@ -36,8 +36,7 @@ public class VkInformationService {
         return actualObj;
     }
 
-
-    public UserVk getAccessTokeByCode(String code) throws Exception {
+    private UserVk getAccessTokeByCode(String code) throws Exception {
         JsonNode userWithAccessToken = this.loadJsonUserByCode(code);
         UserVk user = new UserVk();
         user.setUserAccessToken(JsonParsingHelper.findValueInJson(userWithAccessToken ,"access_token"));
@@ -58,7 +57,7 @@ public class VkInformationService {
         return actualObj;
     }
 
-    public UserVk loadUserWithFullName(String userId) throws Exception {
+    private UserVk loadUserWithFullName(String userId) throws Exception {
         JsonNode userWithFullName = loadFullNameById(userId);
         UserVk userVk = new UserVk();
         userVk.setUserName(JsonParsingHelper.findValueInJson(userWithFullName, "first_name"));
@@ -73,20 +72,39 @@ public class VkInformationService {
         //here I create new user, which has AccessToken and Id
         UserVk userWithAccessTokenAndId = this.getAccessTokeByCode(code);
 
+        UserVk userVk = userIsExist(userWithAccessTokenAndId.getUserId());
+        if (userVk != null){
+            userVk.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
+            sessionFactory.getCurrentSession().merge(userVk);
+            return userVk;
+        }
+
         //here I create new user, which has Name and LastName
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
-        //Here I invoke logged User and adding him parametres from other users
+        //Here I invoke logged User and adding him parameters from other users
 
-        UserVk fullUserWithRegistrationData = loggedUserHelper.getUserFromBD();
-        fullUserWithRegistrationData.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
-        fullUserWithRegistrationData.setUserName(userWithFullName.getUserName());
-        fullUserWithRegistrationData.setUserLastName(userWithFullName.getUserLastName());
-        fullUserWithRegistrationData.setUserId(userWithAccessTokenAndId.getUserId());
+        userVk = loggedUserHelper.getUserFromBD();
+        userVk.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
+        userVk.setUserName(userWithFullName.getUserName());
+        userVk.setUserLastName(userWithFullName.getUserLastName());
+        userVk.setUserId(userWithAccessTokenAndId.getUserId());
 
         //update fullUser
-        sessionFactory.getCurrentSession().merge(fullUserWithRegistrationData);
+        sessionFactory.getCurrentSession().merge(userVk);
         groupService.findUserGroupsInAPI();
-        return fullUserWithRegistrationData;
+        return userVk;
+    }
+
+
+    private UserVk userIsExist(String authorizeUserId){
+        Query queryToBd = sessionFactory.getCurrentSession().createQuery("from UserVk");
+        List<UserVk> userVks = (List<UserVk>) queryToBd.list();
+        for (UserVk userVk : userVks){
+            if (userVk.getUserId().equals(authorizeUserId)){
+                return userVk;
+            }
+        }
+        return null;
     }
 }

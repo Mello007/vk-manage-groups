@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FrontController {
     @RequestMapping (value = "/", method = RequestMethod.GET)
     public String getMain(){
-        return "resources/index.html";
+        return "/resources/index.html";
     }
-
 }

@@ -91,11 +91,11 @@ public class BadMessageService {
     @Transactional
     public void deleteBadWord(String groupId, String word){
         GroupVk groupVk = groupService.searchGroup(groupId);
-        for (String badMessageIterator : groupVk.getBadMessage()){
-            if (badMessageIterator.equals(word)){
-                groupVk.getBadMessage().remove(badMessageIterator);
+        groupVk.getBadMessage().forEach(badMessage -> {
+            if (badMessage.equals(word)){
+                groupVk.getBadMessage().remove(badMessage);
             }
-        }
+        });
         sessionFactory.getCurrentSession().merge(groupVk);
     }
 }

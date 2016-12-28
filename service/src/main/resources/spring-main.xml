@@ -32,6 +32,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
         <beans:property name="annotatedClasses">
             <beans:list>
                 <beans:value>ru.groups.entity.UserVk</beans:value>
+                <beans:value>ru.groups.entity.Product</beans:value>
                 <beans:value>ru.groups.entity.GroupVk</beans:value>
                 <beans:value>ru.groups.entity.MessageVk</beans:value>
                 <beans:value>ru.groups.entity.typeOfMessages.AnswerAndAsk</beans:value>

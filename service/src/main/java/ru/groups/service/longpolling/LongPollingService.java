@@ -1,6 +1,5 @@
 package ru.groups.service.longpolling;
 
-
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import ru.groups.entity.GroupVk;
 import ru.groups.service.MessageService;
 import ru.groups.service.VkInformationService;
 import ru.groups.service.help.JsonParsingHelper;
-
 import java.io.IOException;
 import java.util.List;
 

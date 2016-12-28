@@ -30,7 +30,7 @@ app.controller('adminCTRL', function ($scope, $http) {
         //var login = $('#login').val();
         //var password = $('#password').val();
         
-        $http.post('/register/new', {
+        $http.post('/user/new', {
             userEmail: $scope.email,
             login: $scope.login,
             password: $scope.password

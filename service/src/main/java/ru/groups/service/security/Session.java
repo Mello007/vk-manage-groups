@@ -15,7 +15,7 @@ public class Session {
     private Authentication getAuthentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
-            throw new RuntimeException("Преподователь не найден!");
+            throw new RuntimeException("User is not found!");
         }
         return auth;
     }

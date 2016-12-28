@@ -14,6 +14,7 @@ import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
 import ru.groups.service.messages.BadMessageService;
+import ru.groups.service.messages.WelcomeMessagesService;
 import ru.groups.service.security.Session;
 
 import java.io.IOException;
@@ -23,12 +24,15 @@ import java.util.List;
 
 @Service
 public class GroupService {
+
     @Autowired VkInformationService oauthService;
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
     @Autowired LoggedUserHelper loggedUserHelper;
     @Autowired LongPollingService longPollingService;
     @Autowired BadMessageService badMessageService;
+    @Autowired WelcomeMessagesService welcomeMessagesService;
+    @Autowired ProductService productService;
 
     private static final String versionOfVkApi = "5.59";
 
@@ -38,7 +42,6 @@ public class GroupService {
         UserVk user = loggedUserHelper.getUserFromBD();
         return user.getUserGroups();
     }
-
 
     @Transactional
     public List<GroupVk> findUserGroupsInAPI() throws Exception{
@@ -74,20 +77,15 @@ public class GroupService {
 
     @Transactional
     public GroupVk searchGroup(String groupId){
-        Query query = sessionFactory.getCurrentSession().createQuery
-                ("from GroupVk vkgroup join vkgroup.badMessages as messages where id = :id");
-        query.setParameter("id", groupId);//Делаем запрос в БД с помощью HQL
-        GroupVk groupVk = (GroupVk) query.uniqueResult();
+        Query queryToBd = sessionFactory.getCurrentSession().createQuery("from GroupVk where groupid = :groupid").setParameter("groupid", groupId);
+        GroupVk groupVk = (GroupVk) queryToBd.uniqueResult();
         return groupVk;
     }
-
 
     @Transactional
     public void setAccessTokenToGroup(String accessTokenToGroup, String groupId) throws IOException {
         //It's solution, which get groupVk per ID from BD
-        Query query = sessionFactory.getCurrentSession().createQuery("from GroupVk where groupid = :groupid");
-        query.setParameter("groupid", groupId);
-        GroupVk groupVk = (GroupVk) query.uniqueResult();
+        GroupVk groupVk = searchGroup(groupId);
         groupVk.setAccessToken(accessTokenToGroup);
         sessionFactory.getCurrentSession().merge(groupVk);
 
@@ -99,5 +97,7 @@ public class GroupService {
     @Transactional
     private void addToGroupDefaultAnswers(GroupVk groupVk){
         badMessageService.addDefaultBadMessages(groupVk);
+        welcomeMessagesService.addDefaultAnswerAtWelcomeMessages(groupVk);
+        productService.addAsksAboutProduct(groupVk);
     }
 }

@@ -12,6 +12,14 @@ import java.util.List;
 @Entity @Table(name = "GroupVk")
 public class GroupVk extends BaseEntity{
 
+    private String shopName;
+    private String showDescription;
+    private String shopAddress;
+    private String shopTimeOfWork;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<Product> products;
+
+
     private String groupId;
     private String groupName;
     private String photo50px;
@@ -27,7 +35,12 @@ public class GroupVk extends BaseEntity{
     @ElementCollection private List<String> badMessage;
     @ElementCollection private List<String> stopWords;
 
+    @ElementCollection private List<String> answerAtWelcomeMessage;
     @ElementCollection private List<String> welcomeMessage;
+
+    @ElementCollection private List<String> defaultAnswer;
+
+    @ElementCollection private List<String> asqsAboutProducts;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<MessageVk> messagesOfGroup;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<AnswerAndAsk> answerAndAsksMessages;
