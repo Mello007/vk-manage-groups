@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.groups.entity.GroupVk;
-import ru.groups.entity.MessageVk;
+import ru.groups.entity.MessageVK;
 import ru.groups.service.help.FindMessageHelper;
 import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
@@ -28,7 +28,7 @@ public class MessageService {
     @Autowired SessionFactory sessionFactory;
     @Autowired LongPollingService longPollingService;
 
-    private void sendMessageToUser(MessageVk messageVk, String accessToken) throws IOException {
+    private void sendMessageToUser(MessageVK messageVk, String accessToken) throws IOException {
         String reqUrl = "https://api.vk.com/method/messages.send?access_token={ACCESS_TOKEN}&user_id={userID}&message={MESSAGE}&notification=1"
                 .replace("{ACCESS_TOKEN}", accessToken)
                 .replace("{userID}", messageVk.getMessageUserId())
@@ -39,7 +39,7 @@ public class MessageService {
     }
 
     // This method is WORK!!!!
-    private  MessageVk findAnswerFromMessage(String id[], MessageVk messageVk) {
+    private MessageVK findAnswerFromMessage(String id[], MessageVK messageVk) {
         for (int i = 0; i < id.length; i++){
             if (id[i].equals("[4")){
                 System.out.println(id[i+3]);
@@ -55,9 +55,9 @@ public class MessageService {
     public void findMessageAndUserIdInResponse(JsonNode actualObj, GroupVk groupVk) throws IOException {
         JsonNode slaidsNode = (ArrayNode) actualObj.get("updates");
         Iterator<JsonNode> slaidsIterator = slaidsNode.elements();
-        ArrayList<MessageVk> messagesInNode = new ArrayList<>();
+        ArrayList<MessageVK> messagesInNode = new ArrayList<>();
         while (slaidsIterator.hasNext()) {
-            MessageVk messageVk = new MessageVk();
+            MessageVK messageVk = new MessageVK();
             JsonNode slaidNode = slaidsIterator.next();
             String id[] = slaidNode.toString().split(",");
             messageVk = findAnswerFromMessage(id, messageVk);
@@ -73,7 +73,7 @@ public class MessageService {
 
     private void findAnswerToMessage(GroupVk groupVk) throws IOException {
         //Here I will put many methods (badMessages, AnswerAndAsk message)
-        List<MessageVk> messageVks = groupVk.getMessagesOfGroup();
+        List<MessageVK> messageVks = groupVk.getMessagesOfGroup();
         messageVks.forEach(messageVk -> {
             messageVk.setMessageReply(FindMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk));
             //  FindMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk);

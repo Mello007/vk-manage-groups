@@ -6,7 +6,6 @@ import ru.groups.entity.GroupVk;
 
 @Getter
 @Setter
-
 public class ShopDTO {
     private String shopName;
     private String shopDiscription;
