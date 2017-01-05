@@ -1,12 +1,10 @@
 var pathToApplication = "/api-1.0-SNAPSHOT";
 
-
 function getApi() {
     $.get("/oauth/vk", function (data) {
         window.open(data);
     });
 }
-
 
 function changeWelcome() {
     changeWelcome.try = changeWelcome.try || 10;
