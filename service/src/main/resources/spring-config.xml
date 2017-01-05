@@ -12,8 +12,6 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/task
 http://www.springframework.org/schema/task/spring-task.xsd">
 
-
-
     <context:component-scan base-package="ru.groups.service.security"/>
     <global-method-security secured-annotations="enabled" />
 </beans:beans>

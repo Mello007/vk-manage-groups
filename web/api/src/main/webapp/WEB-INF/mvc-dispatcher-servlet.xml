@@ -14,5 +14,4 @@
     <import resource="classpath:spring-security.xml"/>
     <mvc:resources mapping="/**" location="/resources/"/>
     <mvc:annotation-driven/>
-
 </beans>
