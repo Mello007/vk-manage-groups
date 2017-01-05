@@ -72,19 +72,12 @@ public class VkInformationService {
         //here I create new user, which has AccessToken and Id
         UserVk userWithAccessTokenAndId = this.getAccessTokeByCode(code);
 
-        UserVk userVk = userIsExist(userWithAccessTokenAndId.getUserId());
-        if (userVk != null){
-            userVk.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
-            sessionFactory.getCurrentSession().merge(userVk);
-            return userVk;
-        }
-
+        UserVk userVk = loggedUserHelper.getUserFromBD();
         //here I create new user, which has Name and LastName
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
         //Here I invoke logged User and adding him parameters from other users
 
-        userVk = loggedUserHelper.getUserFromBD();
         userVk.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
         userVk.setUserName(userWithFullName.getUserName());
         userVk.setUserLastName(userWithFullName.getUserLastName());
@@ -94,17 +87,5 @@ public class VkInformationService {
         sessionFactory.getCurrentSession().merge(userVk);
         groupService.findUserGroupsInAPI();
         return userVk;
-    }
-
-
-    private UserVk userIsExist(String authorizeUserId){
-        Query queryToBd = sessionFactory.getCurrentSession().createQuery("from UserVk");
-        List<UserVk> userVks = (List<UserVk>) queryToBd.list();
-        for (UserVk userVk : userVks){
-            if (userVk.getUserId().equals(authorizeUserId)){
-                return userVk;
-            }
-        }
-        return null;
     }
 }
