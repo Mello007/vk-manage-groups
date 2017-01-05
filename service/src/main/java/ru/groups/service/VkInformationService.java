@@ -30,7 +30,7 @@ public class VkInformationService {
                 .replace("{METHOD_NAME}", "access_token")
                 .replace("{USER_ID}", "5499487")
                 .replace("{CLIENT_SECRET}", "bMTTeUDFad7H95I8LiIt")
-                .replace("{REDIRECT_URI}", "http://localhost:8080/oauth/token")
+                .replace("{REDIRECT_URI}", "http://89.223.28.35:8080/api-1.0-SNAPSHOT/oauth/token")
                 .replace("{CODE}", code);
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         return actualObj;
