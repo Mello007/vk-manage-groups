@@ -74,12 +74,6 @@ function registerNewUser() {
         contentType: "application/json",
         dataType: 'json',
         data: requestJSONparametr,
-        success: function (data) {
-            alert("Пользователь успешно добавлен!");
-        },
-        error: function (data) {
-            alert("Не удалось добавить пользователя! Что-то пошло не так, попробуйте еще раз");
-        }
     });
 }
 

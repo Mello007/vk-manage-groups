@@ -21,7 +21,7 @@ public class GroupController {
     // After authorization user reroute at address ouath/getaccess, where method in service get access token from api
     @RequestMapping(value = "getgrouptoken", method = RequestMethod.GET)
     public String getAccessKeyOfGroups(@RequestParam String groupId) throws Exception{
-        String reqUrl = "https://oauth.vk.com/authorize?client_id=5499487&redirect_uri=/api-1.0-SNAPSHOT/getaccess&group_id={group_id}&scope=manage,messages,photos,docs&display=page&response_type=code&v={version}"
+        String reqUrl = "https://oauth.vk.com/authorize?client_id=5499487&redirect_uri=89.223.28.35:8080/api-1.0-SNAPSHOT/getaccess&group_id={group_id}&scope=manage,messages,photos,docs&display=page&response_type=code&v={version}"
                 .replace("{group_id}", groupId)
                 .replace("{version}", "5.59");
         return reqUrl;
@@ -39,7 +39,7 @@ public class GroupController {
     @RequestMapping(value = "getaccess", method = RequestMethod.POST)
     public void getToken(@RequestParam String accessToken, @RequestParam String groupId,
                          HttpServletResponse response) throws Exception {
-        response.sendRedirect("/api-1.0-SNAPSHOT/admin.html");
+        response.sendRedirect("89.223.28.35:8080/api-1.0-SNAPSHOT/admin.html");
     }
 
     @RequestMapping(value = "setpolling", method = RequestMethod.POST)
