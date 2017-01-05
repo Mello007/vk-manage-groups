@@ -1,3 +1,6 @@
+var pathToApplication = "/api-1.0-SNAPSHOT";
+
+
 function getApi() {
     $.get("/oauth/vk", function (data) {
         window.open(data);
@@ -12,7 +15,7 @@ function changeWelcome() {
         return;
     }
     var getUserName = new XMLHttpRequest();
-    getUserName.open("GET", "/user/getName", true);  //Указываем адрес GET-запроса
+    getUserName.open("GET", pathToApplication + "/user/getName", true);  //Указываем адрес GET-запроса
     getUserName.onload = function () { //Функция которая отправляет запрос на сервер для получения имени пользователя
         if (this.responseText[0] === '<') {
             changeWelcome();
@@ -28,7 +31,7 @@ function changeWelcome() {
 function loadGroups() {
     //parameters of json object: name, avatar (there is address in vk), id group. That's all.
     var getGroupsInfo = new XMLHttpRequest();
-    getGroupsInfo.open("GET", "/groups/get", true);  //Указываем адрес GET-запроса
+    getGroupsInfo.open("GET", pathToApplication+ "/groups/get", true);  //Указываем адрес GET-запроса
     getGroupsInfo.onload = function () { //Функция которая отправляет запрос на сервер для получения имени пользователя
         var parsedName = JSON.parse(this.responseText), //получаем объект их JSON ответа.
             tableElement = document.getElementById('all-groups');
@@ -51,23 +54,6 @@ function loadGroups() {
 }
 
 
-
-
-
-
-function login() {
-    var email = $('#inputEmail3').val(),
-        password = $('#inputPassword3').val(),
-        requestJSONparametr = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
-    $.ajax({
-        type: "POST",
-        url: "/teacher/delete",
-        contentType: "application/json",
-        dataType: 'json',
-        data: requestJSONparametr
-    });
-}
-
 if (location.href.match(/admin/)) {
     setTimeout(changeWelcome, 1000);
     setTimeout(loadGroups, 10);
@@ -86,7 +72,7 @@ function registerNewUser() {
     var requestJSONparametr = "{\"userEmail\": \"" + email + "\", \"login\": \"" + login + "\", \"password\": \"" + password + "\"}";
     $.ajax({
         type: "POST",
-        url: "/user/new",
+        url: pathToApplication+"/user/new",
         contentType: "application/json",
         dataType: 'json',
         data: requestJSONparametr,

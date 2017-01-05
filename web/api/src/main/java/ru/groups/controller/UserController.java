@@ -38,5 +38,4 @@ public class UserController {
     void registerNewUser(@RequestBody UserVk user){
         userService.saveUserVk(user);
     }
-
 }
