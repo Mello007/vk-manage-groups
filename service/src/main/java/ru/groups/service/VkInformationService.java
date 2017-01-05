@@ -82,10 +82,8 @@ public class VkInformationService {
         userVk.setUserName(userWithFullName.getUserName());
         userVk.setUserLastName(userWithFullName.getUserLastName());
         userVk.setUserId(userWithAccessTokenAndId.getUserId());
-
         //update fullUser
-        sessionFactory.getCurrentSession().merge(userVk);
-        groupService.findUserGroupsInAPI();
+        groupService.findUserGroupsInAPI(userVk);
         return userVk;
     }
 }
