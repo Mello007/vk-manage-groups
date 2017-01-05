@@ -12,7 +12,6 @@
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
     <import resource="classpath*:spring-main.xml"/>
     <import resource="classpath:spring-security.xml"/>
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/**" location="/resources/"/>
     <mvc:annotation-driven/>
-
 </beans>
