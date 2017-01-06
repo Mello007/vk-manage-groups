@@ -44,16 +44,15 @@ public class GroupService {
     }
 
     @Transactional
-    public List<GroupVk> findUserGroupsInAPI() throws Exception{
-        UserVk user = loggedUserHelper.getUserFromBD();
+    public List<GroupVk> findUserGroupsInAPI(UserVk userVk) throws Exception{
         List<GroupVk> groupVks = new LinkedList<>();
         String method = "groups.get";
         String reqUrl = ("https://api.vk.com/method/{METHOD_NAME}?user_id={userID}&" +
                 "extended=1&filter=admin&access_token=" +
                 "{access_token}&v={version}")
                 .replace("{METHOD_NAME}", method)
-                .replace("{userID}", user.getUserId())
-                .replace("{access_token}", user.getUserAccessToken())
+                .replace("{userID}", userVk.getUserId())
+                .replace("{access_token}", userVk.getUserAccessToken())
                 .replace("{version}", versionOfVkApi);
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         JsonNode massivJson = actualObj.get("response");
@@ -69,8 +68,8 @@ public class GroupService {
             sessionFactory.getCurrentSession().saveOrUpdate(group);
             groupVks.add(group);
         }
-        user.setUserGroups(groupVks); //добавляем юзеру группы его
-        sessionFactory.getCurrentSession().merge(user);
+        userVk.setUserGroups(groupVks); //добавляем юзеру группы его
+        sessionFactory.getCurrentSession().merge(userVk);
         return groupVks;
     }
 
