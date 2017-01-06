@@ -39,12 +39,14 @@ function loadGroups() {
                 imgContainer = document.createElement('td'),
                 nameContainer = document.createElement('td'),
                 linkContainer = document.createElement('td');
+                // linkContainer.createElement('span').className("hd");
             imgContainer.innerHTML = '<img src="' + group.photo50px + '" class = "img-circle" alt = "' + group.name +
                     '" width="50" height="50">';
             nameContainer.innerHTML = '<a href="vk.com/id' + group.groupId + '">' + group.groupName + '</a>';
-            linkContainer.innerHTML = '<button></button>';
+            linkContainer.innerHTML = '<a href="#" class="btn btn-xs btn-embossed btn-primary" data-toggle="modal" data-target="#modal_default">Добавить бота</a>';
             tableRowElement.appendChild(imgContainer);
             tableRowElement.appendChild(nameContainer);
+            tableRowElement.appendChild(linkContainer);
             tableElement.appendChild(tableRowElement);
         });
     };

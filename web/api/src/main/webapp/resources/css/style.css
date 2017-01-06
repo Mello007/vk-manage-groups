@@ -8,7 +8,7 @@
 
 .forma {
 	padding-left:10%;
-
+	text-align:right;
 }
 
 .redaktion {
@@ -25,12 +25,10 @@
     margin-bottom: 0;
     font-weight: normal;
     text-align: center;
-    /* vertical-align: middle; */
     -ms-touch-action: manipulation;
     touch-action: manipulation;
     cursor: pointer;
     background-image: none;
-    /* border: 1px solid transparent; */
     white-space: nowrap;
     padding: 3px 15px;
     font-size: 14px;
@@ -49,4 +47,33 @@
 .inp {
 	border: 2px solid #bdc3c7;
 	border-radius: 5px;
+	outline: none;
 }
+.inp:focus{
+	border: 2px solid #3071a9;
+	border-radius: 5px;
+	outline: none;
+}
+.rel {
+	text-align:right;
+}
+.btn:active {
+	outline:none;
+}
+.btn:hover {
+	outline:none;
+}
+.btn:focus {
+	outline:none;
+}
+
+/* Кнопка добавить бота */
+	.bot-add {
+    display: none;
+  }
+   tbody tr:hover .bot-add {
+	display: block;
+   }
+   tbody tr:hover .hd {
+     display: none;
+   }
