@@ -28,6 +28,6 @@ public class OauthVkController {
     @RequestMapping(value = "token", method = RequestMethod.GET)
     public void getToken(@RequestParam String code, HttpServletResponse response) throws Exception {
         vkInformationService.loadUserByCode(code);
-        response.sendRedirect("http://localhost:8080/resources/admin.html");
+        response.sendRedirect("http://localhost:8080/admin.html");
     }
 }

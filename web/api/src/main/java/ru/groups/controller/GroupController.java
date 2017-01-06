@@ -40,7 +40,7 @@ public class GroupController {
     public void getToken(@RequestParam String accessToken, @RequestParam String groupId,
                          HttpServletResponse response) throws Exception {
 
-        response.sendRedirect("http://localhost:8080/resources/admin.html");
+        response.sendRedirect("http://localhost:8080/admin.html");
     }
 
     @RequestMapping(value = "setpolling", method = RequestMethod.POST)
