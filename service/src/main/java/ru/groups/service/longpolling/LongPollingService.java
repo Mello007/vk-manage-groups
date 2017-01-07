@@ -18,6 +18,10 @@ import java.util.List;
 public class LongPollingService {
 
     private static final String versionOfVkApi = "5.59";
+    private static final Integer NUMBER_OF_KEY_IN_MASSIVE = 0;
+    private static final Integer NUMBER_OF_SERVER_ADDRESS_IN_MASSIVE = 1;
+    private static final Integer NUMBER_OF_LAST_ACTION_IN_MASSIVE = 2;
+
 
     @Autowired SessionFactory sessionFactory;
     @Autowired VkInformationService oauthService;
@@ -26,12 +30,9 @@ public class LongPollingService {
 
     private void addNewKeyServerTsToGroup(GroupVk groupVk, JsonNode actualObj){
         List<String> valuesInJson = JsonParsingHelper.findValueInJson(actualObj, "key", "server", "ts");
-        Integer numberOfKeyInMassiv = 0;
-        groupVk.setTempKeyOfPollingServer(valuesInJson.get(numberOfKeyInMassiv));
-        Integer numberOfServerInMassiv = 1;
-        groupVk.setAddressOfPollingServer(valuesInJson.get(numberOfServerInMassiv));
-        Integer numberOfTSinMassiv = 2;
-        groupVk.setNumberOfLastAction(valuesInJson.get(numberOfTSinMassiv));
+        groupVk.setTempKeyOfPollingServer(valuesInJson.get(NUMBER_OF_KEY_IN_MASSIVE));
+        groupVk.setAddressOfPollingServer(valuesInJson.get(NUMBER_OF_SERVER_ADDRESS_IN_MASSIVE));
+        groupVk.setNumberOfLastAction(valuesInJson.get(NUMBER_OF_LAST_ACTION_IN_MASSIVE));
     }
 
     @Transactional
@@ -46,7 +47,6 @@ public class LongPollingService {
         sessionFactory.getCurrentSession().merge(groupVk);
         requestToPollingServer(groupVk);
     }
-
 
     @Transactional
     private void requestToPollingServer(GroupVk groupVk) throws IOException {

@@ -38,14 +38,12 @@ public class MessageService {
 //        После успешного выполнения возвращает идентификатор отправленного сообщения.
     }
 
-    // This method is WORK!!!!
-    private MessageVK findAnswerFromMessage(String id[], MessageVK messageVk) {
-        for (int i = 0; i < id.length; i++){
-            if (id[i].equals("[4")){
-                System.out.println(id[i+3]);
-                System.out.println(id[i+6]);
-                messageVk.setMessageBody(id[i+6]);
-                messageVk.setMessageUserId(id[i+3]);
+    // This method are WORK!!!!
+    private MessageVK findAnswerFromMessage(String partOfAnswer[], MessageVK messageVk) {
+        for (int i = 0; i < partOfAnswer.length; i++){
+            if (partOfAnswer[i].equals("[4")){
+                messageVk.setMessageBody(partOfAnswer[i+6]);
+                messageVk.setMessageUserId(partOfAnswer[i+3]);
             }
         }
         return messageVk;
