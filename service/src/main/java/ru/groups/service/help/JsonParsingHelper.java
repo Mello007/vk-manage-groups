@@ -23,10 +23,10 @@ public class JsonParsingHelper {
         return String.valueOf(actualObj.findValue(value)).replace("\"", "");
     }
 
-    public static List<String> findValueInJson(JsonNode actualObj, String... massivOfValues){
+    public static List<String> findValueInJson(JsonNode actualObj, String... massiveOfValues){
         List<String> values = new LinkedList<>();
-        for (int i = 0; i < massivOfValues.length; i++) {
-            values.add(String.valueOf(actualObj.findValue(massivOfValues[i])).replace("\"", ""));
+        for (String massiveOfValue : massiveOfValues) {
+            values.add(String.valueOf(actualObj.findValue(massiveOfValue)).replace("\"", ""));
         }
         return values;
     }
@@ -34,8 +34,7 @@ public class JsonParsingHelper {
     public static JsonNode GetValueAndChangeJsonInString(String reqUrl) throws IOException{
         StringBuffer response = apiRequestForGetResponseFromServer(reqUrl);
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode actualObj = mapper.readTree(response.toString());
-        return actualObj;
+        return mapper.readTree(response.toString());
     }
 
     private static StringBuffer apiRequestForGetResponseFromServer(String reqUrl) throws IOException {
@@ -53,5 +52,4 @@ public class JsonParsingHelper {
         in.close();
         return response;
     }
-
 }

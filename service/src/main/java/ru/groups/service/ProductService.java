@@ -10,6 +10,7 @@ import ru.groups.service.help.FindMessageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductService {
@@ -35,7 +36,7 @@ public class ProductService {
     @Transactional
     private String findProductFromMessage(String nameOfProduct, GroupVk groupVk){
          for (Product product : groupVk.getProducts()){
-             if (product.getNameOfGoods() == nameOfProduct){
+             if (product.getNameOfGoods().equals(nameOfProduct)){
                  return "Цена товара: " + product.getPriceOfGoods();
              }
          }
@@ -44,7 +45,7 @@ public class ProductService {
 
     @Transactional
     public void addAsksAboutProduct(GroupVk groupVk){
-        List<String> asks = new ArrayList<>();
+        List<String> asks = new ArrayList<>(11);
         asks.add("товар");
         asks.add("пред");
         asks.add("сколько стоит");
@@ -55,7 +56,6 @@ public class ProductService {
         asks.add("price");
         asks.add("прайс");
         asks.add("наличие");
-        asks.add("есть ли");
         asks.add("товар");
         groupVk.setAsqsAboutProducts(asks);
         sessionFactory.getCurrentSession().merge(groupVk);

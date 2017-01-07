@@ -85,13 +85,13 @@ public class GroupService {
     public void setAccessTokenToGroup(String accessTokenToGroup, String groupId) throws IOException {
         //It's solution, which get groupVk per ID from BD
         GroupVk groupVk = searchGroup(groupId);
-        groupVk.setAccessToken(accessTokenToGroup);
-        sessionFactory.getCurrentSession().merge(groupVk);
 
+        groupVk.setAccessToken(accessTokenToGroup);
         addToGroupDefaultAnswers(groupVk);
+
+        sessionFactory.getCurrentSession().merge(groupVk);
         longPollingService.getLongPolling(groupVk);
     }
-
 
     @Transactional
     private void addToGroupDefaultAnswers(GroupVk groupVk){

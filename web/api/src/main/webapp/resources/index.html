@@ -1,36 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <meta charset="UTF-8">
+    <title>SocialBot</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/requests.js"></script>
-    <title>Система Управления Оценками Студента</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/landing.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<header class="intro">
+    <div class="layout-width">
+        <ul class="menu">
+            <li class="li-logo">SocialBot</li>
+            <li class="fr">
+                <button class="menu-btn btng btn-smg btn-q" href="#enter"  data-toggle="modal">
+                    Вход
+                </button>
+                <button  type="button"  class="menu-btn btng btn-smg btn-q"  href="#myModal"  data-toggle="modal">
+                    Регистрация
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="intro-primary">
+        <div class="layout-width">
+            <h1>Lorem ipsum dolor <br> sit amet</h1>
+            <button class="btng btn-lgm btn-start">Начать работу</button>
+            <a href="#" class="pricing-link">Lorem ipsum dolor sit amet</a>
+            <div class="networks">
+                <div class="heading">Proin posuere ex vel velit fringilla auctor</div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum cursus iaculis tellus,
+                at condimentum augue fringilla vitae. Etiam nec dui purus. Proin ac dui placerat, rhoncus velit id,
+            </div>
+        </div>
+    </div>
+</header>
 
-<div class="container">
-    <form class="form-signin" role="form" action='/login' method='POST'>
-        <h2 class="form-signin-heading">Авторизация</h2>
-        <input class="form-control" placeholder="Почта" name="username" required autofocus>
-        <input type="password" class="form-control" placeholder="Пароль" name="password" required>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me"> Запомнить меня
-        </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Войти</button>
-        <!-- Это раньше кнопка авторизации была <button type="button" class="btn btn-lg btn-primary btn-block" onclick="getApi()" action="javascript:void(null);">VK</button>-->
-    </form>
+<div class="layout-presentation">
+    <div class="browser">
+        <div class="content">
+            <img src="images/1.png" alt="#">
+        </div>
+    </div>
+    <div class="handy">
+        <div class="pca-hold">
+            <div class="pca-main">
+                <img src="images/app-mobile.jpg" alt="#">
+                <div class="pca-inner"></div>
+            </div>
+            <div class="pca-sub">
+                <div class="pca-top"></div>
+                <div class="pca-mid">
+                    <div class="pca-part"></div>
+                </div>
+                <div class="pca-bot"></div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<button type="button" class="btn btn-lg btn-primary btn-block"  href="#myModal"  data-toggle="modal">Регистрация</button>
 
 <div id="myModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!— Заголовок модального окна —>
+            <div class="container-fluid">
             <h2>Регистрация</h2>
             <form class="form-horizontal" onsubmit="registerNewUser()">
                 <div class="form-group">
@@ -76,8 +111,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
+                </div>
         </div>
     </div>
 </div>
+
+<div id="enter" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container-fluid">
+            <form class="form-signin" role="form" action='login' method='POST'>
+                <h2 class="form-signin-heading">Авторизация</h2>
+                <input class="form-control" style="margin-bottom: 10px" placeholder="Почта" name="username" required autofocus>
+                <input type="password" style="margin-bottom: 10px" class="form-control" placeholder="Пароль" name="password" required>
+                <button class="btn btn-lg btn-primary" style="margin-bottom: 10px" type="submit" name="submit">Войти</button>
+                <!-- Это раньше кнопка авторизации была <button type="button" class="btn btn-lg btn-primary btn-block" onclick="getApi()" action="javascript:void(null);">VK</button>-->
+            </form>
+            <!— Футер модального окна —>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
