@@ -95,8 +95,8 @@ public class GroupService {
 
     @Transactional
     private void addToGroupDefaultAnswers(GroupVk groupVk){
-        badMessageService.addDefaultBadMessages(groupVk);
-        welcomeMessagesService.addDefaultAnswerAtWelcomeMessages(groupVk);
+        badMessageService.addBadMessagesToGroup(groupVk);
+        welcomeMessagesService.addWelcomeMessageToGroup(groupVk);
         productService.addAsksAboutProduct(groupVk);
     }
 }

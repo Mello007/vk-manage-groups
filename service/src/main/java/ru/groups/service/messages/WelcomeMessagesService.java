@@ -17,19 +17,21 @@ public class WelcomeMessagesService {
     @Autowired SessionFactory sessionFactory;
     @Autowired GroupService groupService;
 
-    @Transactional
-    public void addNewMessageWord(String word, String groupId){
-        GroupVk groupVk = groupService.searchGroup(groupId);
-        groupVk.getAnswerAtWelcomeMessage().add(word);
+
+    public void addWelcomeMessageToGroup(GroupVk groupVk){
+        addDefaultAnswerAtWelcomeMessages(groupVk);
+        addDefaultWelcomeMessages(groupVk);
+        addDefaultAnswer(groupVk);
         sessionFactory.getCurrentSession().merge(groupVk);
     }
+
 
     // This method adding default mature words to groups bot.
     // He's invoke from controller, when user entered check-button.
     // I don't know how better to add new bad messages
     @Transactional
-    public void addDefaultAnswerAtWelcomeMessages(GroupVk groupVk){
-        List<String> answerAtWelcomeMessages = new ArrayList<>();
+    private void addDefaultAnswerAtWelcomeMessages(GroupVk groupVk){
+        List<String> answerAtWelcomeMessages = new ArrayList<>(9);
         answerAtWelcomeMessages.add("Приветствую!");
         answerAtWelcomeMessages.add("Приветик!");
         answerAtWelcomeMessages.add("Привет  :)!");
@@ -39,36 +41,32 @@ public class WelcomeMessagesService {
         answerAtWelcomeMessages.add("Приветствую, чем мог бы помочь Вам?");
         answerAtWelcomeMessages.add("Приветики!");
         answerAtWelcomeMessages.add("Привет :)");
-        groupVk.setBadMessage(answerAtWelcomeMessages);
-        // groupVk.setBadMessages(matureBadMessages);
-        sessionFactory.getCurrentSession().merge(groupVk);
-        addDefaultWelcomeMessages(groupVk);
+        groupVk.setAnswerAtWelcomeMessage(answerAtWelcomeMessages);
     }
-
-
-
-
 
     @Transactional
     private void addDefaultWelcomeMessages(GroupVk groupVk){
-        List<String> welcomeMessages = new ArrayList<>();
+        List<String> welcomeMessages = new ArrayList<>(3);
         welcomeMessages.add("прив");
         welcomeMessages.add("здаров");
         welcomeMessages.add("здравст");
         groupVk.setWelcomeMessage(welcomeMessages);
-        sessionFactory.getCurrentSession().merge(groupVk);
-        addDefaultAnswer(groupVk);
     }
-
-
 
     @Transactional
     private void addDefaultAnswer(GroupVk groupVk){
-        List<String> defaultAnswer = new ArrayList<>();
+        List<String> defaultAnswer = new ArrayList<>(3);
         defaultAnswer.add("Я не могу понять что Вы хотите");
         defaultAnswer.add("Я не понял, повторите еще раз :) И уточните Ваш запрос пожалуйста :)");
         defaultAnswer.add("Не могу понять, попробуйте другую команду");
         groupVk.setDefaultAnswer(defaultAnswer);
+    }
+
+
+    @Transactional
+    public void addNewMessageWord(String word, String groupId){
+        GroupVk groupVk = groupService.searchGroup(groupId);
+        groupVk.getAnswerAtWelcomeMessage().add(word);
         sessionFactory.getCurrentSession().merge(groupVk);
     }
 

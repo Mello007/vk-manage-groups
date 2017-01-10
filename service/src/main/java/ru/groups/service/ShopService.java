@@ -7,6 +7,9 @@ import ru.groups.entity.DTO.ShopDTO;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.Product;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class ShopService {
@@ -40,6 +43,15 @@ public class ShopService {
 
     public String getContactsShop(GroupVk groupVk){
         return groupVk.getShopAddress();
+    }
+
+    private void addAsksAboutShopTime(GroupVk groupVk){
+        List<String> asksAboutShopTime = new ArrayList<>();
+        asksAboutShopTime.add("время");
+        asksAboutShopTime.add("когда работает магазин");
+        asksAboutShopTime.add("во сколько можно");
+        asksAboutShopTime.add("работа магазина");
+
     }
 
 }
