@@ -7,9 +7,6 @@ import ru.groups.entity.DTO.ShopDTO;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.Product;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Service
 public class ShopService {
@@ -22,7 +19,7 @@ public class ShopService {
         groupVk.setShopAddress(shopDTO.getShopAddress());
         groupVk.setShopName(shopDTO.getShopName());
         groupVk.setShopTimeOfWork(shopDTO.getShopTimeOfWork());
-        groupVk.setShowDescription(shopDTO.getShopDiscription());
+        groupVk.setShowDescription(shopDTO.getShopDescription());
         sessionFactory.getCurrentSession().saveOrUpdate(groupVk);
     }
 

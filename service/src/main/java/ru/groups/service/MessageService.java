@@ -49,7 +49,6 @@ public class MessageService {
         return messageVk;
     }
 
-
     public void findMessageAndUserIdInResponse(JsonNode actualObj, GroupVk groupVk) throws IOException {
         JsonNode slaidsNode = (ArrayNode) actualObj.get("updates");
         Iterator<JsonNode> slaidsIterator = slaidsNode.elements();
@@ -82,6 +81,4 @@ public class MessageService {
             }
         });
     }
-
-
 }

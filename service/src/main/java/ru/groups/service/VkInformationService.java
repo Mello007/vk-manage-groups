@@ -32,8 +32,7 @@ public class VkInformationService {
                 .replace("{CLIENT_SECRET}", "bMTTeUDFad7H95I8LiIt")
                 .replace("{REDIRECT_URI}", "http://localhost:8080/oauth/token")
                 .replace("{CODE}", code);
-        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
-        return actualObj;
+        return JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
     }
 
     private UserVk getAccessTokeByCode(String code) throws Exception {
@@ -78,7 +77,6 @@ public class VkInformationService {
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
         //Here I invoke logged User and adding him parameters from other users
-
         UserVk userVk = loggedUserHelper.getUserFromBD();
         userVk.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
         userVk.setUserName(userWithFullName.getUserName());

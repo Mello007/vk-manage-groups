@@ -8,13 +8,13 @@ import ru.groups.entity.GroupVk;
 @Setter
 public class ShopDTO {
     private String shopName;
-    private String shopDiscription;
+    private String shopDescription;
     private String shopAddress;
     private String shopTimeOfWork;
 
     public ShopDTO(GroupVk groupVk){
         shopName = groupVk.getShopName();
-        shopDiscription = groupVk.getShowDescription();
+        shopDescription = groupVk.getShowDescription();
         shopAddress = groupVk.getShopAddress();
         shopTimeOfWork = groupVk.getShopTimeOfWork();
     }
