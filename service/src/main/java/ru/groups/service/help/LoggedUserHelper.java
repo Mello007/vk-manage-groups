@@ -20,7 +20,6 @@ public class LoggedUserHelper {
     @Transactional
     public UserVk getUserFromBD(){
         long userId = session.getLoggedUserId();
-        UserVk userVk = sessionFactory.openSession().get(UserVk.class, userId);
-        return userVk;
+        return sessionFactory.openSession().get(UserVk.class, userId);
     }
 }

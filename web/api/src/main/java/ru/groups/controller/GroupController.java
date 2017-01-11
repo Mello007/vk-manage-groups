@@ -19,8 +19,7 @@ public class GroupController {
 
     @RequestMapping(value = "get", method = RequestMethod.GET, produces = "application/json")
     public List<GroupVk> getGroups() throws Exception{
-           List<GroupVk> groupVks = groupService.getGroupsFromBD();
-        return  groupVks;
+        return groupService.getGroupsFromBD();
     }
 
     @RequestMapping(value = "setpolling", method = RequestMethod.POST)

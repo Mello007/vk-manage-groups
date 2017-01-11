@@ -13,7 +13,7 @@ import java.util.List;
 public class GroupVk extends BaseEntity{
 
     private String shopName;
-    private String showDescription;
+    private String shopDescription;
     private String shopAddress;
     private String shopTimeOfWork;
 

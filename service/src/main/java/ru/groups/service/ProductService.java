@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void addAsksAboutProduct(GroupVk groupVk){
+    void addAsksAboutProduct(GroupVk groupVk){
         List<String> asks = new ArrayList<>(11);
         asks.add("товар");
         asks.add("пред");

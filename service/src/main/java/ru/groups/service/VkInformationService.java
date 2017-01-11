@@ -32,8 +32,7 @@ public class VkInformationService {
                 .replace("{CLIENT_SECRET}", "bMTTeUDFad7H95I8LiIt")
                 .replace("{REDIRECT_URI}", "http://89.223.28.35:8080/api-1.0-SNAPSHOT/oauth/token")
                 .replace("{CODE}", code);
-        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
-        return actualObj;
+        return JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
     }
 
     private UserVk getAccessTokeByCode(String code) throws Exception {
@@ -72,16 +71,19 @@ public class VkInformationService {
         //here I create new user, which has AccessToken and Id
         UserVk userWithAccessTokenAndId = this.getAccessTokeByCode(code);
 
-        UserVk userVk = loggedUserHelper.getUserFromBD();
+
+
         //here I create new user, which has Name and LastName
         UserVk userWithFullName = this.loadUserWithFullName(userWithAccessTokenAndId.getUserId());
 
         //Here I invoke logged User and adding him parameters from other users
 
+        UserVk userVk = loggedUserHelper.getUserFromBD();
         userVk.setUserAccessToken(userWithAccessTokenAndId.getUserAccessToken());
         userVk.setUserName(userWithFullName.getUserName());
         userVk.setUserLastName(userWithFullName.getUserLastName());
         userVk.setUserId(userWithAccessTokenAndId.getUserId());
+
         //update fullUser
         groupService.findUserGroupsInAPI(userVk);
         return userVk;

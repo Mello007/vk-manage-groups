@@ -11,7 +11,6 @@ public class UserDTO {
     private String userName;
     private String userLastName;
 
-
     public UserDTO(UserVk userVk){
         this.userName = userVk.getUserName();
         this.userLastName = userVk.getUserLastName();
