@@ -27,12 +27,4 @@ public class ShopsController {
     public void addShop(@RequestBody ShopDTO shopDTO, String groupId){
         shopService.addNewShopToGroup(shopDTO, groupId);
     }
-
-    @RequestMapping(value = "getShop", method = RequestMethod.GET, produces = "application/json")
-    public ShopDTO getUserName(String groupId) throws IOException {
-        return shopService.getShopFromGroup(groupId);
-    }
-
-
-
 }

@@ -31,19 +31,13 @@ public class ShopService {
         GroupVk groupVk = groupService.searchGroup(groupId);
     }
 
-    public ShopDTO getShopFromGroup(String groupId){
-        GroupVk groupVk = groupService.searchGroup(groupId);
-        return new ShopDTO(groupVk);
-    }
-
     public void addShopMessages(GroupVk groupVk){
         addAsksAboutPaymentMethod(groupVk);
         addAsksAboutShop(groupVk);
         addAsksAboutShopAddress(groupVk);
         addAsksAboutShopTime(groupVk);
-        sessionFactory.getCurrentSession().saveOrUpdate(groupVk);
+        sessionFactory.getCurrentSession().merge(groupVk);
     }
-
 
     //There are two methods about payment methods: asks and answers
 
