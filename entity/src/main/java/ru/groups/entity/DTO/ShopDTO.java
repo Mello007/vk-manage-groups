@@ -14,7 +14,7 @@ public class ShopDTO {
 
     public ShopDTO(GroupVk groupVk){
         shopName = groupVk.getShopName();
-        shopDescription = groupVk.getShowDescription();
+        shopDescription = groupVk.getShopDescription();
         shopAddress = groupVk.getShopAddress();
         shopTimeOfWork = groupVk.getShopTimeOfWork();
     }
