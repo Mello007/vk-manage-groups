@@ -24,6 +24,8 @@ public class FindMessageHelper {
         Random random = new Random();
         boolean foundedBadMessage = messageFound(groupVk.getBadMessage(), message);
         boolean foundedWelcomeMessage = messageFound(groupVk.getWelcomeMessage(), message);
+        String defaultAnswer = groupVk.getDefaultAnswer().get(random.nextInt(groupVk.getDefaultAnswer().size()));
+
 
         if (foundedBadMessage){
             return groupVk.getStopWords().get(random.nextInt(groupVk.getStopWords().size()));
@@ -32,6 +34,6 @@ public class FindMessageHelper {
         } else if(productService.findInformationAboutProduct(message, groupVk) != null){
             return productService.findInformationAboutProduct(message, groupVk);
         }
-        return groupVk.getDefaultAnswer().get(random.nextInt(groupVk.getDefaultAnswer().size()));
+        return defaultAnswer;
     }
 }
