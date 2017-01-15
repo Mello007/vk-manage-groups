@@ -1,11 +1,12 @@
-package ru.groups.service;
+package ru.groups.service.shops;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.groups.entity.DTO.ShopDTO;
+import ru.groups.entity.Shop;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.Product;
+import ru.groups.service.GroupService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,16 @@ import java.util.List;
 @Service
 public class ShopService {
 
-    @Autowired GroupService groupService;
+    @Autowired
+    GroupService groupService;
     @Autowired SessionFactory sessionFactory;
 
-    public void addNewShopToGroup(ShopDTO shopDTO, String groupId){
+    public void addNewShopToGroup(Shop shop, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
-        groupVk.setShopAddress(shopDTO.getShopAddress());
-        groupVk.setShopName(shopDTO.getShopName());
-        groupVk.setShopTimeOfWork(shopDTO.getShopTimeOfWork());
-        groupVk.setShopDescription(shopDTO.getShopDescription());
+        groupVk.setShopAddress(shop.getShopAddress());
+        groupVk.setShopName(shop.getShopName());
+        groupVk.setShopTimeOfWork(shop.getShopTimeOfWork());
+        groupVk.setShopDescription(shop.getShopDescription());
         sessionFactory.getCurrentSession().saveOrUpdate(groupVk);
     }
 
@@ -97,5 +99,4 @@ public class ShopService {
                 "Адрес магазина" + groupVk.getShopAddress() + "\n" +
                 "Время работы магазина" + groupVk.getShopDescription() + "\n";
     }
-
 }

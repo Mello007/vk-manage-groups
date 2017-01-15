@@ -16,6 +16,7 @@ public class GroupVk extends BaseEntity{
     private String shopDescription;
     private String shopAddress;
     private String shopTimeOfWork;
+    private boolean groupNeededToCheck;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<Product> products;
 
@@ -39,7 +40,6 @@ public class GroupVk extends BaseEntity{
     @ElementCollection private List<String> welcomeMessage;
 
     @ElementCollection private List<String> defaultAnswer;
-
     @ElementCollection private List<String> asqsAboutProducts;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable private List<MessageVK> messagesOfGroup;

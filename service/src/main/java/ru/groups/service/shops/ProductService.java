@@ -1,4 +1,4 @@
-package ru.groups.service;
+package ru.groups.service.shops;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +27,14 @@ public class ProductService {
         return null;
     }
 
-    private String findAskAboutProduct(String message, GroupVk groupVk){
+    public   String findAskAboutProduct(String message, GroupVk groupVk){
         if (FindMessageHelper.messageFound(groupVk.getAsqsAboutProducts(), message)){
             return "О каком товаре вы хотите узнать поподробнее?";
         } else return null;
     }
 
     @Transactional
-    private String findProductFromMessage(String nameOfProduct, GroupVk groupVk){
+    public String findProductFromMessage(String nameOfProduct, GroupVk groupVk){
          for (Product product : groupVk.getProducts()){
              if (product.getNameOfGoods().equals(nameOfProduct)){
                  return "Цена товара: " + product.getPriceOfGoods();
@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     @Transactional
-    void addAsksAboutProduct(GroupVk groupVk){
+    public void addAsksAboutProduct(GroupVk groupVk){
         List<String> asks = new ArrayList<>(11);
         asks.add("товар");
         asks.add("пред");

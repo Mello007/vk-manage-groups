@@ -1,4 +1,4 @@
-package ru.groups.entity.DTO;
+package ru.groups.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,13 +6,13 @@ import ru.groups.entity.GroupVk;
 
 @Getter
 @Setter
-public class ShopDTO {
+public class Shop {
     private String shopName;
     private String shopDescription;
     private String shopAddress;
     private String shopTimeOfWork;
 
-    public ShopDTO(GroupVk groupVk){
+    public Shop(GroupVk groupVk){
         shopName = groupVk.getShopName();
         shopDescription = groupVk.getShopDescription();
         shopAddress = groupVk.getShopAddress();

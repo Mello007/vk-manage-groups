@@ -16,6 +16,7 @@ import ru.groups.service.longpolling.LongPollingService;
 import ru.groups.service.messages.BadMessageService;
 import ru.groups.service.messages.WelcomeMessagesService;
 import ru.groups.service.security.Session;
+import ru.groups.service.shops.ProductService;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -32,7 +33,8 @@ public class GroupService {
     @Autowired LongPollingService longPollingService;
     @Autowired BadMessageService badMessageService;
     @Autowired WelcomeMessagesService welcomeMessagesService;
-    @Autowired ProductService productService;
+    @Autowired
+    ProductService productService;
 
     private static final String versionOfVkApi = "5.59";
 
@@ -85,10 +87,8 @@ public class GroupService {
     public void setAccessTokenToGroup(String accessTokenToGroup, String groupId) throws IOException {
         //It's solution, which get groupVk per ID from BD
         GroupVk groupVk = searchGroup(groupId);
-
         groupVk.setAccessToken(accessTokenToGroup);
         addToGroupDefaultAnswers(groupVk);
-
         sessionFactory.getCurrentSession().merge(groupVk);
         longPollingService.getLongPolling(groupVk);
     }
