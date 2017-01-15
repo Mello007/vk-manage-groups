@@ -33,11 +33,9 @@ public class GroupService {
     @Autowired LongPollingService longPollingService;
     @Autowired BadMessageService badMessageService;
     @Autowired WelcomeMessagesService welcomeMessagesService;
-    @Autowired
-    ProductService productService;
+    @Autowired ProductService productService;
 
     private static final String versionOfVkApi = "5.59";
-
 
     @Transactional
     public List<GroupVk> getGroupsFromBD(){
@@ -57,9 +55,9 @@ public class GroupService {
                 .replace("{access_token}", userVk.getUserAccessToken())
                 .replace("{version}", versionOfVkApi);
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
-        JsonNode massivJson = actualObj.get("response");
-        JsonNode slaidsNode = (ArrayNode) massivJson.get("items");
-        Iterator<JsonNode> slaidsIterator = slaidsNode.elements();
+        JsonNode jsonNode = actualObj.get("response");
+        JsonNode items = jsonNode.get("items");
+        Iterator<JsonNode> slaidsIterator = items.elements();
         while (slaidsIterator.hasNext()) {
             JsonNode slaidNode = slaidsIterator.next();
             GroupVk group = new GroupVk();
@@ -74,7 +72,6 @@ public class GroupService {
         sessionFactory.getCurrentSession().merge(userVk);
         return groupVks;
     }
-
 
     @Transactional
     public GroupVk searchGroup(String groupId){

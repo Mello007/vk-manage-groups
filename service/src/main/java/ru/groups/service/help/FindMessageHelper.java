@@ -3,11 +3,13 @@ package ru.groups.service.help;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.groups.entity.GroupVk;
+import ru.groups.entity.typeOfMessages.AnswerAndAsk;
 import ru.groups.service.shops.ProductService;
 import ru.groups.service.shops.ShopService;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class FindMessageHelper {
 
@@ -42,7 +44,8 @@ public class FindMessageHelper {
             return askAboutProduct;
         } else if (infoAboutProduct != null){
             return infoAboutProduct;
-        }
+        }// I need to do something with this
+        // else if (messageFound(groupVk.getAnswerAndAsksMessages().stream().map(AnswerAndAsk::getMessageAnswer).collect(Collectors.toList())), message)
         return defaultAnswer;
     }
 }

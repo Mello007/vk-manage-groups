@@ -15,8 +15,7 @@ import java.util.List;
 @Service
 public class ShopService {
 
-    @Autowired
-    GroupService groupService;
+    @Autowired GroupService groupService;
     @Autowired SessionFactory sessionFactory;
 
     public void addNewShopToGroup(Shop shop, String groupId){

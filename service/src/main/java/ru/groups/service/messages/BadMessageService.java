@@ -36,6 +36,7 @@ public class BadMessageService {
         stopWords.add("Зачем вы так со мной :(");
         stopWords.add("Я не люблю отвечать на сообщения данного типа");
         groupVk.setStopWords(stopWords);
+
     }
 
     // This method adding default mature words to groups bot.
