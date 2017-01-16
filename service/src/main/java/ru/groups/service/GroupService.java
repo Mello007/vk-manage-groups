@@ -94,6 +94,6 @@ public class GroupService {
     private void addToGroupDefaultAnswers(GroupVk groupVk){
         badMessageService.addBadMessagesToGroup(groupVk);
         welcomeMessagesService.addWelcomeMessageToGroup(groupVk);
-        productService.addAsksAboutProduct(groupVk);
+
     }
 }

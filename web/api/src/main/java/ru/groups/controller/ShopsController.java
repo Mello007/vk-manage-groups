@@ -21,7 +21,7 @@ public class ShopsController {
     }
 
     @RequestMapping(value = "addShop", method = RequestMethod.POST, consumes = "application/json")
-    public void addShop(@RequestBody Shop shopDTO, String groupId){
-        shopService.addNewShopToGroup(shopDTO, groupId);
+    public void addShop(@RequestBody Shop shop, String groupId){
+        shopService.addNewShopToGroup(shop, groupId);
     }
 }

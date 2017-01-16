@@ -3,6 +3,7 @@ package ru.groups.service.shops;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.Shop;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.Product;
@@ -18,84 +19,71 @@ public class ShopService {
     @Autowired GroupService groupService;
     @Autowired SessionFactory sessionFactory;
 
+    @Transactional
     public void addNewShopToGroup(Shop shop, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
-        groupVk.setShopAddress(shop.getShopAddress());
-        groupVk.setShopName(shop.getShopName());
-        groupVk.setShopTimeOfWork(shop.getShopTimeOfWork());
-        groupVk.setShopDescription(shop.getShopDescription());
-        sessionFactory.getCurrentSession().saveOrUpdate(groupVk);
-    }
-
-    // we need to add one object to list, I don't know how
-    public void addNewProductToShopInGroup(Product product, String groupId){
-        GroupVk groupVk = groupService.searchGroup(groupId);
-    }
-
-    public void addShopMessages(GroupVk groupVk){
-        addAsksAboutPaymentMethod(groupVk);
-        addAsksAboutShop(groupVk);
-        addAsksAboutShopAddress(groupVk);
-        addAsksAboutShopTime(groupVk);
+        groupVk.setShop(new Shop(shop));
+        addShopMessages(groupVk);
         sessionFactory.getCurrentSession().merge(groupVk);
     }
 
-    //There are two methods about payment methods: asks and answers
+    @Transactional
+    // we need to add one object to list, I don't know how
+    public void addNewProductToShopInGroup(Product product, String groupId){
+        GroupVk groupVk = groupService.searchGroup(groupId);
+        groupVk.getShop().getProducts().add(product);
+        sessionFactory.getCurrentSession().merge(groupVk);
+    }
 
-    private void addAsksAboutPaymentMethod(GroupVk groupVk){
+    @Transactional
+    private void addShopMessages(GroupVk groupVk){
+        Shop shop = groupVk.getShop();
+        addAsksAboutPaymentMethod(shop);
+        addAsksAboutShop(shop);
+        addAsksAboutShopAddress(shop);
+        addAsksAboutShopTime(shop);
+        sessionFactory.getCurrentSession().merge(shop);
+    }
+
+
+    private void addAsksAboutPaymentMethod(Shop shop){
         List<String> asksAboutPaymentMethod = new ArrayList<>();
         asksAboutPaymentMethod.add("способы оплаты");
         asksAboutPaymentMethod.add("оплата");
+        shop.setAsksAboutPaymentMethod(asksAboutPaymentMethod);
     }
 
-    private String answerAboutPaymentMethod(GroupVk groupVk){
-        return "Доступные способы оплаты: ";
-    }
-
-
-
-    //There are two methods about time of work: asks and answers
-
-    private void addAsksAboutShopTime(GroupVk groupVk){
+    private void addAsksAboutShopTime(Shop shop){
         List<String> asksAboutShopTime = new ArrayList<>();
         asksAboutShopTime.add("время");
         asksAboutShopTime.add("когда работает магазин");
         asksAboutShopTime.add("во сколько можно");
         asksAboutShopTime.add("работа магазина");
+        shop.setAsksAboutShopTime(asksAboutShopTime);
     }
 
-    private String answerAboutTimeOfWorkOfShop(GroupVk groupVk){
-        return "Время работы магазина: " + groupVk.getShopTimeOfWork();
-    }
-
-    //There are two methods about shop address: asks and answers
-
-    private void addAsksAboutShopAddress(GroupVk groupVk){
+    private void addAsksAboutShopAddress(Shop shop){
         List<String> asksAboutShopAddress = new ArrayList<>();
         asksAboutShopAddress.add("адрес");
         asksAboutShopAddress.add("где находится магазин");
         asksAboutShopAddress.add("как проехать к Вам");
-    }
-
-    private String answerAboutShopAddress(GroupVk groupVk){
-        return "Адрес магазина: " + groupVk.getShopAddress();
+        shop.setAsksAboutShopAddress(asksAboutShopAddress);
     }
 
 
-    // There are two methods about shop: possible asks and answer.
-
-    private void addAsksAboutShop(GroupVk groupVk){
-        List<String> asksAboutShopInformation = new ArrayList<>();
+    private void addAsksAboutShop(Shop shop){
+        List<String> asksAboutShopInformation = new ArrayList<>(3);
         asksAboutShopInformation.add("Магазин");
         asksAboutShopInformation.add("информация о магазине");
         asksAboutShopInformation.add("все о магазине");
+        shop.setAsksAboutShopInformation(asksAboutShopInformation);
     }
 
-    private String answerAboutShop(GroupVk groupVk){
+    private String answerAboutShop(Shop shop){
         return "Информация о магазине\n " +
-                "Название магазина: " + groupVk.getShopName() + "\n" +
-                "Время работы магазина: " + groupVk.getShopTimeOfWork() + "\n" +
-                "Адрес магазина" + groupVk.getShopAddress() + "\n" +
-                "Время работы магазина" + groupVk.getShopDescription() + "\n";
+                shop.getShopName() + "\n" +
+                shop.getShopTimeOfWork() + "\n" +
+                shop.getShopAddress() + "\n" +
+                shop.getShopDescription() + "\n";
     }
 }

@@ -27,6 +27,8 @@ public class MessageService {
     @Autowired BadMessageService badMessageService;
     @Autowired SessionFactory sessionFactory;
     @Autowired LongPollingService longPollingService;
+    @Autowired FindMessageHelper findMessageHelper;
+
 
     private void sendMessageToUser(MessageVK messageVk, String accessToken) throws IOException {
         String reqUrl = "https://api.vk.com/method/messages.send?access_token={ACCESS_TOKEN}&user_id={userID}&message={MESSAGE}&notification=1"
@@ -72,7 +74,7 @@ public class MessageService {
         //Here I will put many methods (badMessages, AnswerAndAsk message)
         List<MessageVK> messageVks = groupVk.getMessagesOfGroup();
         messageVks.forEach(messageVk -> {
-            messageVk.setMessageReply(FindMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk));
+            messageVk.setMessageReply(findMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk));
             //  FindMessageHelper.findMessageInListsWithAnswers(messageVk.getMessageBody(), groupVk);
             try {
                 sendMessageToUser(messageVk, groupVk.getAccessToken());

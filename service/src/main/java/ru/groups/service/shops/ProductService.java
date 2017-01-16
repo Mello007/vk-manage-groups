@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.Product;
+import ru.groups.entity.Shop;
 import ru.groups.service.help.FindMessageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class ProductService {
@@ -21,20 +21,20 @@ public class ProductService {
         String informationAboutProduct = findProductFromMessage(message, groupVk);
         if (informationAboutProduct != null){
             return informationAboutProduct;
-        } else if (findAskAboutProduct(message, groupVk) != null){
-            return findAskAboutProduct(message, groupVk);
+        } else if (findAskAboutProduct(message, groupVk.getShop()) != null){
+            return findAskAboutProduct(message, groupVk.getShop());
         }
         return null;
     }
 
-    public   String findAskAboutProduct(String message, GroupVk groupVk){
-        if (FindMessageHelper.messageFound(groupVk.getAsqsAboutProducts(), message)){
+    public String findAskAboutProduct(String message, Shop shop){
+        if (FindMessageHelper.messageFound(shop.getAsksAboutProduct(), message)){
             return "О каком товаре вы хотите узнать поподробнее?";
         } else return null;
     }
 
     @Transactional
-    public String findProductFromMessage(String nameOfProduct, GroupVk groupVk){
+    private String findProductFromMessage(String nameOfProduct, GroupVk groupVk){
          for (Product product : groupVk.getProducts()){
              if (product.getNameOfGoods().equals(nameOfProduct)){
                  return "Цена товара: " + product.getPriceOfGoods();
@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void addAsksAboutProduct(GroupVk groupVk){
+    public void addAsksAboutProduct(Shop shop){
         List<String> asks = new ArrayList<>(11);
         asks.add("товар");
         asks.add("пред");
@@ -57,7 +57,7 @@ public class ProductService {
         asks.add("прайс");
         asks.add("наличие");
         asks.add("товар");
-        groupVk.setAsqsAboutProducts(asks);
-        sessionFactory.getCurrentSession().merge(groupVk);
+        shop.setAsksAboutProduct(asks);
+        sessionFactory.getCurrentSession().merge(shop);
     }
 }
