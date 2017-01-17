@@ -25,7 +25,6 @@ public class WelcomeMessagesService {
         sessionFactory.getCurrentSession().merge(groupVk);
     }
 
-
     // This method adding default mature words to groups bot.
     // He's invoke from controller, when user entered check-button.
     // I don't know how better to add new bad messages
