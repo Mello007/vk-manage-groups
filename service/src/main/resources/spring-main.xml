@@ -22,9 +22,9 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
     <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> <!-- Подключаем PosgreSQL-->
         <beans:property name="driverClassName" value="org.postgresql.Driver"/> <!-- Указываем данные от БД-->
-        <beans:property name="url" value="jdbc:postgresql://localhost:5432/vk_groups"/> <!--Указываем расположение бд -->
+        <beans:property name="url" value="jdbc:postgresql://localhost:5432/vk-groups"/> <!--Указываем расположение бд -->
         <beans:property name="username" value="postgres"/> <!--Логин к бд -->
-        <beans:property name="password" value="postgres"/> <!--Пароль к бд -->
+        <beans:property name="password" value="55164937"/> <!--Пароль к бд -->
     </beans:bean>
     <!-- Hibernate 5 SessionFactory Bean definition -->
     <beans:bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -35,6 +35,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
                 <beans:value>ru.groups.entity.Product</beans:value>
                 <beans:value>ru.groups.entity.GroupVk</beans:value>
                 <beans:value>ru.groups.entity.MessageVK</beans:value>
+                <beans:value>ru.groups.entity.Shop</beans:value>
                 <beans:value>ru.groups.entity.typeOfMessages.AnswerAndAsk</beans:value>
             </beans:list>
         </beans:property>

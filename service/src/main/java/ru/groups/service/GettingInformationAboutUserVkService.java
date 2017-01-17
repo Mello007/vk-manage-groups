@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class VkInformationService {
+public class GettingInformationAboutUserVkService {
 
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;

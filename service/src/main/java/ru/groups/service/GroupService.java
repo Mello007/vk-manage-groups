@@ -2,7 +2,6 @@ package ru.groups.service;
 
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
-import com.couchbase.client.deps.com.fasterxml.jackson.databind.node.ArrayNode;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,8 @@ import java.util.List;
 @Service
 public class GroupService {
 
-    @Autowired VkInformationService oauthService;
+    @Autowired
+    GettingInformationAboutUserVkService oauthService;
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
     @Autowired LoggedUserHelper loggedUserHelper;
@@ -76,8 +76,7 @@ public class GroupService {
     @Transactional
     public GroupVk searchGroup(String groupId){
         Query queryToBd = sessionFactory.getCurrentSession().createQuery("from GroupVk where groupid = :groupid").setParameter("groupid", groupId);
-        GroupVk groupVk = (GroupVk) queryToBd.uniqueResult();
-        return groupVk;
+        return (GroupVk) queryToBd.uniqueResult();
     }
 
     @Transactional
@@ -86,6 +85,7 @@ public class GroupService {
         GroupVk groupVk = searchGroup(groupId);
         groupVk.setAccessToken(accessTokenToGroup);
         addToGroupDefaultAnswers(groupVk);
+        groupVk.setGroupNeededToCheck(true);
         sessionFactory.getCurrentSession().merge(groupVk);
         longPollingService.getLongPolling(groupVk);
     }

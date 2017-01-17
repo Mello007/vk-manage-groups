@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
-import ru.groups.service.MessageService;
-import ru.groups.service.VkInformationService;
+import ru.groups.service.messages.MessageService;
+import ru.groups.service.GettingInformationAboutUserVkService;
 import ru.groups.service.help.JsonParsingHelper;
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +24,8 @@ public class LongPollingService {
 
 
     @Autowired SessionFactory sessionFactory;
-    @Autowired VkInformationService oauthService;
+    @Autowired
+    GettingInformationAboutUserVkService oauthService;
     @Autowired MessageService messageService;
 
 
@@ -49,7 +50,7 @@ public class LongPollingService {
     }
 
     @Transactional
-    private void requestToPollingServer(GroupVk groupVk) throws IOException {
+    public void requestToPollingServer(GroupVk groupVk) throws IOException {
         String reqUrl = "https://{SERVER_ADDRESS}?act=a_check&key={GROUP_KEY}&ts={LATEST_ACTION}&wait=25&mode=2&version=1"
                 .replace("{SERVER_ADDRESS}", groupVk.getAddressOfPollingServer())
                 .replace("{GROUP_KEY}", groupVk.getTempKeyOfPollingServer())

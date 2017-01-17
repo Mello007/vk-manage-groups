@@ -1,13 +1,12 @@
 package ru.groups.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.groups.service.UserService;
-import ru.groups.service.VkInformationService;
+import ru.groups.service.GettingInformationAboutUserVkService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.io.IOException;
 @RequestMapping(value = "oauth")
 public class OauthVkController {
 
-    @Autowired VkInformationService vkInformationService;
+    @Autowired GettingInformationAboutUserVkService vkInformationService;
     @Autowired UserService userService;
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
