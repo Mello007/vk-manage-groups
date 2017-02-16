@@ -1,9 +1,10 @@
+var pathToApplication = "/api-1.0-SNAPSHOT";
+
 function getApi() {
     $.get("/oauth/vk", function (data) {
         window.open(data);
     });
 }
-
 
 function changeWelcome() {
     changeWelcome.try = changeWelcome.try || 10;
@@ -53,23 +54,6 @@ function loadGroups() {
 }
 
 
-
-
-
-
-function login() {
-    var email = $('#inputEmail3').val(),
-        password = $('#inputPassword3').val(),
-        requestJSONparametr = "{\"email\": \"" + email + "\", \"password\": \"" + password + "\"}";
-    $.ajax({
-        type: "POST",
-        url: "/teacher/delete",
-        contentType: "application/json",
-        dataType: 'json',
-        data: requestJSONparametr
-    });
-}
-
 if (location.href.match(/admin/)) {
     setTimeout(changeWelcome, 1000);
     setTimeout(loadGroups, 10);
@@ -92,12 +76,6 @@ function registerNewUser() {
         contentType: "application/json",
         dataType: 'json',
         data: requestJSONparametr,
-        success: function (data) {
-            alert("Пользователь успешно добавлен!");
-        },
-        error: function (data) {
-            alert("Не удалось добавить пользователя! Что-то пошло не так, попробуйте еще раз");
-        }
     });
 }
 

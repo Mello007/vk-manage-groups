@@ -28,9 +28,11 @@ public class ProductService {
     }
 
     public String findAskAboutProduct(String message, Shop shop){
-        if (FindMessageHelper.messageFound(shop.getAsksAboutProduct(), message)){
-            return "О каком товаре вы хотите узнать поподробнее?";
-        } else return null;
+        if (shop != null) {
+            if (FindMessageHelper.messageFound(shop.getAsksAboutProduct(), message)) {
+                return "О каком товаре вы хотите узнать поподробнее?";
+            } else return null;
+        } return "О каком товаре вы хотите узнать поподробнее?";
     }
 
     @Transactional

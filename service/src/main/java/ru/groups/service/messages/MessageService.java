@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.MessageVK;
-import ru.groups.service.GettingInformationAboutUserVkService;
+import ru.groups.service.GetUserInfoService;
 import ru.groups.service.help.FindMessageHelper;
 import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
@@ -22,14 +22,12 @@ import java.util.List;
 @Service
 public class MessageService {
 
-    @Autowired
-    GettingInformationAboutUserVkService oauthService;
+    @Autowired GetUserInfoService oauthService;
     @Autowired LoggedUserHelper loggedUserHelper;
     @Autowired BadMessageService badMessageService;
     @Autowired SessionFactory sessionFactory;
     @Autowired LongPollingService longPollingService;
     @Autowired FindMessageHelper findMessageHelper;
-
 
     private void sendMessageToUser(MessageVK messageVk, String accessToken) throws IOException {
         String reqUrl = "https://api.vk.com/method/messages.send?access_token={ACCESS_TOKEN}&user_id={userID}&message={MESSAGE}&notification=1"
@@ -53,7 +51,7 @@ public class MessageService {
     }
 
     public void findMessageAndUserIdInResponse(JsonNode actualObj, GroupVk groupVk) throws IOException {
-        JsonNode slaidsNode = (ArrayNode) actualObj.get("updates");
+        JsonNode slaidsNode = actualObj.get("updates");
         Iterator<JsonNode> slaidsIterator = slaidsNode.elements();
         ArrayList<MessageVK> messagesInNode = new ArrayList<>();
         while (slaidsIterator.hasNext()) {
@@ -66,7 +64,9 @@ public class MessageService {
                 sessionFactory.getCurrentSession().merge(messageVk);
             }
         }
-        groupVk.setMessagesOfGroup(messagesInNode);
+        if (messagesInNode != null){
+            groupVk.setMessagesOfGroup(messagesInNode);
+        }
         sessionFactory.getCurrentSession().merge(groupVk);
         findAnswerToMessage(groupVk);
     }

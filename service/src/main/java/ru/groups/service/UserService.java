@@ -14,7 +14,6 @@ import ru.groups.service.security.Session;
 public class UserService {
 
     @Autowired SessionFactory sessionFactory;
-    @Autowired Session securityServiceContext;
 
     @Transactional
     public void saveUserVk(UserVk user){
@@ -31,5 +30,4 @@ public class UserService {
         }
         return user;
     }
-
 }

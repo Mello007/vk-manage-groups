@@ -14,10 +14,6 @@ import java.util.List;
 public class JsonParsingHelper {
 
     private static final String USER_AGENT = "Mozilla/5.0";
-    private static final String API_VERSION = "5.21";
-
-
-
 
     public static String findValueInJson(JsonNode actualObj, String value){
         return String.valueOf(actualObj.findValue(value)).replace("\"", "");

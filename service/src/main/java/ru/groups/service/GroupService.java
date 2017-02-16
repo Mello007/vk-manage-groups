@@ -1,7 +1,11 @@
 package ru.groups.service;
 
-
-import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.objects.groups.GroupFull;
+import com.vk.api.sdk.queries.groups.GroupsGetFilter;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,25 +13,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
 import ru.groups.entity.UserVk;
-import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
 import ru.groups.service.messages.BadMessageService;
 import ru.groups.service.messages.WelcomeMessagesService;
-import ru.groups.service.security.Session;
 import ru.groups.service.shops.ProductService;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
 
-    @Autowired
-    GettingInformationAboutUserVkService oauthService;
-    @Autowired Session session;
+    @Autowired GetUserInfoService oauthService;
     @Autowired SessionFactory sessionFactory;
     @Autowired LoggedUserHelper loggedUserHelper;
     @Autowired LongPollingService longPollingService;
@@ -35,46 +35,51 @@ public class GroupService {
     @Autowired WelcomeMessagesService welcomeMessagesService;
     @Autowired ProductService productService;
 
-    private static final String versionOfVkApi = "5.59";
-
     @Transactional
-    public List<GroupVk> getGroupsFromBD(){
-        UserVk user = loggedUserHelper.getUserFromBD();
-        return user.getUserGroups();
+    void findUserGroupsInAPI(UserVk userVk, VkApiClient vk, UserActor actor) throws Exception {
+        List<GroupVk> groupsFromVkApi = getGroupsFromVkApi(vk, actor);
+        List<GroupVk> changedOrNewGroups = findNewUserGroups(userVk.getUserGroups(), groupsFromVkApi);
+        if (!changedOrNewGroups.isEmpty()) {
+            userVk.setUserGroups(changedOrNewGroups); //добавляем юзеру группы его
+            sessionFactory.getCurrentSession().saveOrUpdate(userVk);
+        }
     }
 
-    @Transactional
-    public List<GroupVk> findUserGroupsInAPI(UserVk userVk) throws Exception{
-        List<GroupVk> groupVks = new LinkedList<>();
-        String method = "groups.get";
-        String reqUrl = ("https://api.vk.com/method/{METHOD_NAME}?user_id={userID}&" +
-                "extended=1&filter=admin&access_token=" +
-                "{access_token}&v={version}")
-                .replace("{METHOD_NAME}", method)
-                .replace("{userID}", userVk.getUserId())
-                .replace("{access_token}", userVk.getUserAccessToken())
-                .replace("{version}", versionOfVkApi);
-        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
-        JsonNode jsonNode = actualObj.get("response");
-        JsonNode items = jsonNode.get("items");
-        Iterator<JsonNode> slaidsIterator = items.elements();
-        while (slaidsIterator.hasNext()) {
-            JsonNode slaidNode = slaidsIterator.next();
-            GroupVk group = new GroupVk();
-            group.setGroupId(slaidNode.get("id").asText());
-            group.setGroupName(slaidNode.get("name").asText());
-            group.setPhoto50px(slaidNode.get("photo_50").asText());
-            group.setPhoto100px(slaidNode.get("photo_100").asText());
-            sessionFactory.getCurrentSession().saveOrUpdate(group);
-            groupVks.add(group);
-        }
-        userVk.setUserGroups(groupVks); //добавляем юзеру группы его
-        sessionFactory.getCurrentSession().merge(userVk);
+    private List<GroupVk> getGroupsFromVkApi (VkApiClient vk, UserActor actor) throws ClientException, ApiException {
+        List<GroupVk> groupVks = new ArrayList<>();
+        GroupsGetFilter filterForGroups = GroupsGetFilter.ADMIN;
+        List<String> groupIds = vk.groups()
+                .get(actor)
+                .filter(filterForGroups)
+                .execute()
+                .getItems()
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
+        List<GroupFull> groupFulls = vk.groups().getById(actor).groupIds(groupIds).execute();
+        groupFulls.forEach(groupFull -> {
+            GroupVk groupVk = new GroupVk();
+            groupVk.setGroupName(groupFull.getName());
+            groupVk.setGroupId(groupFull.getId());
+            groupVk.setPhoto50px(groupFull.getPhoto50());
+            groupVk.setPhoto100px(groupFull.getPhoto100());
+            groupVks.add(groupVk);
+        });
         return groupVks;
     }
 
+    private List<GroupVk> findNewUserGroups(List<GroupVk> groupsInBd, List<GroupVk> groupsFromApi) {
+        List<GroupVk> newGroups = new ArrayList<>();
+        groupsFromApi.forEach(groupVk -> {
+            if (!groupsInBd.contains(groupVk)) {
+                newGroups.add(groupVk);
+            }
+        });
+        return newGroups;
+    }
+
     @Transactional
-    public GroupVk searchGroup(String groupId){
+    public GroupVk searchGroup(String groupId) {
         Query queryToBd = sessionFactory.getCurrentSession().createQuery("from GroupVk where groupid = :groupid").setParameter("groupid", groupId);
         return (GroupVk) queryToBd.uniqueResult();
     }
@@ -86,14 +91,19 @@ public class GroupService {
         groupVk.setAccessToken(accessTokenToGroup);
         addToGroupDefaultAnswers(groupVk);
         groupVk.setGroupNeededToCheck(true);
-        sessionFactory.getCurrentSession().merge(groupVk);
-        longPollingService.getLongPolling(groupVk);
     }
 
+//    test method
+//    @Transactional
+//    public void set(){
+//        GroupVk groupVk = searchGroup("139156858");
+//        groupVk.setGroupNeededToCheck(true);
+//        sessionFactory.getCurrentSession().saveOrUpdate(groupVk);
+//    }
+
     @Transactional
-    private void addToGroupDefaultAnswers(GroupVk groupVk){
+    private void addToGroupDefaultAnswers(GroupVk groupVk) {
         badMessageService.addBadMessagesToGroup(groupVk);
         welcomeMessagesService.addWelcomeMessageToGroup(groupVk);
-
     }
 }

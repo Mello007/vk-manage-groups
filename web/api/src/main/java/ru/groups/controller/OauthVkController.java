@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.groups.service.UserService;
-import ru.groups.service.GettingInformationAboutUserVkService;
+import ru.groups.service.GetUserInfoService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,12 +16,13 @@ import java.io.IOException;
 @RequestMapping(value = "oauth")
 public class OauthVkController {
 
-    @Autowired GettingInformationAboutUserVkService vkInformationService;
+    @Autowired
+    GetUserInfoService vkInformationService;
     @Autowired UserService userService;
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
     public void sendLink(HttpServletResponse response) throws IOException{
-        response.sendRedirect("https://oauth.vk.com/authorize?client_id=5499487&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code&v=5.52");
+        response.sendRedirect("https://oauth.vk.com/authorize?client_id=5861084&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code");
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)

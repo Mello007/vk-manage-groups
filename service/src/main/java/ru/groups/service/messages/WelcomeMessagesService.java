@@ -17,7 +17,6 @@ public class WelcomeMessagesService {
     @Autowired SessionFactory sessionFactory;
     @Autowired GroupService groupService;
 
-
     public void addWelcomeMessageToGroup(GroupVk groupVk){
         addDefaultAnswerAtWelcomeMessages(groupVk);
         addDefaultWelcomeMessages(groupVk);
@@ -74,11 +73,12 @@ public class WelcomeMessagesService {
     @Transactional
     public void deleteWelcomeWord(String groupId, String word){
         GroupVk groupVk = groupService.searchGroup(groupId);
-        for (String welcomeMessageIterator : groupVk.getAnswerAtWelcomeMessage()){
-            if (welcomeMessageIterator.equals(word)){
-                groupVk.getBadMessage().remove(welcomeMessageIterator);
-            }
-        }
+        groupVk.getAnswerAtWelcomeMessage().stream()
+                .filter(welcomeMessageIterator -> welcomeMessageIterator
+                        .equals(word))
+                .forEach(welcomeMessageIterator -> {
+            groupVk.getBadMessage().remove(welcomeMessageIterator);
+        });
         sessionFactory.getCurrentSession().merge(groupVk);
     }
 }
