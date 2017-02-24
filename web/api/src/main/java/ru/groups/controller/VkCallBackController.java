@@ -15,4 +15,10 @@ public class VkCallBackController {
     public String get(){
         return "a975253d";
     }
+
+
+    @RequestMapping(value = "set", method = RequestMethod.GET)
+    public String gett(){
+        return "asdasd";
+    }
 }
