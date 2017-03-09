@@ -2,6 +2,7 @@ package ru.groups.service.help;
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class JsonParsingHelper {
 
     private static final String USER_AGENT = "Mozilla/5.0";

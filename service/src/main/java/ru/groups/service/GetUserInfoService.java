@@ -33,17 +33,17 @@ public class GetUserInfoService {
     private final String redirectUri = "http://localhost:8080/oauth/token";
 
 
-    private JsonNode loadFullNameById(String userId) throws IOException{
-        String method = "users.get";
-        String reqUrl = "https://api.vk.com/method/{METHOD_NAME}?user_id={userID}"
-                .replace("{METHOD_NAME}", method)
-                .replace("{userID}", userId);
-        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
-        if (actualObj.get("response") == null){
-            throw new RuntimeException("Ошибка авторизации!!!");
-        }
-        return actualObj;
-    }
+//    private JsonNode loadFullNameById(String userId) throws IOException{
+//        String method = "users.get";
+//        String reqUrl = "https://api.vk.com/method/{METHOD_NAME}?user_id={userID}"
+//                .replace("{METHOD_NAME}", method)
+//                .replace("{userID}", userId);
+//        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
+//        if (actualObj.get("response") == null){
+//            throw new RuntimeException("Ошибка авторизации!!!");
+//        }
+//        return actualObj;
+//    }
 
 //    private UserVk addToUserNameAndLastName(UserVk userVk) throws Exception {
 //        JsonNode userWithFullName = loadFullNameById(userVk.getUserId());
