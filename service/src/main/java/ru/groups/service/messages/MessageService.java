@@ -34,7 +34,7 @@ public class MessageService {
                 .replace("{ACCESS_TOKEN}", accessToken)
                 .replace("{userID}", messageVk.getMessageUserId())
                 .replace("{MESSAGE}", messageVk.getMessageReply().replace(" ", "%20"));
-        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
+//        JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         messageVk.isMessageAnswered();
 //        После успешного выполнения возвращает идентификатор отправленного сообщения.
     }
