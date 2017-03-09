@@ -10,7 +10,4 @@ public class FrontController {
     public String getMain(){
         return "/index.html";
     }
-
-
-
 }

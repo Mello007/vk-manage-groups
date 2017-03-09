@@ -22,12 +22,12 @@ public class OauthVkController {
 
     @RequestMapping(value = "vk", method = RequestMethod.GET)
     public void sendLink(HttpServletResponse response) throws IOException{
-        response.sendRedirect("https://oauth.vk.com/authorize?client_id=5861084&display=page&scope=groups,messages,photos,docs&redirect_uri=http://localhost:8080/oauth/token&scope=offline&response_type=code");
+        response.sendRedirect("https://oauth.vk.com/authorize?client_id=5861084&display=page&scope=groups,messages,photos,docs&redirect_uri=http://botsell.ru/oauth/token&scope=offline&response_type=code");
     }
 
     @RequestMapping(value = "token", method = RequestMethod.GET)
     public void getToken(@RequestParam String code, HttpServletResponse response) throws Exception {
         vkInformationService.loadUserByCode(code);
-        response.sendRedirect("http://localhost:8080/admin.html");
+        response.sendRedirect("http://botsell.ru/admin.html");
     }
 }
