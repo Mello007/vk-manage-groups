@@ -18,22 +18,22 @@ import java.util.List;
 @Component
 public class MainService {
 
-    @Autowired SessionFactory sessionFactory;
-    @Autowired LongPollingService longPollingService;
-
-    @Transactional
-    @Scheduled(fixedRate = 50000)
-    private void checkGroupsAtMessages(){
-        Query query = sessionFactory.openSession().createQuery("from GroupVk");
-        List<GroupVk> groupsInBd = query.list();
-        groupsInBd.forEach(groupVk -> {
-            if (groupVk.getGroupNeededToCheck()){
-                try {
-                    longPollingService.getLongPolling(groupVk);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    @Autowired SessionFactory sessionFactory;
+//    @Autowired LongPollingService longPollingService;
+//
+//    @Transactional
+//    @Scheduled(fixedRate = 50000)
+//    private void checkGroupsAtMessages(){
+//        Query query = sessionFactory.openSession().createQuery("from GroupVk");
+//        List<GroupVk> groupsInBd = query.list();
+//        groupsInBd.forEach(groupVk -> {
+//            if (groupVk.getGroupNeededToCheck()){
+//                try {
+//                    longPollingService.getLongPolling(groupVk);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 }
