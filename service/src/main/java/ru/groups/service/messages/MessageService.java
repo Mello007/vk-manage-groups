@@ -10,7 +10,7 @@ import ru.groups.entity.GroupVk;
 import ru.groups.entity.MessageVK;
 import ru.groups.service.GetUserInfoService;
 import ru.groups.service.help.FindMessageHelper;
-import ru.groups.service.help.JsonParsingHelper;
+//import ru.groups.service.help.JsonParsingHelper;
 import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
 

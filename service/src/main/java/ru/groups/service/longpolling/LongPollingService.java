@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
 import ru.groups.service.messages.MessageService;
 import ru.groups.service.GetUserInfoService;
-import ru.groups.service.help.JsonParsingHelper;
+//import ru.groups.service.help.JsonParsingHelper;
 import java.io.IOException;
 import java.util.List;
 
