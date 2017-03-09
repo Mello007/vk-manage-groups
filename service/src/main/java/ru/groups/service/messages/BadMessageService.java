@@ -36,6 +36,7 @@ public class BadMessageService {
         stopWords.add("Зачем вы так со мной :(");
         stopWords.add("Я не люблю отвечать на сообщения данного типа");
         groupVk.setStopWords(stopWords);
+
     }
 
     // This method adding default mature words to groups bot.
@@ -71,7 +72,7 @@ public class BadMessageService {
 
     // This method delete bad word from list of bad words this group
     @Transactional
-    public void deleteBadWord(String groupId, String word){
+    private void deleteBadWord(String groupId, String word){
         GroupVk groupVk = groupService.searchGroup(groupId);
         groupVk.getBadMessage().forEach(badMessage -> {
             if (badMessage.equals(word)){
@@ -82,13 +83,13 @@ public class BadMessageService {
     }
 
     @Transactional
-    public void addNewBadWord(String word, String groupId){
+    private void addNewBadWord(String word, String groupId){
         GroupVk groupVk = groupService.searchGroup(groupId);
         groupVk.getBadMessage().add(word);
         sessionFactory.getCurrentSession().merge(groupVk);
     }
 
-    public String isBadMessage(String message, GroupVk groupVk){
+    private String isBadMessage(String message, GroupVk groupVk){
         String loverCaseMessage = message.toLowerCase();
         boolean isBadMessage = groupVk.getBadMessage().stream().
                 anyMatch(badMessage -> loverCaseMessage.

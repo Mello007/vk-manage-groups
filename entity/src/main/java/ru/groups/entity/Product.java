@@ -14,4 +14,10 @@ public class Product extends BaseEntity{
     private String nameOfGoods;
     private String priceOfGoods;
     private String countOfGoods;
+
+    Product(Product product){
+        this.nameOfGoods = product.getNameOfGoods();
+        this.priceOfGoods = product.getPriceOfGoods();
+        this.countOfGoods = product.getCountOfGoods();
+    }
 }

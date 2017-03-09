@@ -37,16 +37,4 @@ public class AsqAndAnswerService {
         groupVk.getAnswerAndAsksMessages().add(answerAndAsk);
     }
 
-    //This method find Answer from value of Ask.
-    // need to write else
-    public String findAnswer(String message, String groupId){
-        GroupVk groupVk = groupService.searchGroup(groupId);
-        List<AnswerAndAsk> answerAndAsksList = groupVk.getAnswerAndAsksMessages();
-        for (AnswerAndAsk answer : answerAndAsksList){
-            if (answer.getMessageAsk().equals(message)){
-                return answer.getMessageAnswer();
-            }
-        }
-        return null;
-    }
 }

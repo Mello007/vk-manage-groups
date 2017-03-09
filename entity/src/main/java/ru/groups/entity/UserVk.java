@@ -16,6 +16,5 @@ public class UserVk extends BaseEntity{
     private String userEmail;
     private String password;
     private String userId;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) @JoinTable  private List<GroupVk> userGroups;
 }

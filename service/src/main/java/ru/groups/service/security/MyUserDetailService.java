@@ -21,8 +21,7 @@ import java.util.Set;
 @Service("userDetailsService")
 public class MyUserDetailService implements UserDetailsService {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @Transactional(readOnly=true)
     @Override

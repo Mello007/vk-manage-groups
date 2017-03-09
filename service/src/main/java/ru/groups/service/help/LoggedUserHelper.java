@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class LoggedUserHelper {
 
-
     @Autowired Session session;
     @Autowired SessionFactory sessionFactory;
 

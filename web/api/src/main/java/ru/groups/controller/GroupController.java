@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.groups.entity.GroupVk;
 import ru.groups.service.GroupService;
+import ru.groups.service.help.LoggedUserHelper;
 import ru.groups.service.longpolling.LongPollingService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +17,11 @@ public class GroupController {
 
     @Autowired GroupService groupService;
     @Autowired LongPollingService longPollingService;
+    @Autowired LoggedUserHelper loggedUserHelper;
 
     @RequestMapping(value = "get", method = RequestMethod.GET, produces = "application/json")
     public List<GroupVk> getGroups() throws Exception{
-        return groupService.getGroupsFromBD();
+        return loggedUserHelper.getUserFromBD().getUserGroups();
     }
 
     @RequestMapping(value = "setpolling", method = RequestMethod.POST)
@@ -27,4 +29,12 @@ public class GroupController {
         groupService.setAccessTokenToGroup(accessToken, groupId);
        // response.sendRedirect("http://localhost:8080/resources/admin.html");
     }
+
+
+    //test controller
+//    @RequestMapping(value = "set", method = RequestMethod.GET)
+//    public void set() {
+//        groupService.set();
+//        // response.sendRedirect("http://localhost:8080/resources/admin.html");
+//    }
 }

@@ -5,12 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.groups.entity.DTO.ShopDTO;
-import ru.groups.entity.DTO.UserDTO;
+import ru.groups.entity.Shop;
 import ru.groups.entity.Product;
-import ru.groups.service.ShopService;
-
-import java.io.IOException;
+import ru.groups.service.shops.ShopService;
 
 @RestController
 @RequestMapping(value = "shop")
@@ -24,7 +21,7 @@ public class ShopsController {
     }
 
     @RequestMapping(value = "addShop", method = RequestMethod.POST, consumes = "application/json")
-    public void addShop(@RequestBody ShopDTO shopDTO, String groupId){
-        shopService.addNewShopToGroup(shopDTO, groupId);
+    public void addShop(@RequestBody Shop shop, String groupId){
+        shopService.addNewShopToGroup(shop, groupId);
     }
 }

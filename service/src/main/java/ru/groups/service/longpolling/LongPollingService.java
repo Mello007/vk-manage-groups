@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.groups.entity.GroupVk;
-import ru.groups.service.MessageService;
-import ru.groups.service.VkInformationService;
+import ru.groups.service.messages.MessageService;
+import ru.groups.service.GetUserInfoService;
 import ru.groups.service.help.JsonParsingHelper;
 import java.io.IOException;
 import java.util.List;
@@ -18,21 +18,21 @@ import java.util.List;
 public class LongPollingService {
 
     private static final String versionOfVkApi = "5.59";
-    private static final Integer NUMBER_OF_KEY_IN_MASSIVE = 0;
-    private static final Integer NUMBER_OF_SERVER_ADDRESS_IN_MASSIVE = 1;
-    private static final Integer NUMBER_OF_LAST_ACTION_IN_MASSIVE = 2;
+    private static final Integer KEY = 0;
+    private static final Integer SERVER_ADDRESS = 1;
+    private static final Integer NUMBER_OF_LAST_ACTION = 2;
 
 
     @Autowired SessionFactory sessionFactory;
-    @Autowired VkInformationService oauthService;
+    @Autowired GetUserInfoService oauthService;
     @Autowired MessageService messageService;
 
 
     private void addNewKeyServerTsToGroup(GroupVk groupVk, JsonNode actualObj){
         List<String> valuesInJson = JsonParsingHelper.findValueInJson(actualObj, "key", "server", "ts");
-        groupVk.setTempKeyOfPollingServer(valuesInJson.get(NUMBER_OF_KEY_IN_MASSIVE));
-        groupVk.setAddressOfPollingServer(valuesInJson.get(NUMBER_OF_SERVER_ADDRESS_IN_MASSIVE));
-        groupVk.setNumberOfLastAction(valuesInJson.get(NUMBER_OF_LAST_ACTION_IN_MASSIVE));
+        groupVk.setTempKeyOfPollingServer(valuesInJson.get(KEY));
+        groupVk.setAddressOfPollingServer(valuesInJson.get(SERVER_ADDRESS));
+        groupVk.setNumberOfLastAction(valuesInJson.get(NUMBER_OF_LAST_ACTION));
     }
 
     @Transactional
@@ -44,7 +44,6 @@ public class LongPollingService {
                 .replace("{API_VERSION}", versionOfVkApi);
         JsonNode actualObj = JsonParsingHelper.GetValueAndChangeJsonInString(reqUrl);
         addNewKeyServerTsToGroup(groupVk, actualObj);
-        sessionFactory.getCurrentSession().merge(groupVk);
         requestToPollingServer(groupVk);
     }
 
