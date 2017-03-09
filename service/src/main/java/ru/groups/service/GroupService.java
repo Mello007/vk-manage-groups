@@ -1,11 +1,11 @@
 package ru.groups.service;
 
-//import com.vk.api.sdk.client.VkApiClient;
-//import com.vk.api.sdk.client.actors.UserActor;
-//import com.vk.api.sdk.exceptions.ApiException;
-//import com.vk.api.sdk.exceptions.ClientException;
-//import com.vk.api.sdk.objects.groups.GroupFull;
-//import com.vk.api.sdk.queries.groups.GroupsGetFilter;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.objects.groups.GroupFull;
+import com.vk.api.sdk.queries.groups.GroupsGetFilter;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +37,8 @@ public class GroupService {
     @Autowired ProductService productService;
 
     @Transactional
-    void findUserGroupsInAPI(UserVk userVk) throws Exception {
-        List<GroupVk> groupsFromVkApi = getGroupsFromVkApi();
+    void findUserGroupsInAPI(UserVk userVk, VkApiClient vk, UserActor actor) throws Exception {
+        List<GroupVk> groupsFromVkApi = getGroupsFromVkApi(vk, actor);
         List<GroupVk> changedOrNewGroups = findNewUserGroups(userVk.getUserGroups(), groupsFromVkApi);
         if (!changedOrNewGroups.isEmpty()) {
             userVk.setUserGroups(changedOrNewGroups); //добавляем юзеру группы его
@@ -46,27 +46,27 @@ public class GroupService {
         }
     }
 
-    private List<GroupVk> getGroupsFromVkApi () {
-//        List<GroupVk> groupVks = new ArrayList<>();
-//        GroupsGetFilter filterForGroups = GroupsGetFilter.ADMIN;
-//        List<String> groupIds = vk.groups()
-//                .get(actor)
-//                .filter(filterForGroups)
-//                .execute()
-//                .getItems()
-//                .stream()
-//                .map(Object::toString)
-//                .collect(Collectors.toList());
-//        List<GroupFull> groupFulls = vk.groups().getById(actor).groupIds(groupIds).execute();
-//        groupFulls.forEach(groupFull -> {
-//            GroupVk groupVk = new GroupVk();
-//            groupVk.setGroupName(groupFull.getName());
-//            groupVk.setGroupId(groupFull.getId());
-//            groupVk.setPhoto50px(groupFull.getPhoto50());
-//            groupVk.setPhoto100px(groupFull.getPhoto100());
-//            groupVks.add(groupVk);
-//        });
-        return null;
+    private List<GroupVk> getGroupsFromVkApi (VkApiClient vk, UserActor actor) throws ClientException, ApiException {
+        List<GroupVk> groupVks = new ArrayList<>();
+        GroupsGetFilter filterForGroups = GroupsGetFilter.ADMIN;
+        List<String> groupIds = vk.groups()
+                .get(actor)
+                .filter(filterForGroups)
+                .execute()
+                .getItems()
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
+        List<GroupFull> groupFulls = vk.groups().getById(actor).groupIds(groupIds).execute();
+        groupFulls.forEach(groupFull -> {
+            GroupVk groupVk = new GroupVk();
+            groupVk.setGroupName(groupFull.getName());
+            groupVk.setGroupId(groupFull.getId());
+            groupVk.setPhoto50px(groupFull.getPhoto50());
+            groupVk.setPhoto100px(groupFull.getPhoto100());
+            groupVks.add(groupVk);
+        });
+        return groupVks;
     }
 
     private List<GroupVk> findNewUserGroups(List<GroupVk> groupsInBd, List<GroupVk> groupsFromApi) {

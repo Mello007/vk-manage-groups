@@ -1,12 +1,12 @@
 package ru.groups.service;
 
 import com.couchbase.client.deps.com.fasterxml.jackson.databind.JsonNode;
-//import com.vk.api.sdk.client.TransportClient;
-//import com.vk.api.sdk.client.VkApiClient;
-//import com.vk.api.sdk.client.actors.UserActor;
-//import com.vk.api.sdk.httpclient.HttpTransportClient;
-//import com.vk.api.sdk.objects.UserAuthResponse;
-//import com.vk.api.sdk.queries.account.AccountGetInfoQuery;
+import com.vk.api.sdk.client.TransportClient;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.vk.api.sdk.objects.UserAuthResponse;
+import com.vk.api.sdk.queries.account.AccountGetInfoQuery;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,16 +55,16 @@ public class GetUserInfoService {
     @Transactional
     public UserVk loadUserByCode(String code) throws Exception {
         UserVk userVk = loggedUserHelper.getUserFromBD();
-//        TransportClient transportClient = HttpTransportClient.getInstance();
-//        VkApiClient vk = new VkApiClient(transportClient);
-//        UserAuthResponse authResponse = vk.oauth()
-//                .userAuthorizationCodeFlow(appId, clientSecret, redirectUri, code)
-//                .execute();
-//        UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
-//        userVk.setUserId(actor.getId().toString());
-//        userVk.setUserAccessToken(actor.getAccessToken());
-//        userVk = addToUserNameAndLastName(userVk);
-//        groupService.findUserGroupsInAPI(userVk, vk, actor);
+        TransportClient transportClient = HttpTransportClient.getInstance();
+        VkApiClient vk = new VkApiClient(transportClient);
+        UserAuthResponse authResponse = vk.oauth()
+                .userAuthorizationCodeFlow(appId, clientSecret, redirectUri, code)
+                .execute();
+        UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+        userVk.setUserId(actor.getId().toString());
+        userVk.setUserAccessToken(actor.getAccessToken());
+        userVk = addToUserNameAndLastName(userVk);
+        groupService.findUserGroupsInAPI(userVk, vk, actor);
         return userVk;
     }
 }
