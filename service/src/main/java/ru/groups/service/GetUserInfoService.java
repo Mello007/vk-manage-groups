@@ -45,12 +45,12 @@ public class GetUserInfoService {
         return actualObj;
     }
 
-    private UserVk addToUserNameAndLastName(UserVk userVk) throws Exception {
-        JsonNode userWithFullName = loadFullNameById(userVk.getUserId());
-        userVk.setUserName(JsonParsingHelper.findValueInJson(userWithFullName, "first_name"));
-        userVk.setUserLastName(JsonParsingHelper.findValueInJson(userWithFullName, "last_name"));
-        return userVk;
-    }
+//    private UserVk addToUserNameAndLastName(UserVk userVk) throws Exception {
+//        JsonNode userWithFullName = loadFullNameById(userVk.getUserId());
+//        userVk.setUserName(JsonParsingHelper.findValueInJson(userWithFullName, "first_name"));
+//        userVk.setUserLastName(JsonParsingHelper.findValueInJson(userWithFullName, "last_name"));
+//        return userVk;
+//    }
 
     @Transactional
     public UserVk loadUserByCode(String code) throws Exception {
@@ -63,7 +63,9 @@ public class GetUserInfoService {
         UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
         userVk.setUserId(actor.getId().toString());
         userVk.setUserAccessToken(actor.getAccessToken());
-        userVk = addToUserNameAndLastName(userVk);
+        userVk.setUserName("sfgg");
+        userVk.setUserLastName("dfgfgh");
+//        userVk = addToUserNameAndLastName(userVk);
         groupService.findUserGroupsInAPI(userVk, vk, actor);
         return userVk;
     }
